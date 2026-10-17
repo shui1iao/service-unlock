@@ -22,7 +22,7 @@ func fixtureResults() []access.Result {
 func TestCLIJSONScopeFieldsAndExitCodes(t *testing.T) {
 	for _, hasError := range []bool{false, true} {
 		out, errout := new(bytes.Buffer), new(bytes.Buffer)
-		runner := func(_ context.Context, timeout time.Duration, workers int) ([]access.Result, error) {
+		runner := func(_ context.Context, timeout time.Duration, workers int) (measurements, error) {
 			if timeout != 100*time.Millisecond || workers != 2 {
 				t.Fatal(timeout, workers)
 			}
@@ -34,7 +34,7 @@ func TestCLIJSONScopeFieldsAndExitCodes(t *testing.T) {
 				results[7].State = access.StateError
 				results[7].Detail = "parse failure"
 			}
-			return results, nil
+			return measurements{Access: results}, nil
 		}
 		code := runCLI(context.Background(), []string{"--json", "--timeout", ".1", "--workers", "2"}, out, errout, runner)
 		want := 0
@@ -75,15 +75,15 @@ func TestCLIJSONScopeFieldsAndExitCodes(t *testing.T) {
 	}
 }
 func TestCLIHelpValidationAndHumanOutput(t *testing.T) {
-	never := func(context.Context, time.Duration, int) ([]access.Result, error) {
+	never := func(context.Context, time.Duration, int) (measurements, error) {
 		t.Fatal("help/invalid args attempted measurement")
-		return nil, nil
+		return measurements{}, nil
 	}
 	for _, args := range [][]string{{"--help"}, {"-h"}, {"--workers", "0"}, {"--workers", "9"}, {"--timeout", "NaN"}, {"--timeout", "0"}, {"--timeout", "-1"}, {"--unknown"}, {"extra"}} {
 		out, errout := new(bytes.Buffer), new(bytes.Buffer)
 		code := runCLI(context.Background(), args, out, errout, never)
 		if args[0] == "--help" || args[0] == "-h" {
-			if code != 0 || !strings.Contains(out.String(), "7个平台") {
+			if code != 0 || !strings.Contains(out.String(), "37项检查") {
 				t.Fatal(code, out)
 			}
 		} else if code != 2 || out.Len() != 0 {
@@ -91,7 +91,9 @@ func TestCLIHelpValidationAndHumanOutput(t *testing.T) {
 		}
 	}
 	out := new(bytes.Buffer)
-	code := runCLI(context.Background(), nil, out, new(bytes.Buffer), func(context.Context, time.Duration, int) ([]access.Result, error) { return fixtureResults(), nil })
+	code := runCLI(context.Background(), nil, out, new(bytes.Buffer), func(context.Context, time.Duration, int) (measurements, error) {
+		return measurements{Access: fixtureResults()}, nil
+	})
 	if code != 0 || !strings.Contains(out.String(), "ChatGPT (app)") || !strings.Contains(out.String(), "Stash checks") || !strings.Contains(out.String(), "completed in") {
 		t.Fatal(code, out)
 	}
@@ -100,7 +102,9 @@ func TestCLICancelNoPartialJSON(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
 	out, errout := new(bytes.Buffer), new(bytes.Buffer)
-	code := runCLI(ctx, []string{"--json"}, out, errout, func(context.Context, time.Duration, int) ([]access.Result, error) { return nil, context.Canceled })
+	code := runCLI(ctx, []string{"--json"}, out, errout, func(context.Context, time.Duration, int) (measurements, error) {
+		return measurements{}, context.Canceled
+	})
 	if code != 130 || out.Len() != 0 || !strings.Contains(errout.String(), "中断") {
 		t.Fatal(code, out, errout)
 	}

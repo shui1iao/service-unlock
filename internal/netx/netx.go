@@ -31,6 +31,9 @@ type Stack struct {
 	timeout time.Duration
 }
 type Request struct {
+	Method    string
+	JSON      string
+	HeadOnly  bool
 	URL       string
 	UserAgent string
 	Headers   map[string]string
@@ -90,14 +93,32 @@ func readBounded(r io.Reader) ([]byte, error) {
 func (s *Stack) Do(ctx context.Context, _ Family, req Request) (*Response, error) {
 	ctx, cancel := context.WithTimeout(ctx, s.timeout)
 	defer cancel()
-	request, err := http.NewRequestWithContext(ctx, http.MethodGet, req.URL, nil)
+	method := req.Method
+	if method == "" {
+		method = http.MethodGet
+	}
+	if req.HeadOnly {
+		method = http.MethodHead
+	}
+	var body io.Reader
+	if req.JSON != "" {
+		body = strings.NewReader(req.JSON)
+	}
+	request, err := http.NewRequestWithContext(ctx, method, req.URL, body)
 	if err != nil {
 		return nil, err
 	}
 	if (request.URL.Scheme != "http" && request.URL.Scheme != "https") || request.URL.User != nil {
 		return nil, fmt.Errorf("unsupported request destination")
 	}
-	request.Header.Set("User-Agent", req.UserAgent)
+	ua := req.UserAgent
+	if ua == "" {
+		ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36"
+	}
+	request.Header.Set("User-Agent", ua)
+	if req.JSON != "" {
+		request.Header.Set("Content-Type", "application/json")
+	}
 	request.Header.Set("Accept-Encoding", "gzip")
 	for name, value := range req.Headers {
 		request.Header.Set(name, value)
@@ -110,6 +131,12 @@ func (s *Stack) Do(ctx context.Context, _ Family, req Request) (*Response, error
 	// Incomplete redirect responses are not success evidence.
 	if response.StatusCode >= 300 && response.StatusCode < 400 {
 		return nil, fmt.Errorf("redirect failed")
+	}
+	if req.HeadOnly {
+		if err := ctx.Err(); err != nil {
+			return nil, err
+		}
+		return &Response{Status: response.StatusCode, Header: response.Header, FinalURL: response.Request.URL.String()}, nil
 	}
 	raw, err := readBounded(response.Body)
 	if err != nil {

@@ -10,14 +10,12 @@ import (
 	"strings"
 	"testing"
 	"time"
-
-	"serviceunlock/internal/access"
 )
 
 func TestTerminalFooterUsesRealRunInterval(t *testing.T) {
 	var measured time.Duration
 	out := new(bytes.Buffer)
-	code := runCLI(context.Background(), nil, out, new(bytes.Buffer), func(context.Context, time.Duration, int) ([]access.Result, error) {
+	code := runCLI(context.Background(), nil, out, new(bytes.Buffer), func(context.Context, time.Duration, int) (measurements, error) {
 		start := time.Now()
 		time.Sleep(120 * time.Millisecond)
 		results := fixtureResults()
@@ -25,7 +23,7 @@ func TestTerminalFooterUsesRealRunInterval(t *testing.T) {
 			results[i].RTT = 999 * time.Second
 		}
 		measured = time.Since(start)
-		return results, nil
+		return measurements{Access: results}, nil
 	})
 	match := regexp.MustCompile(`completed in ([0-9]+\.[0-9])s`).FindStringSubmatch(out.String())
 	if code != 0 || len(match) != 2 {
@@ -44,7 +42,9 @@ func TestJSONUnchangedUnderForcedColor(t *testing.T) {
 	t.Setenv("COLORTERM", "truecolor")
 	t.Setenv("NO_COLOR", "")
 	out := new(bytes.Buffer)
-	code := runCLI(context.Background(), []string{"--json"}, out, new(bytes.Buffer), func(context.Context, time.Duration, int) ([]access.Result, error) { return fixtureResults(), nil })
+	code := runCLI(context.Background(), []string{"--json"}, out, new(bytes.Buffer), func(context.Context, time.Duration, int) (measurements, error) {
+		return measurements{Access: fixtureResults()}, nil
+	})
 	if code != 0 || strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "Stash checks") {
 		t.Fatal(code, out.String())
 	}
@@ -52,13 +52,13 @@ func TestJSONUnchangedUnderForcedColor(t *testing.T) {
 	if err := json.Unmarshal(out.Bytes(), &object); err != nil {
 		t.Fatal(err)
 	}
-	for _, name := range []string{"schema_version", "source", "generated_at", "network", "results"} {
+	for _, name := range []string{"schema_version", "source", "generated_at", "network", "results", "services", "ai_endpoints"} {
 		if _, ok := object[name]; !ok {
 			t.Fatal(name)
 		}
 	}
-	if len(object) != 5 {
-		t.Fatal("changed JSON top-level fields")
+	if len(object) != 7 {
+		t.Fatal("unexpected JSON fields beyond the two additive groups")
 	}
 	var rows []map[string]json.RawMessage
 	if err := json.Unmarshal(object["results"], &rows); err != nil {

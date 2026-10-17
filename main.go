@@ -1,4 +1,4 @@
-// Service Unlock v0.3.1. MIT License; Copyright (c) 2026 Remnawave.
+// Service Unlock v0.4.0. MIT License; Copyright (c) 2026 Remnawave.
 // Derived from remnawave/geocheck v0.3.0; see LICENSE and README.md.
 package main
 
@@ -18,6 +18,8 @@ import (
 	"time"
 
 	"serviceunlock/internal/access"
+	"serviceunlock/internal/ai"
+	"serviceunlock/internal/geo"
 	"serviceunlock/internal/netx"
 	"serviceunlock/internal/render"
 )
@@ -25,10 +27,10 @@ import (
 //go:embed LICENSE
 var licenseText string
 
-const help = `Service Unlock v0.3.1 — 7个平台 / 8项检查
+const help = `Service Unlock v0.4.0 — 37项检查 / 3组
 Usage: service-unlock [--json] [--timeout SECONDS] [--workers N]
   --json       只输出JSON，error=未知，不代表未解锁
-  --timeout N  每次GET总预算秒数（含重定向/正文），默认6
+  --timeout N  每次HTTP请求总预算秒数（含重定向/正文），默认6
   --workers N  有界并发1–8，默认4
   --help       显示帮助，不联网
   --license    显示内嵌MIT许可，不联网
@@ -52,6 +54,8 @@ type report struct {
 	GeneratedAt   string            `json:"generated_at"`
 	Network       networkInfo       `json:"network"`
 	Results       []item            `json:"results"`
+	Services      []serviceItem     `json:"services"`
+	AIEndpoints   []endpointItem    `json:"ai_endpoints"`
 }
 type networkInfo struct {
 	Mode           string  `json:"mode"`
@@ -65,7 +69,7 @@ func utc(t time.Time) string { return t.UTC().Format("2006-01-02T15:04:05.000Z")
 func makeReport(results []access.Result, timeout float64, workers int) report {
 	r := report{SchemaVersion: 1, GeneratedAt: utc(time.Now()),
 		Source: map[string]string{"repository": "https://github.com/remnawave/geocheck", "tag": "v0.3.0",
-			"commit": "50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc", "port": "Go v0.3.1 standalone extraction with conservative error handling"},
+			"commit": "50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc", "port": "Go v0.4.0 standalone three-group extraction with conservative error handling"},
 		Network: networkInfo{"direct", "system-selected", timeout, "request including redirects and body", workers},
 		Results: make([]item, 0, len(results)),
 	}
@@ -95,16 +99,37 @@ func makeReport(results []access.Result, timeout float64, workers int) report {
 	return r
 }
 
-type runner func(context.Context, time.Duration, int) ([]access.Result, error)
+type measurements struct {
+	Access   []access.Result
+	Services []geo.Result
+	AI       []ai.Result
+}
+type runner func(context.Context, time.Duration, int) (measurements, error)
 
-func realRun(ctx context.Context, timeout time.Duration, workers int) ([]access.Result, error) {
+func realRun(ctx context.Context, timeout time.Duration, workers int) (measurements, error) {
 	stack, err := netx.New(ctx, netx.Options{Timeout: timeout})
 	if err != nil {
-		return nil, err
+		return measurements{}, err
 	}
 	defer stack.Close()
-	return access.Run(ctx, stack, 0, access.Checks(), workers), nil
+	return runGroups(ctx, stack, workers)
 }
+
+// Groups run consecutively through the same direct stack. This preserves the
+// existing access path and makes --workers a GLOBAL bound, not a per-group multiplier.
+func runGroups(ctx context.Context, stack *netx.Stack, workers int) (measurements, error) {
+	m := measurements{Access: access.Run(ctx, stack, 0, access.Checks(), workers)}
+	if ctx.Err() != nil {
+		return m, ctx.Err()
+	}
+	m.Services = geo.Run(ctx, &geo.Env{Stack: stack}, geo.ServiceChecks(), workers)
+	if ctx.Err() != nil {
+		return m, ctx.Err()
+	}
+	m.AI = ai.Run(ctx, stack, 0, ai.Checks(), workers)
+	return m, ctx.Err()
+}
+
 func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run runner) int {
 	flags := flag.NewFlagSet("service-unlock", flag.ContinueOnError)
 	flags.SetOutput(io.Discard)
@@ -141,21 +166,31 @@ func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run ru
 		fmt.Fprintln(stderr, "检测失败:", err)
 		return 1
 	}
-	r := makeReport(results, *timeout, *workers)
+	r := makeCompleteReport(results, *timeout, *workers)
 	if *asJSON {
 		encoder := json.NewEncoder(stdout)
 		encoder.SetIndent("", "  ")
 		encoder.SetEscapeHTML(false)
 		err = encoder.Encode(r)
 	} else {
-		err = render.WriteAccess(stdout, render.Report{Access: results, Duration: elapsed})
+		err = render.WriteAccess(stdout, render.Report{Access: results.Access, Services: results.Services, AI: results.AI, Duration: elapsed})
 	}
 	if err != nil {
 		fmt.Fprintln(stderr, "输出失败:", err)
 		return 1
 	}
-	for _, r := range results {
+	for _, r := range results.Access {
 		if r.State == access.StateError {
+			return 1
+		}
+	}
+	for _, r := range results.Services {
+		if r.Err != nil {
+			return 1
+		}
+	}
+	for _, r := range results.AI {
+		if r.State == ai.StateError {
 			return 1
 		}
 	}

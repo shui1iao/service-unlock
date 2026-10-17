@@ -1,4 +1,5 @@
-// Extracted verbatim functions from remnawave/geocheck v0.3.0 internal/render/report.go.
+// Adapted from remnawave/geocheck v0.3.0 internal/render/report.go.
+// Original table shape retained; information now uses terminal-default foreground.
 // Commit 50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc.
 // MIT License; Copyright (c) 2026 Remnawave. See LICENSE.
 package render
@@ -8,12 +9,17 @@ import (
 	"charm.land/lipgloss/v2/table"
 	"fmt"
 	"serviceunlock/internal/access"
+	"serviceunlock/internal/ai"
+	"serviceunlock/internal/geo"
+	"strconv"
 	"strings"
 	"time"
 )
 
 type Report struct {
 	Access   []access.Result
+	Services []geo.Result
+	AI       []ai.Result
 	Duration time.Duration
 }
 
@@ -51,7 +57,7 @@ func (o *Output) accessTable(r Report) {
 	add(s.Available, "available", t.Good)
 	add(s.Restricted, "restricted", t.Warn)
 	add(s.Blocked, "blocked", t.Bad)
-	add(s.Errors, "inconclusive", t.Muted)
+	add(s.Errors, "inconclusive", t.Error)
 	if len(parts) > 0 {
 		o.line("  %s", strings.Join(parts, t.Muted.Render(" · ")))
 	}
@@ -68,7 +74,7 @@ func (o *Output) accessStateCell(s access.State) string {
 	case access.StateBlocked:
 		return t.Bad.Render("● blocked")
 	default:
-		return t.Muted.Render("○ error")
+		return t.Error.Render("○ error")
 	}
 }
 
@@ -116,21 +122,7 @@ func (o *Output) table(headers []string, rows [][]string) string {
 }
 
 func (o *Output) rttCell(d time.Duration) string {
-	t := o.Theme
-	if d == 0 {
-		return t.Muted.Render("—")
-	}
-	ms := d.Seconds() * 1000
-	style := t.Good
-	switch {
-	case ms > 160:
-		style = t.Bad
-	case ms > 80:
-		style = t.Warn
-	case ms > 30:
-		style = t.Info
-	}
-	return style.Render(formatRTT(d))
+	return o.Theme.Value.Render(formatRTT(d))
 }
 
 func clip(s string, n int) string {
@@ -160,4 +152,59 @@ func maxInt(a, b int) int {
 		return a
 	}
 	return b
+}
+
+func (o *Output) aiTable(r Report) {
+	t := o.Theme
+	o.section("AI endpoints")
+
+	rows := make([][]string, 0, len(r.AI))
+	for _, res := range r.AI {
+		status := "—"
+		if res.Status > 0 {
+			status = strconv.Itoa(res.Status)
+		}
+		rows = append(rows, []string{
+			res.Check.Name,
+			o.aiStateCell(res.State),
+			t.Muted.Render(status),
+			t.Muted.Render(clip(res.Detail, 46)),
+			o.aiTimeCell(res),
+		})
+	}
+	o.line("%s", o.table([]string{"Endpoint", "Status", "HTTP", "Detail", "Time"}, rows))
+
+	s := ai.Summarize(r.AI)
+	var parts []string
+	add := func(n int, label string, style lg.Style) {
+		if n > 0 {
+			parts = append(parts, style.Render(fmt.Sprintf("%d %s", n, label)))
+		}
+	}
+	add(s.Reachable, "reachable", t.Good)
+	add(s.Blocked, "blocked", t.Bad)
+	add(s.Failed, "inconclusive", t.Error)
+	if len(parts) > 0 {
+		o.line("  %s", strings.Join(parts, t.Muted.Render(" · ")))
+	}
+	o.line("")
+}
+
+func (o *Output) aiStateCell(s ai.State) string {
+	t := o.Theme
+	switch s {
+	case ai.StateReachable:
+		return t.Good.Render("● reachable")
+	case ai.StateBlocked:
+		return t.Bad.Render("● blocked")
+	default:
+		return t.Error.Render("○ error")
+	}
+}
+
+func (o *Output) aiTimeCell(res ai.Result) string {
+	if res.RTT <= 0 {
+		return o.Theme.Muted.Render("—")
+	}
+	return o.rttCell(res.RTT)
 }

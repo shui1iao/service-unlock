@@ -6,6 +6,7 @@ package render
 import (
 	"fmt"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/charmbracelet/colorprofile"
@@ -35,17 +36,23 @@ func TestTTYWidthAndProfiles(t *testing.T) {
 	}
 	t.Setenv("TERM", "xterm-256color")
 	t.Setenv("COLORTERM", "truecolor")
-	for _, width := range []int{120, 30} {
-		if err = unix.IoctlSetWinsize(int(slave.Fd()), unix.TIOCSWINSZ, &unix.Winsize{Row: 24, Col: uint16(width)}); err != nil {
-			t.Fatal(err)
-		}
-		o := NewOutput(slave)
-		want := width
-		if width <= 40 {
-			want = 100
-		}
-		if o.Width != want || !o.Color || o.W.(*colorprofile.Writer).Profile != colorprofile.TrueColor {
-			t.Fatal(o.Width, o.Color, o.W)
+	for _, bg := range []string{"", "15;0", "0;15"} {
+		t.Setenv("COLORFGBG", bg)
+		for _, width := range []int{120, 30} {
+			if err = unix.IoctlSetWinsize(int(slave.Fd()), unix.TIOCSWINSZ, &unix.Winsize{Row: 24, Col: uint16(width)}); err != nil {
+				t.Fatal(err)
+			}
+			o := NewOutput(slave)
+			want := width
+			if width <= 40 {
+				want = 100
+			}
+			if o.Width != want || !o.Color || o.W.(*colorprofile.Writer).Profile != colorprofile.TrueColor {
+				t.Fatal(o.Width, o.Color, o.W)
+			}
+			if strings.Contains(o.Theme.TableCell.Render("body"), "\x1b") || strings.Contains(o.Theme.Muted.Render("detail"), "\x1b") {
+				t.Fatal("TTY information forced a foreground", bg)
+			}
 		}
 	}
 	t.Setenv("CLICOLOR_FORCE", "1")

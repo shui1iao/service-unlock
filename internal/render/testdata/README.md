@@ -17,8 +17,10 @@ v0.3.0、commit `50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc` 的以下原始函数
 - `ansi`：colorprofile.TrueColor（保留完整原始真彩 SGR）
 - `nocolor`：colorprofile.Ascii（原版 NO_COLOR 行为，去颜色但可保留加粗/复位）
 
-`TestUpstreamGoldenExactBytes` 对三个完整输出逐字节比较；其他用例进一步断言表格形状、
-顺序、颜色、时间、截断、计数、真实 PTY 与 JSON 隔离。原始 `clip` 按字节操作；
+本轮用户明确要求改善深/浅背景可读性，旧 `ansi/nocolor` 文件只保留历史参考，**不是当前颜色预期**。
+`TestAccessLayoutUnchangedWithReadablePalette` 将当前输出去除 ANSI 后，与原版 plain 文件完整比较。
+正文/地区/详情/耗时改为默认前景，状态使用 ANSI 语义色、error 默认前景加粗；新增三组测试另行验证
+37行、目录顺序、分组含义、NO_COLOR、真实 PTY 和深/浅/未提供背景的可读性。原始 `clip` 按字节操作；
 原始 `accessTimeCell` 仅因非 nil Err 或零耗时隐藏时间，未将所有 StateError 擅自改写。
 
 来源许可：MIT，Copyright (c) 2026 Remnawave。

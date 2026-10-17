@@ -1,0 +1,13 @@
+{
+ "note":"Pinned upstream v0.3.0 endpoint catalogue. Offline fixtures, not live results.",
+ "checks":[
+  {"id":"openai","name":"OpenAI","vendor":"OpenAI","url":"https://api.openai.com/v1/models"},
+  {"id":"anthropic","name":"Anthropic","vendor":"Anthropic","url":"https://api.anthropic.com/v1/models","headers":{"anthropic-version":"2023-06-01"}},
+  {"id":"gemini","name":"Google Gemini","vendor":"Google","url":"https://generativelanguage.googleapis.com/v1beta/models"},
+  {"id":"deepseek","name":"DeepSeek","vendor":"DeepSeek","url":"https://api.deepseek.com/models"},
+  {"id":"qwen_intl","name":"Qwen (Singapore)","vendor":"Alibaba","url":"https://dashscope-intl.aliyuncs.com/compatible-mode/v1/models"},
+  {"id":"qwen_cn","name":"Qwen (Beijing)","vendor":"Alibaba","url":"https://dashscope.aliyuncs.com/compatible-mode/v1/models"},
+  {"id":"moonshot","name":"Kimi / Moonshot","vendor":"Moonshot","url":"https://api.moonshot.cn/v1/models"},
+  {"id":"zhipu","name":"Zhipu GLM","vendor":"Zhipu","url":"https://open.bigmodel.cn/api/paas/v4/models"}
+ ]
+}

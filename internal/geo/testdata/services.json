@@ -1,0 +1,26 @@
+{
+  "note": "Offline response fixtures only. Endpoint catalogue is pinned to upstream v0.3.0; responses are NOT real measurements.",
+  "checks": [
+    {"id":"google","name":"Google","kind":"country","url":"https://www.google.com","method":"GET","body":"\"en_US\"","value":"US"},
+    {"id":"google_captcha","name":"Google Search captcha","kind":"blocked","url":"https://www.google.com/search?q=cats","method":"GET","headers":{"Accept-Language":"en-US,en;q=0.9"},"body":"normal search page","value":"no"},
+    {"id":"youtube","name":"YouTube","kind":"country","url":"https://www.youtube.com","method":"GET","body":"\"countryCode\":\"US\"","value":"US"},
+    {"id":"youtube_premium","name":"YouTube Premium","kind":"availability","url":"https://www.youtube.com/premium","method":"GET","headers":{"Cookie":"SOCS=CAISNQgDEitib3FfaWRlbnRpdHlmcm9udGVuZHVpc2VydmVyXzIwMjUwNzMwLjA1X3AwGgJlbiACGgYIgPC_xAY","Accept-Language":"en-US,en;q=0.9"},"body":"ad-free offer","value":"yes"},
+    {"id":"youtube_music","name":"YouTube Music","kind":"availability","url":"https://music.youtube.com/","method":"GET","headers":{"Cookie":"SOCS=CAISNQgDEitib3FfaWRlbnRpdHlmcm9udGVuZHVpc2VydmVyXzIwMjUwNzMwLjA1X3AwGgJlbiACGgYIgPC_xAY","Accept-Language":"en-US,en;q=0.9"},"body":"music offer","value":"yes"},
+    {"id":"twitch","name":"Twitch","kind":"country","url":"https://gql.twitch.tv/gql","method":"POST","headers":{"Client-Id":"kimne78kx3ncx6brgo4mv6wki5h1ko","Content-Type":"application/json"},"request_json":[{"operationName":"VerifyEmail_CurrentUser","variables":{},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"f9e7dcdf7e99c314c82d8f7f725fab5f99d1df3d7359b53c9ae122deec590198"}}}],"body":"[{\"data\":{\"requestInfo\":{\"countryCode\":\"US\"}}}]","value":"US"},
+    {"id":"chatgpt","name":"ChatGPT","kind":"country","url":"https://ab.chatgpt.com/v1/initialize","method":"POST","headers":{"Statsig-Api-Key":"client-zUdXdSTygXJdzoE0sWTkP8GKTVsUMF2IRM7ShVO2JAG"},"body":"{\"derived_fields\":{\"country\":\"US\"}}","value":"US"},
+    {"id":"netflix","name":"Netflix","kind":"country","url":"https://api.fast.com/netflix/speedtest/v2?https=true&token=YXNkZmFzZGxmbnNkYWZoYXNkZmhrYWxm&urlCount=1","method":"GET","body":"{\"client\":{\"location\":{\"country\":\"US\"}},\"targets\":[{\"url\":\"https://must-not-fetch.invalid/speed.bin\"}]}","value":"US"},
+    {"id":"spotify","name":"Spotify","kind":"country","url":"https://accounts.spotify.com/status","method":"GET","body":"{\"geoLocationCountryCode\":\"US\"}","value":"US"},
+    {"id":"spotify_signup","name":"Spotify signup","kind":"availability","url":"https://spclient.wg.spotify.com/signup/public/v1/account/?validate=1&key=142b583129b2df829de3656f9eb484e6","method":"GET","headers":{"X-Client-Id":"9a8d2f0ce77a4e248bb71fefcb557637"},"body":"{\"status\":1,\"is_country_launched\":true}","value":"yes"},
+    {"id":"deezer","name":"Deezer","kind":"country","url":"https://www.deezer.com/en/offers","method":"GET","body":"'country': 'US'","value":"US"},
+    {"id":"reddit","name":"Reddit","kind":"country","url":"https://www.reddit.com/svc/shreddit/reddit-chat","method":"GET","body":"<widget country=\"us\">","value":"US"},
+    {"id":"reddit_guest","name":"Reddit guest access","kind":"availability","url":"https://www.reddit.com","method":"GET","body":"guest landing page","value":"yes"},
+    {"id":"prime","name":"Amazon Prime Video","kind":"country","url":"https://www.primevideo.com","method":"GET","body":"\"currentTerritory\":\"US\"","value":"US"},
+    {"id":"apple","name":"Apple","kind":"country","url":"https://gspe1-ssl.ls.apple.com/pep/gcc","method":"GET","body":"US\n","value":"US"},
+    {"id":"steam","name":"Steam","kind":"country","url":"https://store.steampowered.com","method":"HEAD","response_headers":{"Set-Cookie":["steamCountry=US%7Cfixture; Path=/"]},"body":"","value":"US"},
+    {"id":"playstation","name":"PlayStation","kind":"country","url":"https://www.playstation.com","method":"HEAD","response_headers":{"Set-Cookie":["country=US; Path=/"]},"body":"","value":"US"},
+    {"id":"tiktok","name":"TikTok","kind":"country","url":"https://www.tiktok.com/api/v1/web-cookie-privacy/config?appId=1988","method":"GET","body":"{\"body\":{\"appProps\":{\"region\":\"US\"}}}","value":"US"},
+    {"id":"ookla","name":"Ookla Speedtest","kind":"country","url":"https://www.speedtest.net/api/js/config-sdk","method":"GET","body":"{\"location\":{\"countryCode\":\"US\"},\"servers\":[\"https://must-not-fetch.invalid/speed.bin\"]}","value":"US"},
+    {"id":"jetbrains","name":"JetBrains","kind":"country","url":"https://data.services.jetbrains.com/geo","method":"GET","body":"{\"code\":\"US\"}","value":"US"},
+    {"id":"bing","name":"Microsoft (Bing)","kind":"country","url":"https://www.bing.com/search?q=cats","method":"GET","body":"Region: \"US\"","value":"US"}
+  ]
+}
