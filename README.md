@@ -1,10 +1,12 @@
-# Service Unlock v0.3.0 · Linux 独立程序
+# Service Unlock v0.3.1 · Linux 独立程序
 
 **无需安装 Node、Python 或 Go。** 提供 Linux amd64 / arm64 静态二进制，以及自动选择架构、校验 SHA256、运行后清理的 POSIX `check.sh`。
 
 固定检测 **7 个平台、8 项**：Netflix、YouTube Premium、TikTok、ChatGPT Web、ChatGPT App、Gemini、NotebookLM、Claude。ChatGPT 两项分列，不生成合并“解锁”结论。不需要账号，不做测速、GeoIP、路由、IP 评分或 GUKO 接入。
 
-下载短链：<https://check.siaoz.si>，固定提供 v0.3.0 的 `check.sh`。旧 Python / Node.js 版本在历史 Release 中保留。
+下载短链：<https://check.siaoz.si>，固定提供 v0.3.1 的 `check.sh`。旧 Python / Node.js 版本在历史 Release 中保留。
+
+> v0.3.1 恢复原版 Geocheck 的终端输出格式；检测逻辑与 JSON 结构不变。已下载过旧 `check.sh` 的用户请重新执行下面的下载命令，旧脚本不会自动追随新版。
 
 ## 一键使用
 
@@ -29,7 +31,7 @@ sh check.sh --timeout 10 --workers 4
 启动器识别 `x86_64` / `amd64` 与 `aarch64` / `arm64`，不支持的系统或架构会明确拒绝。固定从以下版本下载，不追随 latest，不执行安装器：
 
 ```
-https://github.com/shui1iao/service-unlock/releases/download/v0.3.0/
+https://github.com/shui1iao/service-unlock/releases/download/v0.3.1/
 ```
 
 下载失败、HTTP 错误、缺失/重复/无效清单条目、SHA256 不一致都拒绝执行。参数及检测退出码原样传递，启动错误仅写 stderr，`--json` 的 stdout 不混入下载日志。Ctrl-C / TERM 会终止被跟踪的下载器或检测进程并清理本次临时目录。清单和程序都依赖同一 GitHub HTTPS 发布源，**哈希校验不是独立发布签名**。
@@ -55,6 +57,12 @@ arm64 对应 `service-unlock_linux_arm64`。程序通过 `CGO_ENABLED=0` 构建�
 - 退出码：`0`＝全部得到结论（包括 restricted / blocked）；`1`＝至少一项 error 或启动/执行失败；`2`＝检测参数错误；`130`＝Ctrl-C；`143`＝TERM。退出 0 **不表示全部解锁**。
 
 ## 输出与判据
+
+终端直接复用 **geocheck v0.3.0 的 Stash checks 渲染函数和主题**，不是自行绘制的类似表格：列顺序为 `Service / Status / Region / Detail / Time`，圆角外框、表头分隔线，无列间/行间分隔线，保持原服务顺序。`● available` 绿、`● restricted` 黄、`● blocked` 红、`○ error` 灰。地区缺失显示 `—`，Detail 使用原版 `clip(..., 52)`（按字节截断），总耗时按真实检查执行区间显示 `completed in %.1fs`。
+
+表后仅统计非零的 `available / restricted / blocked / inconclusive` 数量，以 `·` 分隔；这不是新的总体解锁状态。Time 严格沿用原版：有底层 `Err` 或零耗时显示 `—`；只有 `StateError`、没有底层 `Err` 的未能判定结果仍显示耗时。耗时格式和 30/80/160 ms 配色阈值不变。
+
+TTY、宽度、深浅背景、`NO_COLOR` 均使用原版 `theme.go`：普通重定向输出为无 ANSI 文本；`NO_COLOR` 优先于 `CLICOLOR_FORCE`，关闭颜色但按原版仍可能保留加粗/复位 SGR；`COLORFGBG` 决定深浅背景，不向终端发送背景查询。默认宽度 100，检测到大于 40 列的真实终端时采用实际宽度。`--json` 完全绕过终端渲染，不混入 ANSI、表格、计数或耗时页脚。
 
 | status | 含义 |
 |---|---|
@@ -90,23 +98,26 @@ JSON 保留前两版结构：`schema_version: 1`、`source`、`generated_at`、`
 
 ## 构建与离线验证（仅开发者需要 Go）
 
-用户运行发行二进制不需要此步骤。源码没有第三方 Go 依赖，`go.mod` 要求 Go 1.22+；本次用官方 **Go 1.27.2** 构建。
+用户运行发行二进制不需要此步骤。检测逻辑仍用 Go 标准库；原版终端渲染增加上游固定版本的 lipgloss v2.0.6、colorprofile v0.4.3、x/term v0.2.2 及必要传递依赖，均锁定在 go.mod/go.sum。依赖要求 Go 1.26+，实际使用 **Go 1.27.2**。`godebug default=go1.22` 保留已发布 v0.3.0 的 Go 运行时默认值，避免引入无关探测行为变化。首次构建需下载固定模块，之后可离线测试。
 
 ```sh
+GOTOOLCHAIN=local GOPROXY=https://proxy.golang.org go mod download
 GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off CGO_ENABLED=0 go test ./...
 sh -n check.sh
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GOAMD64=v1 go build -buildvcs=false -trimpath -ldflags='-s -w -buildid=' -o service-unlock_linux_amd64 .
 CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM64=v8.0 go build -buildvcs=false -trimpath -ldflags='-s -w -buildid=' -o service-unlock_linux_arm64 .
 ```
 
-已通过 **39 个顶层测试，计入子用例共 91 项，无失败/跳过**：四状态、八项列表、关键标记、异常 HTTP/解析/网络/超时、JSON/退出码/并发、回环 HTTP 重定向/gzip/大小限制/截断、拒绝不可信 TLS；启动器用 mock curl/wget 检查固定 URL、架构、三种哈希工具、失败拒绝执行、参数/返回码、INT/TERM 子进程终止及清理。
+原有 **39 个顶层离线回归**继续通过：四状态、八项列表、关键标记、异常 HTTP/解析/网络/超时、JSON/退出码/并发、回环 HTTP 重定向/gzip/大小限制/截断、拒绝不可信 TLS；启动器用 mock curl/wget 检查固定 URL、架构、三种哈希工具、失败拒绝执行、参数/返回码、INT/TERM 子进程终止及清理。
 
-**amd64**：实际运行测试和发行二进制 `--help`。**arm64**：已交叉构建并检查 ELF 架构及静态属性，未在 arm64 主机执行。两份二进制均确认 `CGO_ENABLED=0`，无动态解释器/动态段。离线测试不包含真实平台、真实地区、双栈分别检测或旧系统兼容性，不报告真实解锁结果。发行下载与短链另行验收，不等同于真实平台解锁验证。
+新增格式测试以固定 mock 输入与独立提取的上游原始函数生成的 golden 文件进行 **plain / truecolor / NO_COLOR 逐字节比对**，并覆盖表格形状、顺序、状态颜色、缺失地区/错误耗时、截断、计数、真实执行总耗时、本地 PTY 宽度/颜色检测及 JSON 字段隔离。参考文件和输入位于 `internal/render/testdata/`，全部是示例，不代表真实检测。本轮合计 **50 个顶层测试、含子用例 105 项全部通过，无跳过**。
+
+**amd64**：实际运行测试、发行二进制 `--help` 及同渲染包的离线 fixture 演示。**arm64**：仅交叉构建并检查 ELF 架构及静态属性，未在 arm64 主机执行。两份二进制均确认 `CGO_ENABLED=0`，无动态解释器/动态段。离线测试不包含真实平台、真实地区、双栈分别检测或旧系统兼容性，不报告真实解锁结果。发行下载与短链另行验收，不等同于真实平台解锁验证。
 
 ## 来源、许可与资产
 
-源：<https://github.com/remnawave/geocheck> **v0.3.0**，commit `50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc`（annotated tag 对象 `ff684cfb377c91fd845976d71d8036b2ee40d317`）。直接复用 `internal/access/access.go`、`checks.go` 及对应测试；必要 HTTP 实现依据 `internal/netx` 提取为纯标准库。上游注释提及 Stash collapsed-tile panel scripts；未另行引入其他来源代码。
+源：<https://github.com/remnawave/geocheck> **v0.3.0**，commit `50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc`（annotated tag 对象 `ff684cfb377c91fd845976d71d8036b2ee40d317`）。直接复用 `internal/access/access.go`、`checks.go` 及对应测试；必要 HTTP 实现依据 `internal/netx` 提取为纯标准库。终端直接复用同一 commit 的 `internal/render/report.go` 中 access 表格、状态/耗时/页脚等必要函数及完整 `theme.go`，仅省去无关的 banner、IP 身份、GeoIP、路由等区块。上游注释提及 Stash collapsed-tile panel scripts；未引入其他来源的检测算法；渲染依赖及其许可见下节。
 
-**MIT License — Copyright (c) 2026 Remnawave**。原文保留在 `LICENSE`，也嵌入二进制，可用 `--license` 查看。本改进版与随附代码按同一 MIT 许可提供。
+**MIT License — Copyright (c) 2026 Remnawave**。原文保留在 `LICENSE`，也嵌入二进制，可用 `--license` 查看。本改进版与随附代码按同一 MIT 许可提供。新增链接依赖的完整版权与许可原文保留在 `internal/render/THIRD_PARTY_LICENSES.txt`，并随 `--license` 一起输出；原 MIT 原文不变。
 
-发行资产共五件：`check.sh`、`service-unlock_linux_amd64`、`service-unlock_linux_arm64`、`service-unlock-v0.3.0-source.zip`、`SHA256SUMS`。source zip 含完整独立构建源码、测试、启动器、README 和 LICENSE，不含 Go 工具链或预编译二进制。SHA256SUMS 校验前四件资产。
+v0.3.1 发行资产共五件（旧版资产保留）：`check.sh`、`service-unlock_linux_amd64`、`service-unlock_linux_arm64`、`service-unlock-v0.3.1-source.zip`、`SHA256SUMS`。source zip 含完整独立构建源码、测试、启动器、README 和 LICENSE，不含 Go 工具链或预编译二进制。SHA256SUMS 校验前四件资产。

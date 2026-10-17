@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"serviceunlock/internal/access"
+	"serviceunlock/internal/render"
 	"testing"
 	"time"
 )
@@ -14,7 +15,7 @@ func TestEmbeddedLicenseNoNetwork(t *testing.T) {
 		t.Fatal("license attempted measurement")
 		return nil, nil
 	})
-	if code != 0 || out.String() != licenseText || !bytes.Contains(out.Bytes(), []byte("Copyright (c) 2026 Remnawave")) {
+	if code != 0 || out.String() != licenseText+render.ThirdPartyLicenses || !bytes.Contains(out.Bytes(), []byte("Copyright (c) 2026 Remnawave")) {
 		t.Fatal("missing MIT license")
 	}
 }

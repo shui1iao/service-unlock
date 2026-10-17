@@ -44,6 +44,9 @@ func TestCLIJSONScopeFieldsAndExitCodes(t *testing.T) {
 		if code != want {
 			t.Fatal(code)
 		}
+		if strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "Stash checks") {
+			t.Fatal("renderer polluted JSON")
+		}
 		var r report
 		if err := json.Unmarshal(out.Bytes(), &r); err != nil {
 			t.Fatal(err)
@@ -89,7 +92,7 @@ func TestCLIHelpValidationAndHumanOutput(t *testing.T) {
 	}
 	out := new(bytes.Buffer)
 	code := runCLI(context.Background(), nil, out, new(bytes.Buffer), func(context.Context, time.Duration, int) ([]access.Result, error) { return fixtureResults(), nil })
-	if code != 0 || !strings.Contains(out.String(), "ChatGPT (app)") || !strings.Contains(out.String(), "error = 未知") {
+	if code != 0 || !strings.Contains(out.String(), "ChatGPT (app)") || !strings.Contains(out.String(), "Stash checks") || !strings.Contains(out.String(), "completed in") {
 		t.Fatal(code, out)
 	}
 }

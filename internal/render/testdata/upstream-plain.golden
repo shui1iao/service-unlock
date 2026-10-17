@@ -1,0 +1,17 @@
+  Stash checks ─────────────────────────────────────────────────────────────────────────────────
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Service          Status        Region  Detail                                                Time    │
+├──────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ ChatGPT (web)    ● available   —                                                             5.68 ms │
+│ ChatGPT (app)    ● blocked     —       disallowed ISP; the exit address is classed as host…  50.4 ms │
+│ YouTube Premium  ● available   —                                                             80.0 ms │
+│ Netflix          ● restricted  FR      originals only; licensed titles are withheld          141 ms  │
+│ Claude           ○ error       —       request failed                                        —       │
+│ TikTok           ● available   —                                                             25.5 ms │
+│ Gemini           ● blocked     CHN     not offered in this country                           201 ms  │
+│ NotebookLM       ● available   —       sign-in required                                      —       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  4 available · 1 restricted · 2 blocked · 1 inconclusive
+
+  completed in 6.2s
+

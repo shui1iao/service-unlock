@@ -1,4 +1,4 @@
-// Service Unlock v0.3.0. MIT License; Copyright (c) 2026 Remnawave.
+// Service Unlock v0.3.1. MIT License; Copyright (c) 2026 Remnawave.
 // Derived from remnawave/geocheck v0.3.0; see LICENSE and README.md.
 package main
 
@@ -13,20 +13,19 @@ import (
 	"math"
 	"os"
 	"os/signal"
-	"strings"
 	"sync/atomic"
 	"syscall"
 	"time"
-	"unicode"
 
 	"serviceunlock/internal/access"
 	"serviceunlock/internal/netx"
+	"serviceunlock/internal/render"
 )
 
 //go:embed LICENSE
 var licenseText string
 
-const help = `Service Unlock v0.3.0 — 7个平台 / 8项检查
+const help = `Service Unlock v0.3.1 — 7个平台 / 8项检查
 Usage: service-unlock [--json] [--timeout SECONDS] [--workers N]
   --json       只输出JSON，error=未知，不代表未解锁
   --timeout N  每次GET总预算秒数（含重定向/正文），默认6
@@ -66,7 +65,7 @@ func utc(t time.Time) string { return t.UTC().Format("2006-01-02T15:04:05.000Z")
 func makeReport(results []access.Result, timeout float64, workers int) report {
 	r := report{SchemaVersion: 1, GeneratedAt: utc(time.Now()),
 		Source: map[string]string{"repository": "https://github.com/remnawave/geocheck", "tag": "v0.3.0",
-			"commit": "50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc", "port": "Go v0.3.0 standalone extraction with conservative error handling"},
+			"commit": "50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc", "port": "Go v0.3.1 standalone extraction with conservative error handling"},
 		Network: networkInfo{"direct", "system-selected", timeout, "request including redirects and body", workers},
 		Results: make([]item, 0, len(results)),
 	}
@@ -94,33 +93,6 @@ func makeReport(results []access.Result, timeout float64, workers int) report {
 		r.Results = append(r.Results, out)
 	}
 	return r
-}
-func printTable(w io.Writer, r report) error {
-	if _, err := fmt.Fprintln(w, "7个平台 / 8项检查 · Go独立版\n直连，系统选择地址族；error = 未知，不代表未解锁。\n服务               状态         地区   耗时(ms)  详情 / 错误"); err != nil {
-		return err
-	}
-	for _, result := range r.Results {
-		detail, region := result.Detail, "-"
-		if detail == "" {
-			detail = "-"
-		}
-		if result.Region != nil {
-			region = *result.Region
-		}
-		if result.Error != nil && *result.Error != result.Detail {
-			detail += " | " + *result.Error
-		}
-		detail = strings.Map(func(r rune) rune {
-			if !unicode.IsPrint(r) {
-				return ' '
-			}
-			return r
-		}, detail)
-		if _, err := fmt.Fprintf(w, "%-18s %-12s %-5s %9.1f  %s\n", result.Name, result.Status, region, result.ElapsedMS, detail); err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 type runner func(context.Context, time.Duration, int) ([]access.Result, error)
@@ -154,11 +126,13 @@ func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run ru
 		return 2
 	}
 	if *showLicense {
-		fmt.Fprint(stdout, licenseText)
+		fmt.Fprint(stdout, licenseText, render.ThirdPartyLicenses)
 		return 0
 	}
 	duration := time.Duration(math.Ceil(*timeout*1000)) * time.Millisecond
+	started := time.Now()
 	results, err := run(ctx, duration, *workers)
+	elapsed := time.Since(started)
 	if ctx.Err() != nil {
 		fmt.Fprintln(stderr, "检测已中断")
 		return 130
@@ -174,7 +148,7 @@ func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run ru
 		encoder.SetEscapeHTML(false)
 		err = encoder.Encode(r)
 	} else {
-		err = printTable(stdout, r)
+		err = render.WriteAccess(stdout, render.Report{Access: results, Duration: elapsed})
 	}
 	if err != nil {
 		fmt.Fprintln(stderr, "输出失败:", err)
