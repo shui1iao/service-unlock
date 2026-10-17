@@ -1,4 +1,4 @@
-// Service Unlock v0.4.0. MIT License; Copyright (c) 2026 Remnawave.
+// Service Unlock v0.4.1. MIT License; Copyright (c) 2026 Remnawave.
 // Derived from remnawave/geocheck v0.3.0; see LICENSE and README.md.
 package main
 
@@ -27,7 +27,7 @@ import (
 //go:embed LICENSE
 var licenseText string
 
-const help = `Service Unlock v0.4.0 — 37项检查 / 3组
+const help = `Service Unlock v0.4.1 — 37项检查 / 3组
 Usage: service-unlock [--json] [--timeout SECONDS] [--workers N]
   --json       只输出JSON，error=未知，不代表未解锁
   --timeout N  每次HTTP请求总预算秒数（含重定向/正文），默认6

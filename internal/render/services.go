@@ -1,57 +1,35 @@
-// Single system-selected outcome adapter for geocheck's consumer-service group.
+// Terminal-only interpretation of consumer-service observations.
 // MIT License; Copyright (c) 2026 Remnawave.
 package render
 
-import (
-	"fmt"
-	"serviceunlock/internal/geo"
-	"strings"
-)
+import "serviceunlock/internal/geo"
 
-func (o *Output) servicesTable(r Report) {
-	o.section("Popular services")
-	rows := make([][]string, 0, len(r.Services))
-	observed, unknown := 0, 0
-	for _, res := range r.Services {
-		kind := res.Check.Kind.String()
-		if res.Check.Kind == geo.KindBlocked {
-			kind = "captcha/block"
-		}
-		value, detail, elapsed := res.Value, res.Detail, o.rttCell(res.RTT)
-		if res.Err != nil {
-			value = o.Theme.Error.Render("○ error")
-			detail = res.Err.Error()
-			elapsed = "—"
-			unknown++
-		} else {
-			observed++
-			if res.Check.Kind == geo.KindAvailability {
-				if value == "yes" {
-					value = o.Theme.Good.Render("● yes")
-				} else {
-					value = o.Theme.Bad.Render("● no")
+func (o *Output) serviceRows(results []geo.Result) []displayRow {
+	rows := make([]displayRow, 0, len(results))
+	for _, r := range results {
+		label, region, style := "○ 未知", "—", o.Theme.Error
+		if r.Err == nil {
+			switch r.Check.Kind {
+			case geo.KindCountry:
+				region = regionName(r.Value)
+				if region != "—" {
+					label, style = "● 已识别地区", o.Theme.Value
 				}
-			}
-			if res.Check.Kind == geo.KindBlocked {
-				if value == "yes" {
-					value = o.Theme.Bad.Render("● yes")
-				} else {
-					value = o.Theme.Good.Render("● no")
+			case geo.KindAvailability:
+				if r.Value == "yes" {
+					label, style = "● 可访问", o.Theme.Good
+				} else if r.Value == "no" {
+					label, style = "● 不可访问", o.Theme.Bad
+				}
+			case geo.KindBlocked:
+				if r.Value == "yes" {
+					label, style = "● 发现限制", o.Theme.Bad
+				} else if r.Value == "no" {
+					label, style = "● 未发现限制", o.Theme.Good
 				}
 			}
 		}
-		rows = append(rows, []string{res.Check.Name, kind, value, clip(detail, 52), elapsed})
+		rows = append(rows, displayRow{r.Check.Name, label, region, style})
 	}
-	o.line("%s", o.table([]string{"Service", "Type", "Result", "Detail", "Time"}, rows))
-	var parts []string
-	if observed > 0 {
-		parts = append(parts, fmt.Sprintf("%d observations", observed))
-	}
-	if unknown > 0 {
-		parts = append(parts, o.Theme.Error.Render(fmt.Sprintf("%d inconclusive", unknown)))
-	}
-	if len(parts) > 0 {
-		o.line("  %s", strings.Join(parts, " · "))
-	}
-	o.line("")
+	return rows
 }

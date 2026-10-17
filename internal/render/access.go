@@ -24,21 +24,12 @@ func WriteAccess(w io.Writer, r Report) error {
 	return out.PrintAccess(r)
 }
 
-// PrintAccess retains the existing entrypoint and access layout while adding
-// only Popular services and AI endpoints; no identity/GeoIP/CDN/routing sections.
+// PrintAccess keeps the three existing groups, sharing one measured column
+// layout. Per-row detail/time and the duration footer are intentionally absent.
 func (o *Output) PrintAccess(r Report) error {
 	var buf bytes.Buffer
 	inner := &Output{W: &buf, Theme: o.Theme, Color: o.Color, Width: o.Width}
-	if len(r.Services) > 0 {
-		inner.servicesTable(r)
-	}
-	if len(r.Access) > 0 {
-		inner.accessTable(r)
-	}
-	if len(r.AI) > 0 {
-		inner.aiTable(r)
-	}
-	inner.footer(r)
+	inner.printGroups(inner.groups(r))
 	_, err := io.WriteString(o.W, buf.String())
 	return err
 }

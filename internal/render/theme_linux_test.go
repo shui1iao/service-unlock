@@ -4,12 +4,15 @@
 package render
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"strings"
 	"testing"
 
+	lg "charm.land/lipgloss/v2"
 	"github.com/charmbracelet/colorprofile"
+	"github.com/charmbracelet/x/ansi"
 	"golang.org/x/sys/unix"
 )
 
@@ -38,20 +41,28 @@ func TestTTYWidthAndProfiles(t *testing.T) {
 	t.Setenv("COLORTERM", "truecolor")
 	for _, bg := range []string{"", "15;0", "0;15"} {
 		t.Setenv("COLORFGBG", bg)
-		for _, width := range []int{120, 30} {
+		for _, width := range []int{120, 40, 30, 20} {
 			if err = unix.IoctlSetWinsize(int(slave.Fd()), unix.TIOCSWINSZ, &unix.Winsize{Row: 24, Col: uint16(width)}); err != nil {
 				t.Fatal(err)
 			}
 			o := NewOutput(slave)
 			want := width
-			if width <= 40 {
-				want = 100
-			}
+
 			if o.Width != want || !o.Color || o.W.(*colorprofile.Writer).Profile != colorprofile.TrueColor {
 				t.Fatal(o.Width, o.Color, o.W)
 			}
 			if strings.Contains(o.Theme.TableCell.Render("body"), "\x1b") || strings.Contains(o.Theme.Muted.Render("detail"), "\x1b") {
 				t.Fatal("TTY information forced a foreground", bg)
+			}
+			var rendered bytes.Buffer
+			measured := &Output{W: &rendered, Theme: o.Theme, Color: o.Color, Width: o.Width}
+			if err := measured.PrintAccess(completeMock(t)); err != nil {
+				t.Fatal(err)
+			}
+			for _, line := range strings.Split(ansi.Strip(rendered.String()), "\n") {
+				if lg.Width(line) > width {
+					t.Fatal("real PTY width ignored", width, line)
+				}
 			}
 		}
 	}

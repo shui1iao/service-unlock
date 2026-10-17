@@ -57,7 +57,7 @@ func NewOutput(f *os.File) *Output {
 
 	width := 100
 	if isTTY {
-		if w, _, err := xterm.GetSize(f.Fd()); err == nil && w > 40 {
+		if w, _, err := xterm.GetSize(f.Fd()); err == nil && w > 0 {
 			width = w
 		}
 	}

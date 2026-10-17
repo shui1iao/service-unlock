@@ -44,7 +44,7 @@ func TestCLIJSONScopeFieldsAndExitCodes(t *testing.T) {
 		if code != want {
 			t.Fatal(code)
 		}
-		if strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "Stash checks") {
+		if strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "服务可用性") {
 			t.Fatal("renderer polluted JSON")
 		}
 		var r report
@@ -94,7 +94,7 @@ func TestCLIHelpValidationAndHumanOutput(t *testing.T) {
 	code := runCLI(context.Background(), nil, out, new(bytes.Buffer), func(context.Context, time.Duration, int) (measurements, error) {
 		return measurements{Access: fixtureResults()}, nil
 	})
-	if code != 0 || !strings.Contains(out.String(), "ChatGPT (app)") || !strings.Contains(out.String(), "Stash checks") || !strings.Contains(out.String(), "completed in") {
+	if code != 0 || !strings.Contains(out.String(), "ChatGPT (app)") || !strings.Contains(out.String(), "服务可用性") || strings.Contains(out.String(), "completed in") {
 		t.Fatal(code, out)
 	}
 }

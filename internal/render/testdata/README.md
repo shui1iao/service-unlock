@@ -1,26 +1,14 @@
-# 原版渲染参考（全部为离线 mock）
+# 历史渲染参考与本轮三列测试
 
-`input.json` 是固定的八项示例结果，不代表任何服务器的真实检测。
+`input.json` 是固定的8项 access mock，不代表真实检测。
 
-三个 `upstream-*.golden` 来自独立参考程序，直接提取 remnawave/geocheck
-v0.3.0、commit `50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc` 的以下原始函数，
-不是用候选渲染包生成预期值：
+`upstream-*.golden` 保留的是 remnawave/geocheck v0.3.0（commit
+`50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc`）原始五列布局/配色输出，仅作历史来源记录。
+用户已明确要求三组统一【服务｜结果｜地区】并删除说明及全部耗时，所以本轮**不以旧golden约束新显示**。
 
-- `internal/render/report.go`：`line`、`accessTable`、`accessStateCell`、
-  `accessTimeCell`、`footer`、`section`、`table`、`rttCell`、`clip`、`formatRTT`、`maxInt`
-- 原始 `internal/render/theme.go`
-
-参考程序只调用 `accessTable` 和 `footer`，输入为 `input.json`，宽度 100、深色主题。
-使用与上游相同版本的依赖；access 的结果类型/枚举不变，不调用任何检测。
-
-- `plain`：colorprofile.NoTTY（普通重定向，去除 ANSI）
-- `ansi`：colorprofile.TrueColor（保留完整原始真彩 SGR）
-- `nocolor`：colorprofile.Ascii（原版 NO_COLOR 行为，去颜色但可保留加粗/复位）
-
-本轮用户明确要求改善深/浅背景可读性，旧 `ansi/nocolor` 文件只保留历史参考，**不是当前颜色预期**。
-`TestAccessLayoutUnchangedWithReadablePalette` 将当前输出去除 ANSI 后，与原版 plain 文件完整比较。
-正文/地区/详情/耗时改为默认前景，状态使用 ANSI 语义色、error 默认前景加粗；新增三组测试另行验证
-37行、目录顺序、分组含义、NO_COLOR、真实 PTY 和深/浅/未提供背景的可读性。原始 `clip` 按字节操作；
-原始 `accessTimeCell` 仅因非 nil Err 或零耗时隐藏时间，未将所有 StateError 擅自改写。
+当前验证见 `three_columns_test.go`：37项中文映射、共同列宽与圆角外框、14–160终端列无损换行、
+完整CLDR地区目录/ISO2与ISO3名称一致、删除说明和耗时、默认前景和NO_COLOR；
+`theme_linux_test.go` 使用真实本地PTY测量窄屏尺寸后渲染。
+CLI测试另外验证终端翻译/删列不改JSON原说明、耗时、状态枚举或地区码。
 
 来源许可：MIT，Copyright (c) 2026 Remnawave。

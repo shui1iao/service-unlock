@@ -4,37 +4,61 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"math"
-	"regexp"
-	"strconv"
 	"strings"
 	"testing"
 	"time"
+
+	"serviceunlock/internal/ai"
+	"serviceunlock/internal/geo"
 )
 
-func TestTerminalFooterUsesRealRunInterval(t *testing.T) {
-	var measured time.Duration
+func TestTerminalRemovesTimesDetailsButJSONKeepsOriginalValues(t *testing.T) {
+	when := time.Date(2026, 1, 2, 3, 4, 5, 0, time.UTC)
+	m := measurements{Access: fixtureResults()}
+	m.Access[0].Region = "USA"
+	m.Access[0].Detail = "DETAIL_ACCESS"
+	m.Access[0].RTT = 999 * time.Second
+	m.Access[0].CheckedAt = when
+	m.Services = []geo.Result{{Check: geo.Check{ID: "google", Name: "Google", Kind: geo.KindCountry}, Value: "US", Detail: "DETAIL_SERVICE", RTT: 888 * time.Second, CheckedAt: when}}
+	m.AI = []ai.Result{{Check: ai.Check{ID: "openai", Name: "OpenAI", Vendor: "OpenAI"}, State: ai.StateReachable, Status: 401, Detail: "DETAIL_API", RTT: 777 * time.Second, CheckedAt: when}}
+	run := func(context.Context, time.Duration, int) (measurements, error) { return m, nil }
 	out := new(bytes.Buffer)
-	code := runCLI(context.Background(), nil, out, new(bytes.Buffer), func(context.Context, time.Duration, int) (measurements, error) {
-		start := time.Now()
-		time.Sleep(120 * time.Millisecond)
-		results := fixtureResults()
-		for i := range results {
-			results[i].RTT = 999 * time.Second
+	if code := runCLI(context.Background(), nil, out, new(bytes.Buffer), run); code != 0 {
+		t.Fatal(code)
+	}
+	for _, bad := range []string{"DETAIL_", "completed in", "耗时", "说明", "Time", " ms", "999", "888", "777"} {
+		if strings.Contains(out.String(), bad) {
+			t.Fatal("removed terminal content", bad, out.String())
 		}
-		measured = time.Since(start)
-		return measurements{Access: results}, nil
-	})
-	match := regexp.MustCompile(`completed in ([0-9]+\.[0-9])s`).FindStringSubmatch(out.String())
-	if code != 0 || len(match) != 2 {
-		t.Fatal(code, out.String())
 	}
-	shown, err := strconv.ParseFloat(match[1], 64)
-	if err != nil || math.Abs(shown-measured.Seconds()) > 0.1 {
-		t.Fatal("footer not real run duration", shown, measured)
+	if !strings.Contains(out.String(), "美国") || !strings.Contains(out.String(), "已识别地区") || !strings.Contains(out.String(), "API可达") {
+		t.Fatal(out.String())
 	}
-	if strings.Contains(out.String(), "7个平台") || strings.Contains(out.String(), "GeoIP") {
-		t.Fatal("unrequested heading/section")
+	out.Reset()
+	if code := runCLI(context.Background(), []string{"--json"}, out, new(bytes.Buffer), run); code != 0 {
+		t.Fatal(code)
+	}
+	var got report
+	if err := json.Unmarshal(out.Bytes(), &got); err != nil {
+		t.Fatal(err)
+	}
+	if *got.Results[0].Region != "USA" || got.Results[0].Detail != "DETAIL_ACCESS" || got.Results[0].ElapsedMS != 999000 || got.Results[0].Status != "available" {
+		t.Fatal(got.Results[0])
+	}
+	if *got.Services[0].Value != "US" || got.Services[0].Detail != "DETAIL_SERVICE" || got.Services[0].ElapsedMS != 888000 || got.Services[0].Type != "country" {
+		t.Fatal(got.Services[0])
+	}
+	if got.AIEndpoints[0].Detail != "DETAIL_API" || got.AIEndpoints[0].ElapsedMS != 777000 || got.AIEndpoints[0].HTTPStatus != 401 || got.AIEndpoints[0].Status != "reachable" {
+		t.Fatal(got.AIEndpoints[0])
+	}
+	// The same measurements must serialize to identical JSON value bytes after
+	// rendering. Ignore only the independent generated_at timestamp.
+	expected := makeCompleteReport(m, 6, 4)
+	expected.GeneratedAt = got.GeneratedAt
+	a, _ := json.Marshal(expected)
+	b, _ := json.Marshal(got)
+	if !bytes.Equal(a, b) {
+		t.Fatal("rendering mutated JSON", string(a), string(b))
 	}
 }
 func TestJSONUnchangedUnderForcedColor(t *testing.T) {
@@ -45,7 +69,7 @@ func TestJSONUnchangedUnderForcedColor(t *testing.T) {
 	code := runCLI(context.Background(), []string{"--json"}, out, new(bytes.Buffer), func(context.Context, time.Duration, int) (measurements, error) {
 		return measurements{Access: fixtureResults()}, nil
 	})
-	if code != 0 || strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "Stash checks") {
+	if code != 0 || strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "服务可用性") {
 		t.Fatal(code, out.String())
 	}
 	var object map[string]json.RawMessage
@@ -58,7 +82,7 @@ func TestJSONUnchangedUnderForcedColor(t *testing.T) {
 		}
 	}
 	if len(object) != 7 {
-		t.Fatal("unexpected JSON fields beyond the two additive groups")
+		t.Fatal("changed JSON top-level fields")
 	}
 	var rows []map[string]json.RawMessage
 	if err := json.Unmarshal(object["results"], &rows); err != nil {
@@ -69,7 +93,7 @@ func TestJSONUnchangedUnderForcedColor(t *testing.T) {
 	}
 	for _, row := range rows {
 		if len(row) != 9 {
-			t.Fatal("changed result fields", row)
+			t.Fatal("changed access result fields", row)
 		}
 	}
 }
