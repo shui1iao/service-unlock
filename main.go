@@ -1,4 +1,4 @@
-// Service Unlock v0.4.2. MIT License; Copyright (c) 2026 Remnawave.
+// Service Unlock v0.4.3. MIT License; Copyright (c) 2026 Remnawave.
 // Derived from remnawave/geocheck v0.3.0; see LICENSE and README.md.
 package main
 
@@ -27,7 +27,7 @@ import (
 //go:embed LICENSE
 var licenseText string
 
-const help = `Service Unlock v0.4.2 — 37 checks / 3 groups
+const help = `Service Unlock v0.4.3 — 37 checks / 3 groups
 Usage: service-unlock [--json] [--timeout SECONDS] [--workers N]
   --json       Output JSON only; error means inconclusive, not blocked
   --timeout N  Total budget per HTTP request in seconds, default 6

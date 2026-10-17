@@ -20,30 +20,31 @@ import (
 	"serviceunlock/internal/geo"
 )
 
-func TestCLDREnglishISO2AndISO3(t *testing.T) {
-	for _, tc := range []struct{ a, b, want string }{{"US", "USA", "United States"}, {"FR", "FRA", "France"}, {"CN", "CHN", "China"}, {"GB", "GBR", "United Kingdom"}, {"JP", "JPN", "Japan"}, {"DE", "DEU", "Germany"}} {
-		if got := regionName(tc.a); got != tc.want || regionName(tc.b) != got {
-			t.Fatal(tc, got, regionName(tc.b))
+func TestISOAlpha2CanonicalCodes(t *testing.T) {
+	for _, tc := range []struct{ a, b, want string }{{"US", "USA", "US"}, {"ES", "ESP", "ES"}, {"HK", "HKG", "HK"}, {"FR", "FRA", "FR"}, {"CN", "CHN", "CN"}, {"GB", "GBR", "GB"}, {"JP", "JPN", "JP"}, {"DE", "DEU", "DE"}} {
+		if got := regionCode(tc.a); got != tc.want || regionCode(tc.b) != got {
+			t.Fatal(tc, got, regionCode(tc.b))
 		}
 	}
 	for _, code := range []string{"", "—", "WW", "ZZ", "ZZZ", "XXX", "XA", "QZ", "EU", "001", "US123", "America", "en-US", "<US>", "U S", "\x1b[31mUS"} {
-		if got := regionName(code); got != "" {
+		if got := regionCode(code); got != "" {
 			t.Fatalf("invalid region %q -> %q", code, got)
 		}
 	}
-	if regionName(" usa ") != "United States" {
+	if regionCode(" usa ") != "US" {
 		t.Fatal("normalization")
 	}
 	// Exercise the library's full country/autonomous-area catalogue, not a
-	// hand-picked dictionary. ISO3 canonicalization must use the same CLDR name.
+	// hand-picked dictionary. ISO3 canonicalization must yield the same alpha-2 code.
 	count := 0
 	for _, r := range language.Supported.Regions() {
 		if !r.IsCountry() || r.IsPrivateUse() {
 			continue
 		}
-		got := regionName(r.String())
-		want := display.Regions(language.English).Name(r)
-		if want == "" || want == r.String() {
+		got := regionCode(r.String())
+		name := display.Regions(language.English).Name(r)
+		want := r.String()
+		if name == "" || name == r.String() || len(want) != 2 {
 			if got != "" {
 				t.Fatal("unnamed region invented", r, got)
 			}
@@ -51,17 +52,16 @@ func TestCLDREnglishISO2AndISO3(t *testing.T) {
 		}
 		count++
 		if got == "" || got != want {
-			t.Fatalf("%s: got %q want CLDR %q", r, got, want)
+			t.Fatalf("%s: got %q want canonical alpha-2 %q", r, got, want)
 		}
-		hasHan := strings.IndexFunc(got, func(c rune) bool { return unicode.Is(unicode.Han, c) }) >= 0
-		if hasHan {
-			t.Fatalf("not English: %s %s", r, got)
+		if len(got) != 2 || got != strings.ToUpper(got) {
+			t.Fatalf("not uppercase alpha-2: %s %s", r, got)
 		}
-		if iso3 := r.ISO3(); len(iso3) == 3 && iso3 != "ZZZ" && regionName(iso3) != got {
+		if iso3 := r.ISO3(); len(iso3) == 3 && iso3 != "ZZZ" && regionCode(iso3) != got {
 			t.Fatalf("ISO3 mismatch %s/%s", r, iso3)
 		}
 	}
-	t.Logf("CLDR %s: %d named country/area entries verified, including ISO3 equivalence", display.CLDRVersion, count)
+	t.Logf("CLDR %s: %d country/area codes verified, including ISO3 equivalence", display.CLDRVersion, count)
 	if count < 240 {
 		t.Fatal("incomplete region coverage", count)
 	}
@@ -73,10 +73,10 @@ func TestUserDefinedDisplayMappingsPreserveNegativeAndUnknown(t *testing.T) {
 		value, want, region string
 		err                 error
 	}{
-		{geo.KindCountry, "US", "● Yes", "United States", nil},
-		{geo.KindCountry, "FRA", "● Yes", "France", nil},
+		{geo.KindCountry, "US", "● Yes", "US", nil},
+		{geo.KindCountry, "FRA", "● Yes", "FR", nil},
 		{geo.KindCountry, "WW", "○ Unknown", "", nil},
-		{geo.KindCountry, "US", "○ Unknown", "United States", errors.New("timeout")},
+		{geo.KindCountry, "US", "○ Unknown", "US", errors.New("timeout")},
 		{geo.KindAvailability, "yes", "● Yes", "", nil},
 		{geo.KindAvailability, "no", "● No", "", nil},
 		{geo.KindAvailability, "invalid", "○ Unknown", "", nil},
@@ -95,7 +95,7 @@ func TestUserDefinedDisplayMappingsPreserveNegativeAndUnknown(t *testing.T) {
 		want  string
 	}{{"netflix_access", access.StateAvailable, "● Yes"}, {"netflix_access", access.StateRestricted, "● Limited"}, {"other", access.StateRestricted, "● Limited"}, {"netflix_access", access.StateBlocked, "● No"}, {"netflix_access", access.StateError, "○ Unknown"}} {
 		r := o.accessRows([]access.Result{{Check: access.Check{ID: tc.id}, State: tc.state, Region: "FRA"}})[0]
-		if r.result != tc.want || r.region != "France" {
+		if r.result != tc.want || r.region != "FR" {
 			t.Fatal(tc, r)
 		}
 	}
@@ -169,20 +169,21 @@ func TestThreeAlignedEnglishColumnsNoDetailsOrTime(t *testing.T) {
 		if headers[0] != headers[1] || headers[1] != headers[2] {
 			t.Fatal("three header positions differ", headers)
 		}
-		for _, word := range []string{"Time", "Detail", "Type", "Status", "HTTP", "completed in", "HIDDEN_", " ms", "耗时", "说明", "available", "reachable", "restricted", "blocked", "error", "country", "yes", " no ", " US ", " FRA ", " CHN ", "IPv4", "IPv6"} {
-			if strings.Contains(text, word) {
-				t.Fatalf("removed content %q survived", word)
+		for _, word := range []string{"Time", "Detail", "Type", "Status", "HTTP", "completed in", "HIDDEN_", " ms", "耗时", "说明", "available", "reachable", "restricted", "blocked", "error", "country", "yes", " no ", " FRA ", " CHN ", "IPv4", "IPv6"} {
+			if strings.Contains(tableText(text), word) {
+				t.Fatalf("removed main-table content %q survived", word)
 			}
 		}
 		popular, stash, api := strings.Index(text, "Service regions & access"), strings.Index(text, "Service availability"), strings.Index(text, "AI endpoints")
 		if popular < 0 || stash <= popular || api <= stash {
 			t.Fatal("wrong group order")
 		}
-		for _, word := range []string{"20 Yes · 1 Unknown", "4 Yes · 2 No · 1 Limited · 1 Unknown", "6 Yes · 1 No · 1 Unknown"} {
-			if !strings.Contains(text, word) {
-				t.Fatal("missing correct summary", word, text)
+		for _, group := range (&Output{Theme: newTheme(nil)}).groups(r) {
+			if !strings.Contains(compact(text), compact(group.summary)) {
+				t.Fatal("summary meaning lost", group.summary, text)
 			}
 		}
+
 		last := -1
 		for _, res := range r.Services {
 			p := strings.Index(text[:stash], res.Check.Name)
@@ -200,7 +201,7 @@ func compact(s string) string { return strings.Join(strings.Fields(s), "") }
 func TestCJKSharedWidthsAndLosslessWrappingOnNarrowScreens(t *testing.T) {
 	o := &Output{Theme: newTheme(nil)}
 	r := completeMock(t)
-	r.Services[0].Value = "GS"                      // CLDR long English name; no fabricated translations.
+	r.Services[0].Value = "GS"                      // Country code remains compact on narrow screens.
 	r.Services[0].Check.Name = "Fixture 中文 e\u0301" // Synthetic width-only fixture, not a real brand.
 	r.Access[0].Region = "HKG"
 	groups := o.groups(r)

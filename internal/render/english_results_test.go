@@ -73,7 +73,7 @@ func TestEmptyRegionsAndKnownRegionNeverOverrideStatus(t *testing.T) {
 	o := &Output{Theme: newTheme(nil)}
 	for _, state := range []access.State{access.StateAvailable, access.StateRestricted, access.StateBlocked, access.StateError} {
 		rows := o.accessRows([]access.Result{{Check: access.Check{ID: "netflix_access", Name: "Netflix"}, State: state, Region: "FRA"}})
-		if rows[0].region != "France" {
+		if rows[0].region != "FR" {
 			t.Fatal("lost known region")
 		}
 		expected := map[access.State]string{access.StateAvailable: "● Yes", access.StateRestricted: "● Limited", access.StateBlocked: "● No", access.StateError: "○ Unknown"}[state]
@@ -82,7 +82,7 @@ func TestEmptyRegionsAndKnownRegionNeverOverrideStatus(t *testing.T) {
 		}
 	}
 	unknown := o.accessRows([]access.Result{{State: access.StateBlocked, Region: "USA", Err: errors.New("timeout")}})[0]
-	if unknown.result != "○ Unknown" || unknown.region != "United States" {
+	if unknown.result != "○ Unknown" || unknown.region != "US" {
 		t.Fatal(unknown)
 	}
 	// Neither yes/no observation nor a provider's node name supplies a region.

@@ -47,7 +47,7 @@ func (o *Output) accessRows(results []access.Result) []displayRow {
 				label, style = "● No", o.Theme.Bad
 			}
 		}
-		rows = append(rows, displayRow{r.Check.Name, label, regionName(r.Region), style})
+		rows = append(rows, displayRow{r.Check.Name, label, regionCode(r.Region), style})
 	}
 	return rows
 }
@@ -68,32 +68,20 @@ func (o *Output) aiRows(results []ai.Result) []displayRow {
 	return rows
 }
 
-// User-requested display normalization only: Yes is not a new unlock or
-// authenticated-use verdict. Raw outcomes remain unchanged in JSON.
-func summary(rows []displayRow) string {
-	counts := map[string]int{}
-	for _, r := range rows {
-		label := strings.TrimPrefix(strings.TrimPrefix(r.result, "● "), "○ ")
-		counts[label]++
-	}
-	parts := make([]string, 0, 4)
-	for _, label := range []string{"Yes", "No", "Limited", "Unknown"} {
-		if counts[label] > 0 {
-			parts = append(parts, fmt.Sprintf("%d %s", counts[label], label))
-		}
-	}
-	return strings.Join(parts, " · ")
-}
+// Detailed summaries classify only the rows already selected for display.
+// They do not reinterpret HTTP replies, promote Unknown using a region, or
+// make an overall unlock/login verdict.
 func (o *Output) groups(r Report) []displayGroup {
 	var groups []displayGroup
-	add := func(title string, rows []displayRow) {
-		if len(rows) > 0 {
-			groups = append(groups, displayGroup{title, rows, summary(rows)})
-		}
+	if rows := o.serviceRows(r.Services); len(rows) > 0 {
+		groups = append(groups, displayGroup{"Service regions & access", rows, serviceSummary(rows, r.Services)})
 	}
-	add("Service regions & access", o.serviceRows(r.Services))
-	add("Service availability", o.accessRows(r.Access))
-	add("AI endpoints", o.aiRows(r.AI))
+	if rows := o.accessRows(r.Access); len(rows) > 0 {
+		groups = append(groups, displayGroup{"Service availability", rows, accessSummary(rows, r.Access)})
+	}
+	if rows := o.aiRows(r.AI); len(rows) > 0 {
+		groups = append(groups, displayGroup{"AI endpoints", rows, aiSummary(rows)})
+	}
 	return groups
 }
 
@@ -173,23 +161,12 @@ func (o *Output) threeColumnTable(rows []displayRow, widths [3]int, padding int)
 	return part([][]string{headers}, true) + "\n" + part(cells, false)
 }
 
-// Prefer complete count categories on each summary line; do not leave a
-// separator dangling at the start of the next line on ordinary narrow screens.
+// Each status gets its own logical line. Word-wrap where possible; hard-wrap
+// only words longer than the actual table width so even narrow screens fit.
 func wrapSummary(text string, width int) string {
 	var lines []string
-	line := ""
-	for _, part := range strings.Split(text, " · ") {
-		if line != "" && lg.Width(line+" · "+part) <= width {
-			line += " · " + part
-			continue
-		}
-		if line != "" {
-			lines = append(lines, line)
-		}
-		line = ansi.Hardwrap(part, width, true)
-	}
-	if line != "" {
-		lines = append(lines, line)
+	for _, line := range strings.Split(text, "\n") {
+		lines = append(lines, ansi.Wrap(line, width, ""))
 	}
 	return strings.Join(lines, "\n")
 }

@@ -6,12 +6,12 @@ import (
 	"strings"
 )
 
-// Region names come exclusively from the pinned x/text CLDR English
-// dictionary. ParseRegion handles ISO 3166 alpha-2/alpha-3 equivalence; neither
-// the terminal nor this function infers a region from other observations.
+// ParseRegion provides the pinned library's ISO alpha-2/alpha-3 mapping.
+// Keep the existing country/private-use/known-region checks; return only the
+// canonical alpha-2 code, never a name or a region inferred from another probe.
 var englishRegions = display.Regions(language.English)
 
-func regionName(code string) string {
+func regionCode(code string) string {
 	code = strings.ToUpper(strings.TrimSpace(code))
 	if len(code) != 2 && len(code) != 3 {
 		return ""
@@ -29,5 +29,9 @@ func regionName(code string) string {
 	if name == "" || name == region.String() || name == "Unknown Region" {
 		return ""
 	}
-	return name
+	canonical := region.String()
+	if len(canonical) != 2 || canonical[0] < 'A' || canonical[0] > 'Z' || canonical[1] < 'A' || canonical[1] > 'Z' {
+		return ""
+	}
+	return canonical
 }

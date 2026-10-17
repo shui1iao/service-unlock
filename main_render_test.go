@@ -31,7 +31,7 @@ func TestTerminalRemovesTimesDetailsButJSONKeepsOriginalValues(t *testing.T) {
 			t.Fatal("removed terminal content", bad, out.String())
 		}
 	}
-	if !strings.Contains(out.String(), "United States") || !strings.Contains(out.String(), "Yes") {
+	if !strings.Contains(out.String(), "US") || !strings.Contains(out.String(), "Yes") {
 		t.Fatal(out.String())
 	}
 	out.Reset()

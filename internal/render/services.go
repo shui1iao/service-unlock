@@ -9,7 +9,7 @@ func (o *Output) serviceRows(results []geo.Result) []displayRow {
 	for _, r := range results {
 		label, region, style := "○ Unknown", "", o.Theme.Error
 		if r.Check.Kind == geo.KindCountry {
-			region = regionName(r.Value)
+			region = regionCode(r.Value)
 		}
 		if r.Err == nil {
 			switch r.Check.Kind {

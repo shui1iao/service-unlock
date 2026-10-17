@@ -1,58 +1,66 @@
-Service regions & access ────────────────────────────────
-╭───────────────────────────────────────────────────────╮
-│ Service                Result     Region              │
-├───────────────────────────────────────────────────────┤
-│ Google                 ● Yes      United States       │
-│ Google Search captcha  ● No                           │
-│ YouTube                ● Yes      United States       │
-│ YouTube Premium        ● Yes                          │
-│ YouTube Music          ● Yes                          │
-│ Twitch                 ● Yes      United States       │
-│ ChatGPT                ● Yes      United States       │
-│ Netflix                ● Yes      United States       │
-│ Spotify                ● Yes      United States       │
-│ Spotify signup         ● No                           │
-│ Deezer                 ● Yes      United States       │
-│ Reddit                 ● Yes      United States       │
-│ Reddit guest access    ● Yes                          │
-│ Amazon Prime Video     ● Yes      United States       │
-│ Apple                  ○ Unknown                      │
-│ Steam                  ● Yes      Hong Kong SAR China │
-│ PlayStation            ● Yes      Japan               │
-│ TikTok                 ● Yes      United States       │
-│ Ookla Speedtest        ● Yes      United States       │
-│ JetBrains              ● Yes      United States       │
-│ Microsoft (Bing)       ● Yes      United States       │
-╰───────────────────────────────────────────────────────╯
-18 Yes · 2 No · 1 Unknown
+Service regions & access ───────────────────
+╭──────────────────────────────────────────╮
+│ Service                Result     Region │
+├──────────────────────────────────────────┤
+│ Google                 ● Yes      US     │
+│ Google Search captcha  ● No              │
+│ YouTube                ● Yes      US     │
+│ YouTube Premium        ● Yes             │
+│ YouTube Music          ● Yes             │
+│ Twitch                 ● Yes      US     │
+│ ChatGPT                ● Yes      US     │
+│ Netflix                ● Yes      US     │
+│ Spotify                ● Yes      US     │
+│ Spotify signup         ● No              │
+│ Deezer                 ● Yes      US     │
+│ Reddit                 ● Yes      US     │
+│ Reddit guest access    ● Yes             │
+│ Amazon Prime Video     ● Yes      US     │
+│ Apple                  ○ Unknown         │
+│ Steam                  ● Yes      HK     │
+│ PlayStation            ● Yes      JP     │
+│ TikTok                 ● Yes      US     │
+│ Ookla Speedtest        ● Yes      US     │
+│ JetBrains              ● Yes      US     │
+│ Microsoft (Bing)       ● Yes      US     │
+╰──────────────────────────────────────────╯
+Yes 18: 15 regions identified, 3 accessible
+No 2: 1 access denied, 1 with restriction
+markers
+Unknown 1: inconclusive
 
-Service availability ────────────────────────────────────
-╭───────────────────────────────────────────────────────╮
-│ Service                Result     Region              │
-├───────────────────────────────────────────────────────┤
-│ ChatGPT (web)          ● Yes                          │
-│ ChatGPT (app)          ● No                           │
-│ YouTube Premium        ● Yes                          │
-│ Netflix                ● Limited  France              │
-│ Claude                 ○ Unknown                      │
-│ TikTok                 ● Yes                          │
-│ Gemini                 ● No       China               │
-│ NotebookLM             ● Yes                          │
-╰───────────────────────────────────────────────────────╯
-4 Yes · 2 No · 1 Limited · 1 Unknown
+Service availability ───────────────────────
+╭──────────────────────────────────────────╮
+│ Service                Result     Region │
+├──────────────────────────────────────────┤
+│ ChatGPT (web)          ● Yes             │
+│ ChatGPT (app)          ● No              │
+│ YouTube Premium        ● Yes             │
+│ Netflix                ● Limited  FR     │
+│ Claude                 ○ Unknown         │
+│ TikTok                 ● Yes             │
+│ Gemini                 ● No       CN     │
+│ NotebookLM             ● Yes             │
+╰──────────────────────────────────────────╯
+Yes 4: available
+No 2: blocked
+Limited 1: originals-only
+Unknown 1: inconclusive
 
-AI endpoints ────────────────────────────────────────────
-╭───────────────────────────────────────────────────────╮
-│ Service                Result     Region              │
-├───────────────────────────────────────────────────────┤
-│ OpenAI                 ● Yes                          │
-│ Anthropic              ● No                           │
-│ Google Gemini          ● Yes                          │
-│ DeepSeek               ● Yes                          │
-│ Qwen (Singapore)       ● Yes                          │
-│ Qwen (Beijing)         ● Yes                          │
-│ Kimi / Moonshot        ● Yes                          │
-│ Zhipu GLM              ○ Unknown                      │
-╰───────────────────────────────────────────────────────╯
-6 Yes · 1 No · 1 Unknown
+AI endpoints ───────────────────────────────
+╭──────────────────────────────────────────╮
+│ Service                Result     Region │
+├──────────────────────────────────────────┤
+│ OpenAI                 ● Yes             │
+│ Anthropic              ● No              │
+│ Google Gemini          ● Yes             │
+│ DeepSeek               ● Yes             │
+│ Qwen (Singapore)       ● Yes             │
+│ Qwen (Beijing)         ● Yes             │
+│ Kimi / Moonshot        ● Yes             │
+│ Zhipu GLM              ○ Unknown         │
+╰──────────────────────────────────────────╯
+Yes 6: API reachable
+No 1: region/request refused
+Unknown 1: inconclusive
 
