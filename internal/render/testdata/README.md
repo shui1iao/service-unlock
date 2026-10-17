@@ -1,14 +1,22 @@
-# 历史渲染参考与本轮三列测试
+# Offline display fixtures
 
-`input.json` 是固定的8项 access mock，不代表真实检测。
+`input.json` is an eight-check access fixture, not a real measurement.
+`upstream-*.golden` preserves geocheck v0.3.0's old five-column output for historical provenance only.
 
-`upstream-*.golden` 保留的是 remnawave/geocheck v0.3.0（commit
-`50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc`）原始五列布局/配色输出，仅作历史来源记录。
-用户已明确要求三组统一【服务｜结果｜地区】并删除说明及全部耗时，所以本轮**不以旧golden约束新显示**。
+The current user-approved presentation is English `Service / Result / Region`, with
+Yes / No / Limited / Unknown and blank missing regions. It has no detail/time columns or duration footer.
 
-当前验证见 `three_columns_test.go`：37项中文映射、共同列宽与圆角外框、14–160终端列无损换行、
-完整CLDR地区目录/ISO2与ISO3名称一致、删除说明和耗时、默认前景和NO_COLOR；
-`theme_linux_test.go` 使用真实本地PTY测量窄屏尺寸后渲染。
-CLI测试另外验证终端翻译/删列不改JSON原说明、耗时、状态枚举或地区码。
+`english-positive.golden` and `english-negative.golden` are deterministic 37-row
+regression snapshots, reviewed against explicit category/state/colour assertions:
+- positive: captcha raw `no` -> Yes; signup raw `yes` -> Yes;
+- negative: captcha raw `yes` -> No; signup raw `no` -> No;
+- both retain Netflix Limited, access/API refusals, Unknown and observed English regions.
 
-来源许可：MIT，Copyright (c) 2026 Remnawave。
+`english_results_test.go` verifies the complete golden output, whole-word ANSI colouring,
+blank regions, and known regions not overriding negative/unknown results.
+`three_columns_test.go` exercises the complete CLDR English region catalogue, ISO2/ISO3,
+shared widths, lossless 14–160-column wrapping (including headers, long region names,
+synthetic CJK/combining text), and background/NO_COLOR behavior.
+`theme_linux_test.go` uses a real local PTY. CLI tests preserve all original JSON values.
+
+MIT License; Copyright (c) 2026 Remnawave.

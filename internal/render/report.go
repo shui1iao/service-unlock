@@ -36,18 +36,15 @@ type displayGroup struct {
 func (o *Output) accessRows(results []access.Result) []displayRow {
 	rows := make([]displayRow, 0, len(results))
 	for _, r := range results {
-		label, style := "○ 未知", o.Theme.Error
+		label, style := "○ Unknown", o.Theme.Error
 		if r.Err == nil {
 			switch r.State {
 			case access.StateAvailable:
-				label, style = "● 可用", o.Theme.Good
+				label, style = "● Yes", o.Theme.Good
 			case access.StateRestricted:
-				label, style = "● 受限", o.Theme.Warn
-				if r.Check.ID == "netflix_access" {
-					label = "● 仅自制"
-				}
+				label, style = "● Limited", o.Theme.Warn
 			case access.StateBlocked:
-				label, style = "● 不可用", o.Theme.Bad
+				label, style = "● No", o.Theme.Bad
 			}
 		}
 		rows = append(rows, displayRow{r.Check.Name, label, regionName(r.Region), style})
@@ -57,35 +54,33 @@ func (o *Output) accessRows(results []access.Result) []displayRow {
 func (o *Output) aiRows(results []ai.Result) []displayRow {
 	rows := make([]displayRow, 0, len(results))
 	for _, r := range results {
-		label, style := "○ 未知", o.Theme.Error
+		label, style := "○ Unknown", o.Theme.Error
 		if r.Err == nil {
 			switch r.State {
 			case ai.StateReachable:
-				label, style = "● API可达", o.Theme.Good
+				label, style = "● Yes", o.Theme.Good
 			case ai.StateBlocked:
-				label, style = "● 被拒绝", o.Theme.Bad
+				label, style = "● No", o.Theme.Bad
 			}
 		}
-		rows = append(rows, displayRow{r.Check.Name, label, "—", style})
+		rows = append(rows, displayRow{r.Check.Name, label, "", style})
 	}
 	return rows
 }
 
-// Count displayed observations, never infer a global unlock verdict. Each
-// distinct category remains separate (country vs availability vs restriction).
+// User-requested display normalization only: Yes is not a new unlock or
+// authenticated-use verdict. Raw outcomes remain unchanged in JSON.
 func summary(rows []displayRow) string {
 	counts := map[string]int{}
-	var order []string
 	for _, r := range rows {
 		label := strings.TrimPrefix(strings.TrimPrefix(r.result, "● "), "○ ")
-		if counts[label] == 0 {
-			order = append(order, label)
-		}
 		counts[label]++
 	}
-	parts := make([]string, 0, len(order))
-	for _, label := range order {
-		parts = append(parts, fmt.Sprintf("%s %d项", label, counts[label]))
+	parts := make([]string, 0, 4)
+	for _, label := range []string{"Yes", "No", "Limited", "Unknown"} {
+		if counts[label] > 0 {
+			parts = append(parts, fmt.Sprintf("%d %s", counts[label], label))
+		}
 	}
 	return strings.Join(parts, " · ")
 }
@@ -96,9 +91,9 @@ func (o *Output) groups(r Report) []displayGroup {
 			groups = append(groups, displayGroup{title, rows, summary(rows)})
 		}
 	}
-	add("服务地区与访问观察", o.serviceRows(r.Services))
-	add("服务可用性", o.accessRows(r.Access))
-	add("AI接口可达性", o.aiRows(r.AI))
+	add("Service regions & access", o.serviceRows(r.Services))
+	add("Service availability", o.accessRows(r.Access))
+	add("AI endpoints", o.aiRows(r.AI))
 	return groups
 }
 
@@ -106,7 +101,7 @@ func (o *Output) groups(r Report) []displayGroup {
 // widths, not byte/rune counts. Reduce the largest column until the shared
 // layout fits; wrap grapheme clusters rather than truncate country names.
 func sharedWidths(groups []displayGroup, terminal int) (widths [3]int, padding int) {
-	widths = [3]int{4, 4, 4}
+	widths = [3]int{7, 6, 6}
 	for _, g := range groups {
 		for _, r := range g.rows {
 			for col, value := range []string{r.service, r.result, r.region} {
@@ -121,7 +116,7 @@ func sharedWidths(groups []displayGroup, terminal int) (widths [3]int, padding i
 	}
 	if terminal < 14 {
 		terminal = 14
-	} // Minimum: three intact two-CJK headers plus two outer borders.
+	} // Minimum: 4 terminal cells per column plus two outer borders; headers wrap.
 	padding = 1
 	if terminal < 20 {
 		padding = 0
@@ -144,28 +139,38 @@ func sharedWidths(groups []displayGroup, terminal int) (widths [3]int, padding i
 
 func (o *Output) threeColumnTable(rows []displayRow, widths [3]int, padding int) string {
 	wrap := func(s string, col int) string { return ansi.Hardwrap(s, widths[col], true) }
-	headers := []string{wrap("服务", 0), wrap("结果", 1), wrap("地区", 2)}
+	headers := []string{wrap("Service", 0), wrap("Result", 1), wrap("Region", 2)}
 	cells := make([][]string, 0, len(rows))
 	for _, r := range rows {
 		cells = append(cells, []string{wrap(r.service, 0), r.style.Render(wrap(r.result, 1)), wrap(r.region, 2)})
 	}
-	return table.New().Border(lg.RoundedBorder()).BorderStyle(o.Theme.Border).
-		BorderColumn(false).BorderRow(false).Wrap(true).Headers(headers...).Rows(cells...).
-		StyleFunc(func(row, col int) lg.Style {
-			style := o.Theme.TableCell
-			if row == table.HeaderRow {
-				style = o.Theme.TableHead
-			}
-			height := 1
-			if row >= 0 {
-				for _, cell := range cells[row] {
+	// lipgloss intentionally truncates its built-in header to one line. Render
+	// the header as a wrapping table row and join its library-generated separator
+	// to the body. This is one visual rounded table with identical fixed widths,
+	// not a handcrafted border or a shortened/abbreviated header.
+	part := func(data [][]string, header bool) string {
+		border := lg.RoundedBorder()
+		if header {
+			border.BottomLeft = border.MiddleLeft
+			border.BottomRight = border.MiddleRight
+		}
+		return table.New().Border(border).BorderStyle(o.Theme.Border).
+			BorderTop(header).BorderBottom(true).BorderHeader(false).BorderColumn(false).BorderRow(false).Wrap(true).Rows(data...).
+			StyleFunc(func(row, col int) lg.Style {
+				style := o.Theme.TableCell
+				if header {
+					style = o.Theme.TableHead
+				}
+				height := 1
+				for _, cell := range data[row] {
 					if h := lg.Height(cell); h > height {
 						height = h
 					}
 				}
-			}
-			return style.Padding(0, padding).Width(widths[col] + 2*padding).Height(height)
-		}).Render()
+				return style.Padding(0, padding).Width(widths[col] + 2*padding).Height(height)
+			}).Render()
+	}
+	return part([][]string{headers}, true) + "\n" + part(cells, false)
 }
 
 // Prefer complete count categories on each summary line; do not leave a

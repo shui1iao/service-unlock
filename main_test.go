@@ -44,7 +44,7 @@ func TestCLIJSONScopeFieldsAndExitCodes(t *testing.T) {
 		if code != want {
 			t.Fatal(code)
 		}
-		if strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "服务可用性") {
+		if strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "Service availability") {
 			t.Fatal("renderer polluted JSON")
 		}
 		var r report
@@ -83,7 +83,7 @@ func TestCLIHelpValidationAndHumanOutput(t *testing.T) {
 		out, errout := new(bytes.Buffer), new(bytes.Buffer)
 		code := runCLI(context.Background(), args, out, errout, never)
 		if args[0] == "--help" || args[0] == "-h" {
-			if code != 0 || !strings.Contains(out.String(), "37项检查") {
+			if code != 0 || !strings.Contains(out.String(), "37 checks") {
 				t.Fatal(code, out)
 			}
 		} else if code != 2 || out.Len() != 0 {
@@ -94,7 +94,7 @@ func TestCLIHelpValidationAndHumanOutput(t *testing.T) {
 	code := runCLI(context.Background(), nil, out, new(bytes.Buffer), func(context.Context, time.Duration, int) (measurements, error) {
 		return measurements{Access: fixtureResults()}, nil
 	})
-	if code != 0 || !strings.Contains(out.String(), "ChatGPT (app)") || !strings.Contains(out.String(), "服务可用性") || strings.Contains(out.String(), "completed in") {
+	if code != 0 || !strings.Contains(out.String(), "ChatGPT (app)") || !strings.Contains(out.String(), "Service availability") || strings.Contains(out.String(), "completed in") {
 		t.Fatal(code, out)
 	}
 }
@@ -105,7 +105,7 @@ func TestCLICancelNoPartialJSON(t *testing.T) {
 	code := runCLI(ctx, []string{"--json"}, out, errout, func(context.Context, time.Duration, int) (measurements, error) {
 		return measurements{}, context.Canceled
 	})
-	if code != 130 || out.Len() != 0 || !strings.Contains(errout.String(), "中断") {
+	if code != 130 || out.Len() != 0 || !strings.Contains(errout.String(), "interrupted") {
 		t.Fatal(code, out, errout)
 	}
 }

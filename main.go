@@ -1,4 +1,4 @@
-// Service Unlock v0.4.1. MIT License; Copyright (c) 2026 Remnawave.
+// Service Unlock v0.4.2. MIT License; Copyright (c) 2026 Remnawave.
 // Derived from remnawave/geocheck v0.3.0; see LICENSE and README.md.
 package main
 
@@ -27,14 +27,15 @@ import (
 //go:embed LICENSE
 var licenseText string
 
-const help = `Service Unlock v0.4.1 — 37项检查 / 3组
+const help = `Service Unlock v0.4.2 — 37 checks / 3 groups
 Usage: service-unlock [--json] [--timeout SECONDS] [--workers N]
-  --json       只输出JSON，error=未知，不代表未解锁
-  --timeout N  每次HTTP请求总预算秒数（含重定向/正文），默认6
-  --workers N  有界并发1–8，默认4
-  --help       显示帮助，不联网
-  --license    显示内嵌MIT许可，不联网
-执行检测会访问真实平台；不需要Node/Python/Go运行环境。
+  --json       Output JSON only; error means inconclusive, not blocked
+  --timeout N  Total budget per HTTP request in seconds, default 6
+               Includes redirects and response body
+  --workers N  Bounded concurrency from 1 to 8, default 4
+  --help       Show help without running checks
+  --license    Show bundled licenses without running checks
+Running checks contacts real services; no Node/Python/Go runtime is needed.
 `
 
 type item struct {
@@ -143,11 +144,11 @@ func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run ru
 			fmt.Fprint(stdout, help)
 			return 0
 		}
-		fmt.Fprintln(stderr, "参数错误:", err)
+		fmt.Fprintln(stderr, "Invalid arguments:", err)
 		return 2
 	}
 	if flags.NArg() != 0 || math.IsNaN(*timeout) || math.IsInf(*timeout, 0) || *timeout <= 0 || *timeout > 2147483.647 || *workers < 1 || *workers > 8 {
-		fmt.Fprintln(stderr, "参数错误: timeout须在(0,2147483.647]秒，workers须在1–8，不能有位置参数")
+		fmt.Fprintln(stderr, "Invalid arguments: timeout must be in (0,2147483.647] seconds, workers must be 1-8, and positional arguments are not allowed")
 		return 2
 	}
 	if *showLicense {
@@ -159,11 +160,11 @@ func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run ru
 	results, err := run(ctx, duration, *workers)
 	elapsed := time.Since(started)
 	if ctx.Err() != nil {
-		fmt.Fprintln(stderr, "检测已中断")
+		fmt.Fprintln(stderr, "Checks interrupted")
 		return 130
 	}
 	if err != nil {
-		fmt.Fprintln(stderr, "检测失败:", err)
+		fmt.Fprintln(stderr, "Check execution failed:", err)
 		return 1
 	}
 	r := makeCompleteReport(results, *timeout, *workers)
@@ -176,7 +177,7 @@ func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run ru
 		err = render.WriteAccess(stdout, render.Report{Access: results.Access, Services: results.Services, AI: results.AI, Duration: elapsed})
 	}
 	if err != nil {
-		fmt.Fprintln(stderr, "输出失败:", err)
+		fmt.Fprintln(stderr, "Output failed:", err)
 		return 1
 	}
 	for _, r := range results.Access {

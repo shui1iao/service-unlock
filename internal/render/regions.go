@@ -6,28 +6,28 @@ import (
 	"strings"
 )
 
-// Region names come exclusively from the pinned x/text CLDR Simplified Chinese
+// Region names come exclusively from the pinned x/text CLDR English
 // dictionary. ParseRegion handles ISO 3166 alpha-2/alpha-3 equivalence; neither
 // the terminal nor this function infers a region from other observations.
-var chineseRegions = display.Regions(language.SimplifiedChinese)
+var englishRegions = display.Regions(language.English)
 
 func regionName(code string) string {
 	code = strings.ToUpper(strings.TrimSpace(code))
 	if len(code) != 2 && len(code) != 3 {
-		return "—"
+		return ""
 	}
 	for _, c := range code {
 		if c < 'A' || c > 'Z' {
-			return "—"
+			return ""
 		}
 	}
 	region, err := language.ParseRegion(code)
 	if err != nil || !region.IsCountry() || region.IsPrivateUse() {
-		return "—"
+		return ""
 	}
-	name := chineseRegions.Name(region)
-	if name == "" || name == region.String() || name == "未知地区" {
-		return "—"
+	name := englishRegions.Name(region)
+	if name == "" || name == region.String() || name == "Unknown Region" {
+		return ""
 	}
 	return name
 }

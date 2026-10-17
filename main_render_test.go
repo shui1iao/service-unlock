@@ -31,7 +31,7 @@ func TestTerminalRemovesTimesDetailsButJSONKeepsOriginalValues(t *testing.T) {
 			t.Fatal("removed terminal content", bad, out.String())
 		}
 	}
-	if !strings.Contains(out.String(), "美国") || !strings.Contains(out.String(), "已识别地区") || !strings.Contains(out.String(), "API可达") {
+	if !strings.Contains(out.String(), "United States") || !strings.Contains(out.String(), "Yes") {
 		t.Fatal(out.String())
 	}
 	out.Reset()
@@ -69,7 +69,7 @@ func TestJSONUnchangedUnderForcedColor(t *testing.T) {
 	code := runCLI(context.Background(), []string{"--json"}, out, new(bytes.Buffer), func(context.Context, time.Duration, int) (measurements, error) {
 		return measurements{Access: fixtureResults()}, nil
 	})
-	if code != 0 || strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "服务可用性") {
+	if code != 0 || strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "Service availability") {
 		t.Fatal(code, out.String())
 	}
 	var object map[string]json.RawMessage

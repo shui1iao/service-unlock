@@ -1,8 +1,8 @@
 #!/bin/sh
-# Service Unlock v0.4.1 launcher. MIT; Copyright (c) 2026 Remnawave.
+# Service Unlock v0.4.2 launcher. MIT; Copyright (c) 2026 Remnawave.
 # The release URLs below are fixed. No installation and no persistent binary.
 
-BASE=https://github.com/shui1iao/service-unlock/releases/download/v0.4.1
+BASE=https://github.com/shui1iao/service-unlock/releases/download/v0.4.2
 work=
 child=
 interrupted=0
@@ -44,26 +44,26 @@ run_child() {
     return "$result"
 }
 
-os=$(uname -s) || fail '无法识别系统'
-[ "$os" = Linux ] || fail "不支持的系统: $os（仅Linux）"
-arch=$(uname -m) || fail '无法识别架构'
+os=$(uname -s) || fail 'Cannot identify the operating system'
+[ "$os" = Linux ] || fail "Unsupported operating system: $os (Linux only)"
+arch=$(uname -m) || fail 'Cannot identify the architecture'
 case "$arch" in
     x86_64|amd64) arch=amd64 ;;
     aarch64|arm64) arch=arm64 ;;
-    *) fail "不支持的架构: $arch（仅amd64/arm64）" ;;
+    *) fail "Unsupported architecture: $arch (amd64/arm64 only)" ;;
 esac
 asset=service-unlock_linux_$arch
 
 if command -v curl >/dev/null 2>&1; then downloader=curl
 elif command -v wget >/dev/null 2>&1; then downloader=wget
-else fail '需要curl或wget（不会自动安装）'; fi
+else fail 'curl or wget is required (nothing will be installed)'; fi
 if command -v sha256sum >/dev/null 2>&1; then verifier=sha256sum
 elif command -v shasum >/dev/null 2>&1; then verifier=shasum
 elif command -v openssl >/dev/null 2>&1; then verifier=openssl
-else fail '需要sha256sum、shasum或openssl（不会自动安装）'; fi
+else fail 'sha256sum, shasum, or openssl is required (nothing will be installed)'; fi
 
-work=$(mktemp -d "${TMPDIR:-/tmp}/service-unlock.XXXXXXXX") || fail '无法创建安全临时目录'
-[ -n "$work" ] && [ -d "$work" ] || fail '临时目录无效'
+work=$(mktemp -d "${TMPDIR:-/tmp}/service-unlock.XXXXXXXX") || fail 'Cannot create a secure temporary directory'
+[ -n "$work" ] && [ -d "$work" ] || fail 'Invalid temporary directory'
 download() {
     if [ "$downloader" = curl ]; then
         run_child curl -fLsS --proto '=https' --proto-redir '=https' --connect-timeout 15 --max-time 180 -o "$2" "$1"
@@ -72,25 +72,25 @@ download() {
     fi
 }
 
-download "$BASE/SHA256SUMS" "$work/SHA256SUMS" || fail '校验清单下载失败，拒绝执行'
+download "$BASE/SHA256SUMS" "$work/SHA256SUMS" || fail 'Checksum manifest download failed; refusing to execute'
 expected=
 while read -r digest filename extra; do
     [ "$filename" = "$asset" ] || continue
-    [ -z "$extra" ] && [ -z "$expected" ] || fail '校验清单条目无效或重复'
-    [ "${#digest}" -eq 64 ] || fail 'SHA256长度无效'
-    case "$digest" in *[!0123456789abcdef]*) fail 'SHA256格式无效' ;; esac
+    [ -z "$extra" ] && [ -z "$expected" ] || fail 'Invalid or duplicate checksum manifest entry'
+    [ "${#digest}" -eq 64 ] || fail 'Invalid SHA256 length'
+    case "$digest" in *[!0123456789abcdef]*) fail 'Invalid SHA256 format' ;; esac
     expected=$digest
 done < "$work/SHA256SUMS"
-[ -n "$expected" ] || fail '校验清单没有目标架构，拒绝执行'
-download "$BASE/$asset" "$work/$asset" || fail '程序下载失败，拒绝执行'
+[ -n "$expected" ] || fail 'Architecture missing from checksum manifest; refusing to execute'
+download "$BASE/$asset" "$work/$asset" || fail 'Program download failed; refusing to execute'
 case "$verifier" in
-    sha256sum) sum=$(sha256sum "$work/$asset") || fail '无法计算SHA256' ;;
-    shasum) sum=$(shasum -a 256 "$work/$asset") || fail '无法计算SHA256' ;;
-    openssl) sum=$(openssl dgst -sha256 -r "$work/$asset") || fail '无法计算SHA256' ;;
+    sha256sum) sum=$(sha256sum "$work/$asset") || fail 'Cannot compute SHA256' ;;
+    shasum) sum=$(shasum -a 256 "$work/$asset") || fail 'Cannot compute SHA256' ;;
+    openssl) sum=$(openssl dgst -sha256 -r "$work/$asset") || fail 'Cannot compute SHA256' ;;
 esac
 actual=${sum%% *}
-[ "$actual" = "$expected" ] || fail 'SHA256不匹配，拒绝执行'
-chmod 700 "$work/$asset" || fail '无法设置执行权限'
+[ "$actual" = "$expected" ] || fail 'SHA256 mismatch; refusing to execute'
+chmod 700 "$work/$asset" || fail 'Cannot set executable permissions'
 run_child "$work/$asset" "$@"
 result=$?
 [ "$interrupted" -eq 0 ] || exit "$interrupted"
