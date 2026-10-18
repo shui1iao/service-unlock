@@ -5,6 +5,7 @@ package geo
 import (
 	"context"
 	"errors"
+	"mime"
 	"net/http"
 	"regexp"
 	"strings"
@@ -281,13 +282,34 @@ func spotifySignup() Check {
 	return Check{
 		ID: "spotify_signup", Name: "Spotify signup", Group: GroupServices, Kind: KindAvailability,
 		Run: func(ctx context.Context, env *Env, f netx.Family) (string, error) {
-			// AGPL-derived anonymous POST/typed classifier lives in internal/extra;
-			// this adapter retains the existing service ID/type and shared direct stack.
-			resp, err := env.request(ctx, f, extra.SpotifySignupRequest())
+			// This legacy anonymous request cannot establish account eligibility;
+			// only an explicit evidenced endpoint refusal can be a scoped No.
+			request := extra.SpotifySignupRequest()
+			resp, err := env.request(ctx, f, request)
 			if err != nil {
 				return "", err
 			}
+			if resp.Status != http.StatusOK || resp.FinalURL != request.URL {
+				return "", errors.New("Spotify signup endpoint/status changed; registration not tested")
+			}
+			if strings.EqualFold(strings.TrimSpace(resp.Header.Get("Cf-Mitigated")), "challenge") {
+				return "", errors.New("Spotify signup endpoint challenged; registration not tested")
+			}
+			if contentType := resp.Header.Get("Content-Type"); contentType != "" {
+				media, _, e := mime.ParseMediaType(contentType)
+				if e != nil || media != "application/json" {
+					return "", errors.New("unexpected Spotify signup response type; registration not tested")
+				}
+			}
+			for _, marker := range []string{"cf_chl_opt", "_cf_chl", "just a moment", "cf-browser-verification", "enable javascript and cookies to continue"} {
+				if strings.Contains(strings.ToLower(resp.Text()), marker) {
+					return "", errors.New("Spotify signup challenge content; registration not tested")
+				}
+			}
 			value, detail, err := extra.ClassifySpotifySignup(resp.Body)
+			if err != nil && detail == "" {
+				detail = "registration eligibility unknown: incomplete anonymous legacy request; actual registration/login not tested"
+			}
 			if detail != "" {
 				env.note("spotify_signup", detail)
 			}

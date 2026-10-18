@@ -1,4 +1,6 @@
-# Service Unlock v0.5.3
+# Service Unlock v0.5.4
+
+> v0.5.4 收窄 Spotify signup 判据：不再把未经证实的响应判为可注册；证据不足为 Unknown，仅明确的旧端点拒绝保留限定 No。字体、单框布局和其他检测逻辑不变。本轮没有账号注册/登录，不声称验证了实际注册成功。
 
 > v0.5.3 将完整报告合并为一个圆角框，框内按检测组分区，仅顶部一套三列表头；删除所有组统计与解释。自动选区、检测逻辑和 JSON 内容保持不变。
 
@@ -7,6 +9,14 @@
 > v0.5.1 删除 **NotebookLM、ChatGPT App、JCOM**，并发布 WOWOW、Spotify signup、Abema、DeepSeek API 的已验证修复。Hulu Japan 虽有受控 HTTP/1.1 回退，但 JP 真机仍超时，继续显示 Unknown，**尚未解决**。本次仅发布脚本，不部署 GUKO。
 
 Linux amd64 / arm64 独立检测程序。以新版统一格式补齐缺失项目，按 **全球＋所选地区** 检测；无需在运行端安装 Go、Node、Python 或 Bash 探测后端。
+
+## v0.5.4：Spotify signup准确性边界
+
+- 此项发的是无email/password/电话/登录令牌的**不完整匿名旧注册端点POST**，不是官方当前完整注册流程，也不是带`validate=1`的操作。它不能可靠证明“可注册”。
+- 去掉`311＋country＋is_country_launched=true→Yes`的无实证规则：此前“成功”夹具是人工构造，不是真实注册成功证据；现在这类响应为Unknown。也不再用裸120/320或launched=false推导No。
+- 只有已捕获的`status320`＋有效JSON中完全匹配的明确proxy拒绝，才为范围受限No，Detail说明**此旧端点的这次匿名请求被拒绝，实际注册/登录未测试**。裸状态、未知文案、配置/launch标志、类型/重复字段错误或挑战/HTTP错误均Unknown。
+- 旧JP320明确拒绝是真实证据，但不是所有注册渠道都不可用的证明。原Spotify地区观察仍独立，不给signup投票。固定HK creation_point/生日/同意字段未猜测修改，也不拿它们推断用户资格。
+- 项目ID/名称保留；不存在可信匿名正向判据，不能为了显示Yes去补邮箱/密码/验证码或创建账号。若要进一步判断真实注册结果，须用户在官方流程自行实际尝试，不能由本探针替代。
 
 ## v0.5.1 修复与已知限制
 
@@ -58,7 +68,7 @@ sh check.sh --region na --json > result.json
 | sea | 52 |
 | af | 44 |
 
-不是每台服务器检测所有地区。auto只用出口国家调度一个已存在的当地组，不从Google/Netflix地区或库存投票猜所在地。旧 `check.sh` 固定旧版本，升级需重新下载。启动器固定下载 v0.5.3，对应架构二进制通过 SHA256 校验后在临时目录运行并清理；需现有 curl/GNU wget、SHA256 校验工具和系统 CA，不自动安装软件，不安装常驻服务。
+不是每台服务器检测所有地区。auto只用出口国家调度一个已存在的当地组，不从Google/Netflix地区或库存投票猜所在地。旧 `check.sh` 固定旧版本，升级需重新下载。启动器固定下载 v0.5.4，对应架构二进制通过 SHA256 校验后在临时目录运行并清理；需现有 curl/GNU wget、SHA256 校验工具和系统 CA，不自动安装软件，不安装常驻服务。
 
 ## 自动调度、安全与数据
 
@@ -93,7 +103,7 @@ sh check.sh --region na --machine > report-envelope.json
 - `--json` 保留原 `schema_version/source/generated_at/network/results/services/ai_endpoints` 字段意义（删项与已证实判据修正对应的行值会改变），增加 `extra_checks`、`selection`。不把 JSON 原枚举翻译成 Yes/No；说明、耗时和 HTTP 诊断仍保留。
 - `--machine` 输出同一次测量的 JSON＋ANSI envelope（`guko-unified-v1`），不额外再跑一次检测或定位；与 `--json` 互斥。
 - `selection.region`仍是resolved group；新增`requested_region`（auto或显式组）、`detected_country`、`detection_source`、`detection_error`、`resolution_reason`。显式覆盖不声称定位过；失败原因安全化，定位信息不生成额外检查行。
-- `source.port` 保留 v0.4.0 历史实现标记（检测目录已按授权删除NotebookLM与App，JP额外删除JCOM）以维持原字段兼容；发行版本以 `--help` 的 v0.5.3 为准，新增来源见 `selection`。
+- `source.port` 保留 v0.4.0 历史实现标记（检测目录已按授权删除NotebookLM与App，JP额外删除JCOM）以维持原字段兼容；发行版本以 `--help` 的 v0.5.4 为准，新增来源见 `selection`。
 - 退出码 0＝全部得到结论（含 No/Limited）；1＝至少一项 Unknown 或运行失败；2＝参数错误；130/143＝中断。**0 不代表全部解锁，1 也不代表没有可用结果。** 由于 global 含安全排除项，完整报告仍可能正常返回 1。
 
 9 项未启用：HuluUS、AISPlay、trueID、Kancolle、Karaoke@DAM、DAnimeStore、NeonTV、SD Gundam、Crunchyroll。原因及 Optus/ESPN 移植差异、完整实现与网络限制见 [实现说明](README-unified-native.md)。
@@ -119,9 +129,9 @@ CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM64=v8.0 go build -buildvcs=false -tri
 
 完整许可见 `LICENSE`、`LICENSES/`、`internal/render/THIRD_PARTY_LICENSES.txt`；`--license` 可离线查看。
 
-v0.5.3 对应完整源码、构建文件、测试、固定数据和许可免费提供在：
+v0.5.4 对应完整源码、构建文件、测试、固定数据和许可免费提供在：
 
-- [固定版本源码](https://github.com/shui1iao/service-unlock/tree/v0.5.3)
-- [对应源码包](https://github.com/shui1iao/service-unlock/releases/download/v0.5.3/service-unlock-v0.5.3-source.zip)
+- [固定版本源码](https://github.com/shui1iao/service-unlock/tree/v0.5.4)
+- [对应源码包](https://github.com/shui1iao/service-unlock/releases/download/v0.5.4/service-unlock-v0.5.4-source.zip)
 
 源码包与同版本二进制在同一 Release 页面提供。网络部署的修改版还须向其交互用户提供实际对应源码；此脚本发布不代表 GUKO 已部署统一报告版。

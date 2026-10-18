@@ -1,5 +1,5 @@
 {
-  "note": "Offline regression. Captured denial/config responses from JP2026-10-18; status311 success is synthetic contract fixture, NOT a live result. No tokens/account credentials.",
+  "note": "Offline regression: denial/configuration are captured JP2026-10-18 responses. The status311 example is synthetic counterevidence only, NOT verified eligibility or a successful registration. No account credentials.",
   "denied": {
     "status": 320,
     "errors": {
@@ -12,7 +12,7 @@
     "country": "JP",
     "is_country_launched": true
   },
-  "synthetic_success": {
+  "synthetic_311_not_success": {
     "status": 311,
     "country": "JP",
     "is_country_launched": true

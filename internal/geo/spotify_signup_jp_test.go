@@ -26,9 +26,9 @@ func TestJPSpotifySignupRegistrationNotConfiguration(t *testing.T) {
 	}{
 		{"captured_POST_proxy_denied", string(fixtures["denied"]), "no", false},
 		{"captured_GET_configuration_not_registration", string(fixtures["configuration"]), "", true},
-		{"synthetic_311_complete", string(fixtures["synthetic_success"]), "yes", false},
-		{"status120", `{"status":120}`, "no", false},
-		{"not_launched", `{"is_country_launched":false}`, "no", false},
+		{"synthetic_311_not_success", string(fixtures["synthetic_311_not_success"]), "", true},
+		{"status120", `{"status":120}`, "", true},
+		{"not_launched", `{"is_country_launched":false}`, "", true},
 		{"311_missing_country", `{"status":311,"is_country_launched":true}`, "", true},
 		{"311_missing_launched", `{"status":311,"country":"JP"}`, "", true},
 		{"311_country_numeric", `{"status":311,"country":123,"is_country_launched":true}`, "", true},
@@ -69,8 +69,8 @@ func TestJPSpotifySignupRegistrationNotConfiguration(t *testing.T) {
 			if calls != 1 || r.Value != tc.want || (r.Err != nil) != tc.unknown {
 				t.Fatalf("calls=%d result=%+v want=%s unknown=%v", calls, r, tc.want, tc.unknown)
 			}
-			if tc.name == "synthetic_311_complete" && !strings.Contains(r.Detail, "JP") {
-				t.Error("actual country evidence lost")
+			if tc.name == "captured_POST_proxy_denied" && !strings.Contains(r.Detail, "actual registration/login not tested") {
+				t.Error("endpoint refusal overclaims real signup")
 			}
 		})
 	}

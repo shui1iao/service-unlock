@@ -36,7 +36,7 @@ var originalMITLicense string
 var extraAGPLLicense string
 var licenseText = distributionNotice + "\n" + originalMITLicense + "\n" + extraAGPLLicense
 
-const help = `Service Unlock v0.5.3 — original 35 checks + global 6 + selected region
+const help = `Service Unlock v0.5.4 — original 35 checks + global 6 + selected region
   --region auto|global|tw|hk|jp|na|sa|eu|oc|kr|sea|af (default auto)
                Auto detects exit country on the extra family's direct HTTPS path;
                explicit global/group skips detection. Failure/unmapped -> global.

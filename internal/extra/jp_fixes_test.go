@@ -127,7 +127,7 @@ func TestJPWriteOfflineClassificationReplay(t *testing.T) {
 	}
 	var f map[string]json.RawMessage
 	json.Unmarshal(data, &f)
-	for _, key := range []string{"configuration", "denied", "synthetic_success"} {
+	for _, key := range []string{"configuration", "denied", "synthetic_311_not_success"} {
 		value, detail, e := ClassifySpotifySignup(f[key])
 		if e != nil {
 			detail = e.Error()
@@ -135,7 +135,7 @@ func TestJPWriteOfflineClassificationReplay(t *testing.T) {
 		if value == "" {
 			value = "Unknown"
 		}
-		rows = append(rows, map[string]string{"case": "Spotify " + key, "before": map[string]string{"configuration": "Yes (GET configuration)", "denied": "No when denial body supplied; old live GET used different configuration response", "synthetic_success": "Yes without strict country/launched checks"}[key], "after": value, "detail": detail})
+		rows = append(rows, map[string]string{"case": "Spotify " + key, "before": map[string]string{"configuration": "Yes (GET configuration)", "denied": "No when denial body supplied; old live GET used different configuration response", "synthetic_311_not_success": "Yes from unverified status311/country/launched heuristic (not a real signup)"}[key], "after": value, "detail": detail})
 	}
 	os.MkdirAll(dir, 0700)
 	out, e := json.MarshalIndent(map[string]any{"offline_replay_only": true, "real_platform_retested": false, "rows": rows}, "", "  ")

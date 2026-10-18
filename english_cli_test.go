@@ -76,7 +76,7 @@ func TestLauncherEnglishDiagnosticsFixedVersionAndNoExecutionOnFailure(t *testin
 		t.Fatal(err)
 	}
 	assertEnglish(t, string(script))
-	if !strings.Contains(string(script), "BASE=https://github.com/shui1iao/service-unlock/releases/download/v0.5.3\n") {
+	if !strings.Contains(string(script), "BASE=https://github.com/shui1iao/service-unlock/releases/download/v0.5.4\n") {
 		t.Fatal("launcher version changed")
 	}
 	f := newLaunchFixture(t, "riscv64", "curl", "sha256sum")

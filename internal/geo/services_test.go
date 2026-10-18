@@ -176,7 +176,7 @@ func TestServiceSpecificRefusalAndUnknownSemantics(t *testing.T) {
 		{"google_captcha", 403, "unusual traffic from this network", "yes", false}, {"google_captcha", 200, "ordinary page", "no", false}, {"google_captcha", 403, "Forbidden", "", true},
 		{"youtube_premium", 403, "YouTube Premium is not available in your country", "no", false}, {"youtube_music", 403, "YouTube Music is not available in your area", "no", false},
 		{"youtube_premium", 403, "Forbidden", "", true}, {"youtube_music", 200, " ", "", true},
-		{"spotify_signup", 200, `{"status":120}`, "no", false}, {"spotify_signup", 200, `{"status":320}`, "no", false}, {"spotify_signup", 200, `{"is_country_launched":false}`, "no", false},
+		{"spotify_signup", 200, `{"status":120}`, "", true}, {"spotify_signup", 200, `{"status":320}`, "", true}, {"spotify_signup", 200, `{"is_country_launched":false}`, "", true},
 		{"spotify_signup", 200, `{"status":"invalid"}`, "", true}, {"spotify_signup", 200, `{"is_country_launched":"invalid"}`, "", true},
 		{"reddit_guest", 403, "Forbidden", "no", false}, {"reddit_guest", 404, "not found", "", true}, {"reddit_guest", 200, "", "", true},
 		{"reddit", 200, "blocked by network security", "", true}, {"apple", 200, "US123", "", true}, {"apple", 200, "ZZ", "", true},

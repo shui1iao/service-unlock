@@ -1,19 +1,23 @@
-// Anonymous signup-eligibility validation derived from RRC MediaUnlockTest_Spotify
+// Anonymous legacy signup-endpoint observation derived from RRC MediaUnlockTest_Spotify
 // check.sh:3569-3602, commit b6d4a6f9a87fc6eae6d3e62d0092ececcec8e844.
-// Modified 2026-10-18: native form, no account identity fields; strict typed verdict.
+// Modified 2026-10-18: incomplete anonymous form; evidence-bounded refusals only.
 // SPDX-License-Identifier: AGPL-3.0-only
 package extra
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/url"
 	"serviceunlock/internal/netx"
+	"strings"
 )
 
-// SpotifySignupRequest is an incomplete anonymous signup validation, not a
-// completed registration. No email, password, account token, Cookie or login
-// authorization can be attached by this constructor. Missing account credentials
+// SpotifySignupRequest is an incomplete anonymous request to a legacy signup
+// endpoint, not a validate=1 operation or a completed registration. No email,
+// password, account token, Cookie or login authorization can be attached by this
+// constructor. Missing account credentials
 // deliberately prevent this request from completing an account creation.
 func SpotifySignupRequest() netx.Request {
 	form := url.Values{
@@ -28,29 +32,89 @@ func SpotifySignupRequest() netx.Request {
 		Headers: map[string]string{"Content-Type": "application/x-www-form-urlencoded", "Accept-Language": "en"}}
 }
 
-// ClassifySpotifySignup never promotes configuration status1 or the mere
-// absence of a refusal into registration eligibility. Region stays in detail;
-// the existing availability JSON schema remains unchanged.
+// ClassifySpotifySignup cannot establish account-registration eligibility.
+// A launch/config flag or undocumented status311 is not positive evidence.
+// Only the captured status320 + exact proxy refusal establishes a narrowly
+// scoped No for THIS anonymous legacy request, not for every signup route.
 func ClassifySpotifySignup(body []byte) (value, detail string, err error) {
-	var response struct {
-		Status   *int    `json:"status"`
-		Country  *string `json:"country"`
-		Launched *bool   `json:"is_country_launched"`
+	// A local strict object decoder avoids last-key-wins ambiguity in status,
+	// country/launch fields and nested errors. No other API uses this parser.
+	object := func(raw []byte) (map[string]json.RawMessage, error) {
+		dec := json.NewDecoder(bytes.NewReader(raw))
+		token, e := dec.Token()
+		if e != nil || token != json.Delim('{') {
+			return nil, fmt.Errorf("invalid Spotify signup response object")
+		}
+		fields := map[string]json.RawMessage{}
+		seen := map[string]bool{}
+		for dec.More() {
+			token, e = dec.Token()
+			if e != nil {
+				return nil, fmt.Errorf("malformed Spotify signup JSON")
+			}
+			key, ok := token.(string)
+			if !ok {
+				return nil, fmt.Errorf("invalid Spotify signup JSON key")
+			}
+			folded := strings.ToLower(key)
+			if seen[folded] {
+				return nil, fmt.Errorf("ambiguous duplicate Spotify signup field")
+			}
+			seen[folded] = true
+			var value json.RawMessage
+			if e = dec.Decode(&value); e != nil {
+				return nil, fmt.Errorf("malformed Spotify signup field")
+			}
+			fields[key] = value
+		}
+		if _, e = dec.Token(); e != nil {
+			return nil, fmt.Errorf("malformed Spotify signup object")
+		}
+		if _, e = dec.Token(); e != io.EOF {
+			return nil, fmt.Errorf("trailing Spotify signup data")
+		}
+		return fields, nil
 	}
-	if e := json.Unmarshal(body, &response); e != nil {
-		return "", "", fmt.Errorf("malformed Spotify signup JSON or field type: %w", e)
+	fields, e := object(body)
+	if e != nil {
+		return "", "", e
 	}
-	if response.Status != nil && (*response.Status == 320 || *response.Status == 120) {
-		return "no", fmt.Sprintf("anonymous signup validation refused (status %d)", *response.Status), nil
+	var status *int
+	if e = json.Unmarshal(fields["status"], &status); e != nil || status == nil {
+		return "", "", fmt.Errorf("Spotify signup status missing or invalid; registration not tested")
 	}
-	if response.Launched != nil && !*response.Launched {
-		return "no", "anonymous signup validation: country not launched", nil
+	// Optional metadata must be well-typed, but never supplies a yes/no verdict.
+	countryEvidence := ""
+	if raw, ok := fields["country"]; ok {
+		var c string
+		if json.Unmarshal(raw, &c) != nil || country(c) == "" {
+			return "", "", fmt.Errorf("invalid Spotify signup country metadata")
+		}
+		countryEvidence = "; country=" + country(c)
 	}
-	if response.Status == nil || *response.Status != 311 {
-		return "", "", fmt.Errorf("Spotify registration eligibility not established: expected status311 (configuration status1 is not sufficient)")
+	if raw, ok := fields["is_country_launched"]; ok {
+		var launched *bool
+		if json.Unmarshal(raw, &launched) != nil || launched == nil {
+			return "", "", fmt.Errorf("invalid Spotify signup launched metadata")
+		}
 	}
-	if response.Country == nil || country(*response.Country) == "" || response.Launched == nil || !*response.Launched {
-		return "", "", fmt.Errorf("Spotify status311 lacks valid country/launched evidence")
+	errors := map[string]json.RawMessage{}
+	if raw, ok := fields["errors"]; ok {
+		errors, e = object(raw)
+		if e != nil {
+			return "", "", fmt.Errorf("invalid Spotify signup error object")
+		}
 	}
-	return "yes", "anonymous signup validation status311; country=" + country(*response.Country) + "; launched=true; not a completed registration/login test", nil
+	var refusal string
+	if raw, ok := errors["generic_error"]; ok {
+		if json.Unmarshal(raw, &refusal) != nil {
+			return "", "", fmt.Errorf("invalid Spotify signup generic error")
+		}
+	}
+	const observedProxyRefusal = "You seem to be using a proxy service. Please turn off these services and try again. For more help, please contact customer service."
+	if *status == 320 && strings.TrimSpace(refusal) == observedProxyRefusal {
+		return "no", "legacy anonymous signup endpoint explicitly rejected this request as a proxy (status320); actual registration/login not tested", nil
+	}
+	// Do not reflect raw error messages: they may contain account/identity data.
+	return "", "", fmt.Errorf("Spotify anonymous response status%d%s does not establish registration eligibility; actual registration/login not tested", *status, countryEvidence)
 }
