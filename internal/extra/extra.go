@@ -57,7 +57,7 @@ func Regions() []string {
 	return []string{"global", "tw", "hk", "jp", "na", "sa", "eu", "oc", "kr", "sea", "af"}
 }
 
-// Catalogue returns all 135 selected functions, including explicit safety Unknowns.
+// Catalogue returns all 134 selected functions, including explicit safety Unknowns.
 func Catalogue() []Check { return append([]Check(nil), catalogue...) }
 func Selected(region string) ([]Check, error) {
 	valid := false

@@ -438,15 +438,6 @@ var singleParsers = map[string]func(response) verdict{
 		}
 		return unknown("unexpected HTTP status")
 	},
-	"MediaUnlockTest_JCOM_ON_DEMAND": func(r response) verdict {
-		switch r.Status {
-		case 200:
-			return yes("")
-		case 403:
-			return no("HTTP source refusal")
-		}
-		return unknown("unexpected HTTP status")
-	},
 	"MediaUnlockTest_Popcornflix": func(r response) verdict {
 		switch r.Status {
 		case 403:
@@ -1009,19 +1000,7 @@ var singleParsers = map[string]func(response) verdict{
 		}
 		return unknown("no source conclusion marker")
 	},
-	"MediaUnlockTest_AbemaTV": func(r response) verdict {
-		v := scalar(r.Text, "isoCountryCode")
-		if country(v) == "" {
-			return unknown("missing country")
-		}
-		if r.Status != 200 {
-			return unknown("unexpected HTTP")
-		}
-		if v == "JP" {
-			return yes(v)
-		}
-		return limited(v, "Oversea Only")
-	},
+	"MediaUnlockTest_AbemaTV": classifyAbema,
 	"MediaUnlockTest_HBOMax": func(r response) verdict {
 		v := rx(allText(r), `countryCode=([A-Z]{2})`)
 		if v == "" {

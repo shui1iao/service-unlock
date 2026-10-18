@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"reflect"
 	"serviceunlock/internal/netx"
@@ -24,8 +25,9 @@ func (f tripFunc) RoundTrip(r *http.Request) (*http.Response, error) { return f(
 type fixture struct {
 	ID, Name, Kind, URL, Method, Body, Value string
 	Headers                                  map[string]string
-	RequestJSON                              json.RawMessage `json:"request_json"`
-	ResponseHeaders                          http.Header     `json:"response_headers"`
+	RequestForm                              map[string]string `json:"request_form"`
+	RequestJSON                              json.RawMessage   `json:"request_json"`
+	ResponseHeaders                          http.Header       `json:"response_headers"`
 }
 
 func fixtures(t *testing.T) []fixture {
@@ -108,6 +110,21 @@ func TestAll21CatalogueTypesMethodsPayloadsAndParsers(t *testing.T) {
 					json.Unmarshal(f.RequestJSON, &want)
 					if !reflect.DeepEqual(actual, want) {
 						t.Error("POST JSON differs", string(body))
+					}
+				} else if len(f.RequestForm) > 0 {
+					form, err := url.ParseQuery(string(body))
+					if err != nil {
+						t.Fatal(err)
+					}
+					actual := map[string]string{}
+					for key, values := range form {
+						if len(values) != 1 {
+							t.Error("duplicate form value")
+						}
+						actual[key] = form.Get(key)
+					}
+					if !reflect.DeepEqual(actual, f.RequestForm) {
+						t.Error("POST validation form differs")
 					}
 				} else if len(body) > 0 {
 					t.Error("unexpected payload")

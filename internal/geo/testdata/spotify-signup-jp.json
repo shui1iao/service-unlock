@@ -1,0 +1,20 @@
+{
+  "note": "Offline regression. Captured denial/config responses from JP2026-10-18; status311 success is synthetic contract fixture, NOT a live result. No tokens/account credentials.",
+  "denied": {
+    "status": 320,
+    "errors": {
+      "generic_error": "You seem to be using a proxy service. Please turn off these services and try again. For more help, please contact customer service."
+    },
+    "push-notifications": false
+  },
+  "configuration": {
+    "status": 1,
+    "country": "JP",
+    "is_country_launched": true
+  },
+  "synthetic_success": {
+    "status": 311,
+    "country": "JP",
+    "is_country_launched": true
+  }
+}

@@ -96,9 +96,27 @@ func (e endpoint) check() Check {
 			if err != nil {
 				return Result{State: StateError, Detail: "request failed", Err: err}
 			}
+			// The plain-text exception only proves the configured authentication
+			// endpoint answered, not a redirect destination or a challenge edge.
+			if e.isDeepSeekGovernorAuth(resp.Status, resp.Text()) {
+				if resp.FinalURL != e.url {
+					return Result{State: StateError, Status: resp.Status, Detail: "authentication response came from an unexpected final endpoint"}
+				}
+				if strings.EqualFold(strings.TrimSpace(resp.Header.Get("Cf-Mitigated")), "challenge") {
+					return Result{State: StateError, Status: resp.Status, Detail: "challenged before reaching the API"}
+				}
+			}
 			return e.classify(resp.Status, resp.Text())
 		},
 	}
+}
+
+// isDeepSeekGovernorAuth recognizes the exact unauthenticated response observed
+// at DeepSeek's official models endpoint; other non-JSON answers stay unknown.
+func (e endpoint) isDeepSeekGovernorAuth(status int, body string) bool {
+	return e.id == "deepseek" && e.vendor == "DeepSeek" &&
+		e.url == "https://api.deepseek.com/models" && status == 401 &&
+		strings.TrimSpace(body) == "Authentication Fails (governor)"
 }
 
 func (e endpoint) classify(status int, body string) Result {
@@ -120,6 +138,13 @@ func (e endpoint) classify(status int, body string) Result {
 				State: StateBlocked, Status: status,
 				Detail: "the API refused this region",
 			}
+		}
+	}
+
+	if e.isDeepSeekGovernorAuth(status, body) {
+		return Result{
+			State: StateReachable, Status: status,
+			Detail: "authentication endpoint responded without credentials; model calls not tested",
 		}
 	}
 

@@ -1072,7 +1072,7 @@
   "MediaUnlockTest_wowow": {
     "positive": [
       {
-        "body": "{\"link\":\"https://www.wowow.co.jp/drama/original/mock/\"}",
+        "body": "[{\"link\":\"https://www.wowow.co.jp/drama/original/mock/\"}]",
         "status": 200,
         "final": "",
         "headers": {},
@@ -1082,18 +1082,26 @@
         "request_method": "GET"
       },
       {
-        "body": "\"https://wod.wowow.co.jp/content/mock\"",
+        "body": "<!DOCTYPE html><html lang=\"ja-jp\"><body><script>var content=\"https://wod.wowow.co.jp/content/mock\";</script></body></html>",
         "status": 200,
         "final": "",
-        "headers": {},
+        "headers": {
+          "Content-Type": [
+            "text/html; charset=UTF-8"
+          ]
+        },
         "request_contains": [],
         "request_method": "GET"
       },
       {
-        "body": "\"https://wod.wowow.co.jp/watch/123456\"",
+        "body": "<!DOCTYPE html><html lang=\"ja\"><head><link rel=\"canonical\" href=\"https://wod.wowow.co.jp/watch/123456\"></head><body></body></html>",
         "status": 200,
         "final": "",
-        "headers": {},
+        "headers": {
+          "Content-Type": [
+            "text/html; charset=utf-8"
+          ]
+        },
         "request_contains": [],
         "request_method": "GET"
       },
@@ -1112,7 +1120,7 @@
     ],
     "negative": [
       {
-        "body": "{\"link\":\"https://www.wowow.co.jp/drama/original/mock/\"}",
+        "body": "[{\"link\":\"https://www.wowow.co.jp/drama/original/mock/\"}]",
         "status": 200,
         "final": "",
         "headers": {},
@@ -1122,24 +1130,32 @@
         "request_method": "GET"
       },
       {
-        "body": "\"https://wod.wowow.co.jp/content/mock\"",
+        "body": "<!DOCTYPE html><html lang=\"ja-jp\"><body><script>var content=\"https://wod.wowow.co.jp/content/mock\";</script></body></html>",
         "status": 200,
         "final": "",
-        "headers": {},
+        "headers": {
+          "Content-Type": [
+            "text/html; charset=UTF-8"
+          ]
+        },
         "request_contains": [],
         "request_method": "GET"
       },
       {
-        "body": "\"https://wod.wowow.co.jp/watch/123456\"",
+        "body": "<!DOCTYPE html><html lang=\"ja\"><head><link rel=\"canonical\" href=\"https://wod.wowow.co.jp/watch/123456\"></head><body></body></html>",
         "status": 200,
         "final": "",
-        "headers": {},
+        "headers": {
+          "Content-Type": [
+            "text/html; charset=utf-8"
+          ]
+        },
         "request_contains": [],
         "request_method": "GET"
       },
       {
-        "body": "{\"error\": \"VPN blocked\"}",
-        "status": 200,
+        "body": "{\n  \"error\": {\n    \"message\": \"Unsupported network detected. cannot be accessed from outside Japan and/or connection via VPN and Proxy.\",\n    \"code\": 2055,\n    \"type\": \"Forbidden\"\n  }\n}",
+        "status": 403,
         "final": "",
         "headers": {},
         "request_contains": [

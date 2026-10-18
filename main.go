@@ -36,9 +36,9 @@ var originalMITLicense string
 var extraAGPLLicense string
 var licenseText = distributionNotice + "\n" + originalMITLicense + "\n" + extraAGPLLicense
 
-const help = `Service Unlock v0.5.0 — original 37 checks + global 6 + selected region
+const help = `Service Unlock v0.5.1 — original 35 checks + global 6 + selected region
   --region global|tw|hk|jp|na|sa|eu|oc|kr|sea|af (default global)
-  --extra-family auto|4|6 (default auto; native37 remains system-selected)
+  --extra-family auto|4|6 (default auto; native35 remains system-selected)
   --machine    One JSON + ANSI envelope from the same measurement
 Usage: service-unlock [--json] [--timeout SECONDS] [--workers N]
   --json       Output JSON only; error means inconclusive, not blocked
@@ -90,7 +90,7 @@ func makeReport(results []access.Result, timeout float64, workers int) report {
 	}
 	for _, res := range results {
 		platform := res.Check.Name
-		if res.Check.ID == "chatgpt_web" || res.Check.ID == "chatgpt_app" {
+		if res.Check.ID == "chatgpt_web" {
 			platform = "ChatGPT"
 		}
 		out := item{ID: res.Check.ID, Platform: platform, Name: res.Check.Name, Status: res.State.String(), Detail: res.Detail,

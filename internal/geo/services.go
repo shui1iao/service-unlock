@@ -7,10 +7,10 @@ import (
 	"errors"
 	"net/http"
 	"regexp"
-	"strconv"
 	"strings"
 
 	"serviceunlock/internal/countries"
+	"serviceunlock/internal/extra"
 	"serviceunlock/internal/jsonx"
 	"serviceunlock/internal/netx"
 )
@@ -281,31 +281,17 @@ func spotifySignup() Check {
 	return Check{
 		ID: "spotify_signup", Name: "Spotify signup", Group: GroupServices, Kind: KindAvailability,
 		Run: func(ctx context.Context, env *Env, f netx.Family) (string, error) {
-			resp, err := env.request(ctx, f, netx.Request{
-				URL: "https://spclient.wg.spotify.com/signup/public/v1/account/?validate=1&key=" +
-					spotifyAPIKey,
-				Headers: map[string]string{"X-Client-Id": spotifyClientID},
-			})
+			// AGPL-derived anonymous POST/typed classifier lives in internal/extra;
+			// this adapter retains the existing service ID/type and shared direct stack.
+			resp, err := env.request(ctx, f, extra.SpotifySignupRequest())
 			if err != nil {
 				return "", err
 			}
-			status := jsonx.String(resp.Body, "status")
-			launched := jsonx.String(resp.Body, "is_country_launched")
-			if status != "" {
-				if _, err := strconv.Atoi(status); err != nil {
-					return "", errors.New("invalid Spotify signup status")
-				}
+			value, detail, err := extra.ClassifySpotifySignup(resp.Body)
+			if detail != "" {
+				env.note("spotify_signup", detail)
 			}
-			if launched != "" && launched != "true" && launched != "false" {
-				return "", errors.New("invalid Spotify country-launched value")
-			}
-			if status == "120" || status == "320" || launched == "false" {
-				return no, nil
-			}
-			if status == "" && launched == "" {
-				return "", nil
-			}
-			return yes, nil
+			return value, err
 		},
 	}
 }

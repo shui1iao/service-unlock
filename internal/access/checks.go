@@ -18,13 +18,11 @@ const browserUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 
 func Checks() []Check {
 	return []Check{
 		chatGPTWeb(),
-		chatGPTApp(),
 		youTubePremium(),
 		netflix(),
 		claude(),
 		tiktok(),
 		gemini(),
-		notebookLM(),
 	}
 }
 
@@ -175,46 +173,6 @@ func chatGPTWeb() Check {
 			}
 			if containsFold(resp.Text(), "unsupported_country") {
 				return Result{State: StateBlocked, Detail: "unsupported country"}
-			}
-			if resp.Status < 200 || resp.Status >= 400 {
-				return Result{State: StateError, Detail: "unexpected HTTP " + itoa(resp.Status)}
-			}
-			return Result{State: StateAvailable}
-		},
-	}
-}
-
-// chatGPTApp probes the host the iOS app talks to, which rejects hosting and
-// proxy address space specifically — a different gate from the country check.
-func chatGPTApp() Check {
-	return Check{
-		ID: "chatgpt_app", Name: "ChatGPT (app)",
-		Run: func(ctx context.Context, env Env) Result {
-			resp, err := env.Stack.Do(ctx, env.Family, netx.Request{
-				URL:       "https://ios.chat.openai.com",
-				UserAgent: browserUA,
-			})
-			if err != nil {
-				return Result{State: StateError, Detail: "request failed", Err: err}
-			}
-			if problem := textProblem(resp.Status, resp.Text()); problem != "" {
-				return Result{State: StateError, Detail: problem}
-			}
-			body := resp.Text()
-			if isChallenge(resp.Status, strings.ToLower(body)) {
-				return Result{
-					State:  StateError,
-					Detail: "Cloudflare challenged the request, so availability was never tested",
-				}
-			}
-			switch {
-			case containsFold(body, "disallowed isp"):
-				return Result{
-					State:  StateBlocked,
-					Detail: "disallowed ISP; the exit address is classed as hosting or proxy space",
-				}
-			case containsFold(body, "been blocked"):
-				return Result{State: StateBlocked, Detail: "blocked"}
 			}
 			if resp.Status < 200 || resp.Status >= 400 {
 				return Result{State: StateError, Detail: "unexpected HTTP " + itoa(resp.Status)}
@@ -484,54 +442,6 @@ func gemini() Check {
 				return Result{State: StateError, Detail: "request failed", Err: err}
 			}
 			return classifyGemini(resp.Status, resp.Text())
-		},
-	}
-}
-
-// classifyNotebookLM reads the answer out of where the request was sent rather
-// than out of a page. NotebookLM states the reason in the redirect itself —
-// `?location=unsupported` — which is a far better signal than anything its
-// sibling Gemini offers, and the reason this check needs no country list.
-//
-// A served region is redirected to a Google sign-in instead, because the
-// product needs an account. That is not a failure: reaching the sign-in is the
-// evidence that the region is served.
-func classifyNotebookLM(status int, finalURL, body string) Result {
-	if problem := responseProblem(status, body); problem != "" {
-		return Result{State: StateError, Detail: problem}
-	}
-	u, err := validDestination(finalURL)
-	if err != nil {
-		return Result{State: StateError, Detail: "invalid or missing final URL"}
-	}
-	if strings.Contains(finalURL, "location=unsupported") {
-		return Result{State: StateBlocked, Detail: "not offered in this country"}
-	}
-	if status < 200 || status >= 400 {
-		return Result{State: StateError, Detail: "unexpected HTTP " + itoa(status)}
-	}
-	if u.Host == "accounts.google.com" || strings.HasSuffix(u.Host, ".google.com") && strings.Contains(u.EscapedPath(), "/login") {
-		return Result{State: StateAvailable, Detail: "sign-in required"}
-	}
-	return Result{State: StateError, Detail: "unexpected destination " + u.Host}
-}
-
-func notebookLM() Check {
-	return Check{
-		ID: "notebooklm_access", Name: "NotebookLM",
-		Run: func(ctx context.Context, env Env) Result {
-			resp, err := env.Stack.Do(ctx, env.Family, netx.Request{
-				URL:       "https://notebooklm.google.com/",
-				UserAgent: browserUA,
-				Headers: map[string]string{
-					"Accept":          "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-					"Accept-Language": "en-US,en;q=0.9",
-				},
-			})
-			if err != nil {
-				return Result{State: StateError, Detail: "request failed", Err: err}
-			}
-			return classifyNotebookLM(resp.Status, resp.FinalURL, resp.Text())
 		},
 	}
 }

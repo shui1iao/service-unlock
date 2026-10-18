@@ -33,16 +33,14 @@ Service availability ───────────────────�
 │ Service                Result     Region │
 ├──────────────────────────────────────────┤
 │ ChatGPT (web)          ● Yes             │
-│ ChatGPT (app)          ● No              │
 │ YouTube Premium        ● Yes             │
 │ Netflix                ● Limited  FR     │
 │ Claude                 ○ Unknown         │
 │ TikTok                 ● Yes             │
 │ Gemini                 ● No       CN     │
-│ NotebookLM             ● Yes             │
 ╰──────────────────────────────────────────╯
-Yes 4: available
-No 2: blocked
+Yes 3: available
+No 1: blocked
 Limited 1: originals-only
 Unknown 1: inconclusive
 

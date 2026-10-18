@@ -70,7 +70,7 @@ while [ "$#" -gt 0 ]; do
  case "$1" in -o|-O) out=$2; shift;; -*) :;; *) url=$1;; esac
  shift
 done
-base=https://github.com/shui1iao/service-unlock/releases/download/v0.5.0
+base=https://github.com/shui1iao/service-unlock/releases/download/v0.5.1
 case "$url" in "$base/SHA256SUMS"|"$base/service-unlock_linux_amd64"|"$base/service-unlock_linux_arm64") :;; *) exit 91;; esac
 printf '%s\n' "$url" >> "$MOCK_LOG"
 if [ "${MOCK_HANG:-0}" = 1 ]; then
@@ -151,7 +151,7 @@ func TestLauncherArchitecturesArgumentsExitAndURLs(t *testing.T) {
 				target = "arm64"
 			}
 			urls, _ := os.ReadFile(f.log)
-			want := "https://github.com/shui1iao/service-unlock/releases/download/v0.5.0/"
+			want := "https://github.com/shui1iao/service-unlock/releases/download/v0.5.1/"
 			if string(urls) != want+"SHA256SUMS\n"+want+"service-unlock_linux_"+target+"\n" {
 				t.Fatal(string(urls))
 			}

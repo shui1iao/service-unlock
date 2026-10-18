@@ -130,6 +130,9 @@ func (c *Client) step(ctx context.Context, id string, index int, vars map[string
 			return response{}, fmt.Errorf("unresolved source header for %s", id)
 		}
 	}
+	if id == "MediaUnlockTest_HuluJP" {
+		return c.doWithHuluFallback(ctx, q, true)
+	}
 	return c.do(ctx, q)
 }
 func execute(ctx context.Context, c *Client, id string) verdict {
@@ -153,7 +156,11 @@ func execute(ctx context.Context, c *Client, id string) verdict {
 		if !validScalarType(id, r.Text) {
 			return unknown("wrong source JSON field type")
 		}
-		return parser(r)
+		v := parser(r)
+		if r.HTTP1Fallback {
+			v.detail += "; HTTP/1.1 fallback after typed HTTP/2 stream error (same request budget)"
+		}
+		return v
 	}
 	return runFlow(ctx, c, id)
 }

@@ -98,7 +98,7 @@ func TestNativeCatalogueHasNoExecutionOrForbiddenData(t *testing.T) {
 			t.Errorf("missing real endpoint/parser fixture: %s", c.ID)
 		}
 	}
-	if n != 126 {
+	if n != 125 {
 		t.Fatal(n)
 	}
 }

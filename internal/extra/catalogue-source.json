@@ -2256,28 +2256,6 @@
     "safety_exception": null
   },
   {
-    "function": "MediaUnlockTest_JCOM_ON_DEMAND",
-    "display_name": "J:com On Demand",
-    "groups": [
-      "jp"
-    ],
-    "category": "add-missing-verdict",
-    "kind": "new-regional-verdict",
-    "existing_native_ids": "",
-    "decision_note": "No functional equivalent in native37; retain exact selected function and normalize its source verdict, not platform-name guessing",
-    "source_file": "check.sh",
-    "source_line": 3636,
-    "source_endline": 3645,
-    "source_sha256": "c097aa505659b8f5021b190d858857e5cfe68d4e77afba1e63282083f3460e16",
-    "helper_dependencies": [],
-    "ipv6_unsupported_guard": false,
-    "static_url_paths_without_query": [
-      "https://auth.id2.zaq.ne.jp/login"
-    ],
-    "special_handling": "",
-    "safety_exception": null
-  },
-  {
     "function": "MediaUnlockTest_musicjp",
     "display_name": "music.jp",
     "groups": [

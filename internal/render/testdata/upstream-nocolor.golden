@@ -3,13 +3,11 @@
 [m│[m [1mService[m          [1mStatus[m        [1mRegion[m  [1mDetail[m                                                [1mTime[m    [m│[m
 [m├[m[m─────────────────[m[m──────────────[m[m────────[m[m──────────────────────────────────────────────────────[m[m─────────[m[m┤[m
 [m│[m [mChatGPT (web)[m    [m[m● available[m[m   [m[m—[m[m       [m[m[m[m                                                      [m[m5.68 ms[m[m [m│[m
-[m│[m [mChatGPT (app)[m    [m[m● blocked[m[m     [m[m—[m[m       [m[mdisallowed ISP; the exit address is classed as host…[m[m  [m[m50.4 ms[m[m [m│[m
 [m│[m [mYouTube Premium[m  [m[m● available[m[m   [m[m—[m[m       [m[m[m[m                                                      [m[m80.0 ms[m[m [m│[m
 [m│[m [mNetflix[m          [m[m● restricted[m[m  [m[mFR[m[m      [m[moriginals only; licensed titles are withheld[m[m          [m[m141 ms[m[m  [m│[m
 [m│[m [mClaude[m           [m[m○ error[m[m       [m[m—[m[m       [m[mrequest failed[m[m                                        [m[m—[m[m       [m│[m
 [m│[m [mTikTok[m           [m[m● available[m[m   [m[m—[m[m       [m[m[m[m                                                      [m[m25.5 ms[m[m [m│[m
 [m│[m [mGemini[m           [m[m● blocked[m[m     [m[mCHN[m[m     [m[mnot offered in this country[m[m                           [m[m201 ms[m[m  [m│[m
-[m│[m [mNotebookLM[m       [m[m● available[m[m   [m[m—[m[m       [m[msign-in required[m[m                                      [m[m—[m[m       [m│[m
 [m╰[m[m─────────────────[m[m──────────────[m[m────────[m[m──────────────────────────────────────────────────────[m[m─────────[m[m╯[m
   [m4 available[m[m · [m[m1 restricted[m[m · [m[m2 blocked[m[m · [m[m1 inconclusive[m
 

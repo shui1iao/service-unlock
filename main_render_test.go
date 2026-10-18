@@ -88,7 +88,7 @@ func TestJSONUnchangedUnderForcedColor(t *testing.T) {
 	if err := json.Unmarshal(object["results"], &rows); err != nil {
 		t.Fatal(err)
 	}
-	if len(rows) != 8 {
+	if len(rows) != 6 {
 		t.Fatal(len(rows))
 	}
 	for _, row := range rows {

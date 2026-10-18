@@ -3,12 +3,10 @@
   "duration_ns": 6200000000,
   "results": [
     {"id":"chatgpt_web","name":"ChatGPT (web)","state":0,"region":"","detail":"","rtt_ns":5678000},
-    {"id":"chatgpt_app","name":"ChatGPT (app)","state":2,"region":"","detail":"disallowed ISP; the exit address is classed as hosting or proxy space","rtt_ns":50400000},
     {"id":"youtube_premium_access","name":"YouTube Premium","state":0,"region":"","detail":"","rtt_ns":80000000},
     {"id":"netflix_access","name":"Netflix","state":1,"region":"FR","detail":"originals only; licensed titles are withheld","rtt_ns":140900000},
     {"id":"claude_access","name":"Claude","state":3,"region":"","detail":"request failed","rtt_ns":6000000000,"error":"mock request timeout"},
     {"id":"tiktok_access","name":"TikTok","state":0,"region":"","detail":"","rtt_ns":25510000},
-    {"id":"gemini_access","name":"Gemini","state":2,"region":"CHN","detail":"not offered in this country","rtt_ns":200600000},
-    {"id":"notebooklm_access","name":"NotebookLM","state":0,"region":"","detail":"sign-in required","rtt_ns":0}
+    {"id":"gemini_access","name":"Gemini","state":2,"region":"CHN","detail":"not offered in this country","rtt_ns":200600000}
   ]
 }

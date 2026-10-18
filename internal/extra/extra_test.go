@@ -91,7 +91,7 @@ func TestAllSingleNativeRequests(t *testing.T) {
 	if err = json.Unmarshal(data, &fixtures); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixtures) != 108 {
+	if len(fixtures) != 107 {
 		t.Fatalf("fixtures %d", len(fixtures))
 	}
 	for id, f := range fixtures {
@@ -167,10 +167,10 @@ func TestAllMultiStepNativeRequests(t *testing.T) {
 	}
 }
 func TestCatalogueAndSafety(t *testing.T) {
-	if len(Catalogue()) != 135 {
+	if len(Catalogue()) != 134 {
 		t.Fatal("catalogue count")
 	}
-	count := map[string]int{"global": 6, "tw": 17, "hk": 14, "jp": 33, "na": 43, "sa": 9, "eu": 36, "oc": 25, "kr": 14, "sea": 17, "af": 9}
+	count := map[string]int{"global": 6, "tw": 17, "hk": 14, "jp": 32, "na": 43, "sa": 9, "eu": 36, "oc": 25, "kr": 14, "sea": 17, "af": 9}
 	for region, n := range count {
 		checks, e := Selected(region)
 		if e != nil || len(checks) != n {

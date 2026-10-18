@@ -1,0 +1,33 @@
+{
+  "sources": [
+    {
+      "source": "private-jp-comparison-evidence/diagnostics/MediaUnlockTest_wowow.t967NTHl.stdout",
+      "sha256": "4f6b49d2f4ad6e5fcf6a12a7441f4a52c50a2277d37eaaf9192d6a3a12d01140"
+    },
+    {
+      "source": "private-jp-comparison-evidence/diagnostics/MediaUnlockTest_wowow.aRCyEKL2.stdout",
+      "sha256": "51ba5c0eac0b02a9e0ef6cc113b40bc2bf6a991a31eb8f62cd0cf6d8c7b48890"
+    },
+    {
+      "source": "private-jp-comparison-evidence/diagnostics/MediaUnlockTest_wowow.H7FbNIxF.stdout",
+      "sha256": "516bc4e8d358fab97a484474349e6dd97cee9388769ce0aa838f0d032863012f"
+    },
+    {
+      "source": "private-jp-comparison-evidence/diagnostics/MediaUnlockTest_wowow.WugO6mHG.stdout",
+      "sha256": "550b6f9335e2a0d26713e576caef7c583f5a4dc0cd463d276d478301d6702e35"
+    },
+    {
+      "source": "private-jp-comparison-evidence/diagnostics/MediaUnlockTest_AbemaTV.py5AaTkm.stdout",
+      "sha256": "e07e291472384d6fc748cf502f7cbae63229f94284b7bb8cce5e6f2ca3abfa4c"
+    },
+    {
+      "source": "private-jp-comparison-evidence/diagnostics/MediaUnlockTest_Spotify.zr8MrV7I.stdout",
+      "sha256": "792d7c3c02d0970d0e7b5ab674191ff69f5585772c5bc5611e90ff5d48bdf068"
+    },
+    {
+      "source": "private-jp-comparison-evidence/diagnostics/native_spotify_get.22Evo8MI.stdout",
+      "sha256": "823202aa37e976aa29cc0164dffc13b61e45d8c8ec35d2ff4f72242fc66d7e62"
+    }
+  ],
+  "extraction": "Source locators identify private diagnostic evidence not distributed with this repository; hashes retain traceability. Lineup preserves actual public link fields; HTML retains real document/attribute and public-link structure with unrelated page content omitted; denied API fields only. No cookie/header/session data copied. Spotify311 case is synthetic, labelled."
+}

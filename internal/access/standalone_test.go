@@ -33,8 +33,6 @@ func fixture(req *http.Request) (*http.Response, error) {
 		body = "ad-free"
 	case "gemini.google.com":
 		body = `,3,7,200,"FRA"`
-	case "notebooklm.google.com":
-		final = "https://accounts.google.com/login"
 	case "claude.ai":
 		if req.URL.Path == "/cdn-cgi/trace" {
 			body = "loc=FR\n"
@@ -50,9 +48,9 @@ func mockEnv(t *testing.T, f roundTripFunc) Env {
 }
 func TestStandaloneExactScopeAndAvailable(t *testing.T) {
 	env := mockEnv(t, fixture)
-	ids := []string{"chatgpt_web", "chatgpt_app", "youtube_premium_access", "netflix_access", "claude_access", "tiktok_access", "gemini_access", "notebooklm_access"}
+	ids := []string{"chatgpt_web", "youtube_premium_access", "netflix_access", "claude_access", "tiktok_access", "gemini_access"}
 	checks := Checks()
-	if len(checks) != 8 {
+	if len(checks) != 6 {
 		t.Fatal(len(checks))
 	}
 	for i, c := range checks {
@@ -95,7 +93,7 @@ func TestStandaloneChallengesAndNetworkFailures(t *testing.T) {
 	}
 }
 func TestStandaloneService403Semantics(t *testing.T) {
-	markers := map[string]string{"chatgpt_web": "unsupported_country", "chatgpt_app": "disallowed isp", "youtube_premium_access": "youtube premium is not available in your country", "claude_access": "unfortunately, claude isn&#39;t available here.", "tiktok_access": "not available in your region"}
+	markers := map[string]string{"chatgpt_web": "unsupported_country", "youtube_premium_access": "youtube premium is not available in your country", "claude_access": "unfortunately, claude isn&#39;t available here.", "tiktok_access": "not available in your region"}
 	for _, c := range Checks() {
 		if marker, ok := markers[c.ID]; ok {
 			env := mockEnv(t, func(req *http.Request) (*http.Response, error) { return reply(req, 403, marker, ""), nil })
@@ -152,20 +150,6 @@ func TestStandaloneEmptyTextAndOptionalTrace(t *testing.T) {
 	})
 	if r := claude().Run(context.Background(), env); r.State != StateAvailable || r.Region != "" {
 		t.Fatalf("%+v", r)
-	}
-}
-func TestStandaloneNotebookLMGuards(t *testing.T) {
-	for _, final := range []string{"https://accounts.google.com/login", "https://notebook.google/?location=unsupported"} {
-		for _, status := range []int{429, 500, 503} {
-			if r := classifyNotebookLM(status, final, ""); r.State != StateError {
-				t.Fatalf("%+v", r)
-			}
-		}
-	}
-	for _, final := range []string{"", "https://[", "/relative", "https://user@accounts.google.com/login", "https://accounts.google.com:99999/login"} {
-		if r := classifyNotebookLM(200, final, ""); r.State != StateError {
-			t.Fatalf("%s: %+v", final, r)
-		}
 	}
 }
 func TestStandaloneConcurrencyAndCancellation(t *testing.T) {

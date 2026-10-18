@@ -689,26 +689,6 @@
       ]
     }
   },
-  "MediaUnlockTest_JCOM_ON_DEMAND": {
-    "positive": {
-      "status": 200,
-      "body": "ok",
-      "final": "https://fixture.invalid/",
-      "request_method": "GET",
-      "request_contains": [
-        "https://auth.id2.zaq.ne.jp/login"
-      ]
-    },
-    "negative": {
-      "status": 403,
-      "body": "ok",
-      "final": "https://fixture.invalid/",
-      "request_method": "GET",
-      "request_contains": [
-        "https://auth.id2.zaq.ne.jp/login"
-      ]
-    }
-  },
   "MediaUnlockTest_Popcornflix": {
     "positive": {
       "status": 200,

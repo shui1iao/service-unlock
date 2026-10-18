@@ -31,8 +31,8 @@ func TestCLIJSONScopeFieldsAndExitCodes(t *testing.T) {
 			results[3].State = access.StateRestricted
 			results[3].Region = "FR"
 			if hasError {
-				results[7].State = access.StateError
-				results[7].Detail = "parse failure"
+				results[len(results)-1].State = access.StateError
+				results[len(results)-1].Detail = "parse failure"
 			}
 			return measurements{Access: results}, nil
 		}
@@ -51,7 +51,7 @@ func TestCLIJSONScopeFieldsAndExitCodes(t *testing.T) {
 		if err := json.Unmarshal(out.Bytes(), &r); err != nil {
 			t.Fatal(err)
 		}
-		if r.SchemaVersion != 1 || len(r.Results) != 8 || r.Network.Workers != 2 || errout.Len() != 0 {
+		if r.SchemaVersion != 1 || len(r.Results) != 6 || r.Network.Workers != 2 || errout.Len() != 0 {
 			t.Fatalf("%+v %s", r, errout)
 		}
 		platforms := map[string]bool{}
@@ -61,10 +61,10 @@ func TestCLIJSONScopeFieldsAndExitCodes(t *testing.T) {
 				t.Fatalf("%+v", item)
 			}
 		}
-		if len(platforms) != 7 || r.Results[0].ID != "chatgpt_web" || r.Results[1].ID != "chatgpt_app" {
+		if len(platforms) != 6 || r.Results[0].ID != "chatgpt_web" || r.Results[1].ID != "youtube_premium_access" {
 			t.Fatalf("%+v", r.Results)
 		}
-		if hasError && r.Results[7].Error == nil {
+		if hasError && r.Results[len(r.Results)-1].Error == nil {
 			t.Fatal("missing error")
 		}
 		var raw map[string]json.RawMessage
@@ -83,7 +83,7 @@ func TestCLIHelpValidationAndHumanOutput(t *testing.T) {
 		out, errout := new(bytes.Buffer), new(bytes.Buffer)
 		code := runCLI(context.Background(), args, out, errout, never)
 		if args[0] == "--help" || args[0] == "-h" {
-			if code != 0 || !strings.Contains(out.String(), "37 checks") {
+			if code != 0 || !strings.Contains(out.String(), "35 checks") {
 				t.Fatal(code, out)
 			}
 		} else if code != 2 || out.Len() != 0 {
@@ -94,7 +94,7 @@ func TestCLIHelpValidationAndHumanOutput(t *testing.T) {
 	code := runCLI(context.Background(), nil, out, new(bytes.Buffer), func(context.Context, time.Duration, int) (measurements, error) {
 		return measurements{Access: fixtureResults()}, nil
 	})
-	if code != 0 || !strings.Contains(out.String(), "ChatGPT (app)") || !strings.Contains(out.String(), "Service availability") || strings.Contains(out.String(), "completed in") {
+	if code != 0 || !strings.Contains(out.String(), "ChatGPT (web)") || !strings.Contains(out.String(), "Service availability") || strings.Contains(out.String(), "completed in") {
 		t.Fatal(code, out)
 	}
 }

@@ -34,9 +34,10 @@ type request struct {
 	BodyBase64 string            `json:"body_base64"`
 }
 type response struct {
-	Status      int
-	Text, Final string
-	Header      http.Header
+	Status        int
+	Text, Final   string
+	Header        http.Header
+	HTTP1Fallback bool
 }
 type Client struct {
 	HTTP    *http.Client
@@ -78,6 +79,9 @@ func bounded(r io.Reader) ([]byte, error) {
 	return data, nil
 }
 func (c *Client) do(ctx context.Context, q request) (response, error) {
+	return c.doWithHuluFallback(ctx, q, false)
+}
+func (c *Client) doWithHuluFallback(ctx context.Context, q request, allow bool) (result response, err error) {
 	ctx, cancel := context.WithTimeout(ctx, c.Timeout)
 	defer cancel()
 	u, err := url.Parse(q.URL)
@@ -109,6 +113,27 @@ func (c *Client) do(ctx context.Context, q request) (response, error) {
 		}
 	}
 	raw, err := c.HTTP.Do(req)
+	usedHTTP1 := false
+	defer func() {
+		if usedHTTP1 && err != nil {
+			err = fmt.Errorf("Hulu HTTP/1.1 fallback after typed HTTP/2 stream error: %w", err)
+		}
+	}()
+	if allow && method == http.MethodGet && q.Body == "" && q.BodyBase64 == "" && u.String() == "https://id.hulu.jp/" && err != nil && ctx.Err() == nil && isHuluProtocolError(err) {
+		if raw != nil && raw.Body != nil {
+			raw.Body.Close()
+		}
+		h1, cloneErr := c.huluHTTP1Client()
+		if cloneErr != nil {
+			return response{}, fmt.Errorf("Hulu HTTP/2 failure; cannot apply HTTP/1.1 fallback: %w", err)
+		}
+		defer h1.CloseIdleConnections()
+		usedHTTP1 = true
+		raw, err = h1.Do(req.Clone(ctx))
+		if err != nil {
+			return response{}, err
+		}
+	}
 	if err != nil {
 		return response{}, err
 	}
@@ -138,7 +163,7 @@ func (c *Client) do(ctx context.Context, q request) (response, error) {
 	if ctx.Err() != nil {
 		return response{}, ctx.Err()
 	}
-	r := response{raw.StatusCode, string(data), raw.Request.URL.String(), raw.Header}
+	r := response{Status: raw.StatusCode, Text: string(data), Final: raw.Request.URL.String(), Header: raw.Header, HTTP1Fallback: usedHTTP1}
 	if r.Status == 429 || r.Status >= 500 || r.Status < 200 {
 		return r, fmt.Errorf("unexpected HTTP %d", r.Status)
 	}

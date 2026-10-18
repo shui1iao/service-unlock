@@ -103,13 +103,11 @@ func mockCompleteStack(t *testing.T) (*netx.Stack, *completeTransport) {
 	}
 	for _, f := range []requestFixture{
 		{URL: "https://api.openai.com/compliance/cookie_requirements", Body: `{}`},
-		{URL: "https://ios.chat.openai.com", Body: "app landing page"},
 		{URL: "https://www.youtube.com/premium", Body: "ad-free offer"},
 		{URL: "https://www.netflix.com/title/70143836", Body: "licensed title"},
 		{URL: "https://claude.ai/cdn-cgi/trace", Body: "loc=US\n"}, {URL: "https://claude.ai/", Body: "Claude landing page"},
 		{URL: "https://www.tiktok.com/", Body: "TikTok landing page"},
 		{URL: "https://gemini.google.com/app", Body: `,3,7,200,"USA"`},
-		{URL: "https://notebooklm.google.com/", Body: "sign-in page", Final: "https://accounts.google.com/login"},
 	} {
 		add(f)
 	}
@@ -121,13 +119,13 @@ func mockCompleteStack(t *testing.T) (*netx.Stack, *completeTransport) {
 	t.Cleanup(stack.Close)
 	return stack, tr
 }
-func TestComplete37RealCallPathsAndAdditiveJSON(t *testing.T) {
+func TestComplete35RealCallPathsAndAdditiveJSON(t *testing.T) {
 	stack, tr := mockCompleteStack(t)
 	m, err := runGroups(context.Background(), stack, 3)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(m.Access) != 8 || len(m.Services) != 21 || len(m.AI) != 8 {
+	if len(m.Access) != 6 || len(m.Services) != 21 || len(m.AI) != 8 {
 		t.Fatalf("counts=%d/%d/%d", len(m.Access), len(m.Services), len(m.AI))
 	}
 	if !reflect.DeepEqual(tr.seen, tr.want) {
@@ -203,7 +201,7 @@ func TestNewGroupErrorsAffectExitNotLegacyArray(t *testing.T) {
 		if err := json.Unmarshal(out.Bytes(), &r); err != nil {
 			t.Fatal(err)
 		}
-		if len(r.Results) != 8 || len(r.Services) != 21 || len(r.AIEndpoints) != 8 {
+		if len(r.Results) != 6 || len(r.Services) != 21 || len(r.AIEndpoints) != 8 {
 			t.Fatal("scope")
 		}
 		for _, r := range r.Results {

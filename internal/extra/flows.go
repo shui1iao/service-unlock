@@ -51,6 +51,14 @@ func (f *flow) get(index int) response {
 	if flags := flowJSONSteps[f.id]; e == nil && index < len(flags) && flags[index] && !validJSON(r.Text) {
 		e = fmt.Errorf("malformed JSON at source flow step %d", index)
 	}
+	// WOWOW's two middle requests are HTML documents, not unchecked text/JSON.
+	if e == nil && f.id == "MediaUnlockTest_wowow" && (index == 1 || index == 2) {
+		lower := strings.ToLower(strings.TrimSpace(r.Text))
+		htmlStart := strings.HasPrefix(lower, "<!doctype html") || strings.HasPrefix(lower, "<html")
+		if r.Status != 200 || !htmlStart || !has(lower, `<html(?:\s|>)`) || !strings.Contains(lower, "</html>") {
+			e = fmt.Errorf("malformed HTML at WOWOW flow step %d", index)
+		}
+	}
 	if e != nil {
 		f.err = e
 	}
@@ -531,7 +539,7 @@ func runFlow(ctx context.Context, c *Client, id string) verdict {
 		if f.err != nil {
 			return f.failure()
 		}
-		return sourcePair(r, `(?i)VPN`, `(?i)playback_session_id`)
+		return classifyWOWOWPlayback(r)
 	}
 	return unknown("native implementation missing: " + id)
 }

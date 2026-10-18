@@ -107,7 +107,7 @@ func TestDetailedAPISummaryNeverClaimsInvocationSuccess(t *testing.T) {
 		}
 	}
 }
-func TestDetailedSummaryTotalsMatchAll37Rows(t *testing.T) {
+func TestDetailedSummaryTotalsMatchAll35Rows(t *testing.T) {
 	o := &Output{Theme: newTheme(nil)}
 	pattern := regexp.MustCompile(`^(Yes|No|Limited|Unknown) ([0-9]+): (.+)$`)
 	for _, negative := range []bool{false, true} {
@@ -143,7 +143,7 @@ func TestDetailedSummaryTotalsMatchAll37Rows(t *testing.T) {
 			}
 			total += sum
 		}
-		if total != 37 {
+		if total != 35 {
 			t.Fatal(total)
 		}
 	}
