@@ -1,4 +1,4 @@
-# Service Unlock v0.5.1 — source and license notice
+# Service Unlock v0.5.2 — source and license notice
 
 > Modified 2026-10-18 for v0.5.1: NotebookLM, ChatGPT App and JCOM removed; WOWOW, Spotify, Abema and DeepSeek response classification repaired; Hulu Japan receives one bounded HTTP/1.1 fallback but remains unresolved in live testing. The anonymous Spotify POST/strict classifier is derived from fixed RRC MediaUnlockTest_Spotify and is AGPL-3.0-only in internal/extra/spotify_signup.go; internal/geo contains its integration adapter, retaining original MIT notices. Other repair files in internal/extra retain AGPL. Exact modified Corresponding Source is included with this release; GUKO is not deployed by this script publication.
 
@@ -16,10 +16,14 @@ unified.go and internal/render/extra.go carry the same extension license.
 MIT notices on pre-existing files remain notices on those original portions,
 not an assertion that the combined executable is MIT-only.
 
+Modified 2026-10-18 for v0.5.2: default automatic exit-country detection and
+regional scheduling, explicit manual overrides and bounded global fallback.
+No existing platform probe predicate or original network strategy was changed.
+
 Exact Corresponding Source, build files, fixed data, tests, license texts and
 modification notices for this release are available at no charge:
-https://github.com/shui1iao/service-unlock/tree/v0.5.1
-https://github.com/shui1iao/service-unlock/releases/download/v0.5.1/service-unlock-v0.5.1-source.zip
+https://github.com/shui1iao/service-unlock/tree/v0.5.2
+https://github.com/shui1iao/service-unlock/releases/download/v0.5.2/service-unlock-v0.5.2-source.zip
 The source archive is offered beside the matching executable assets on the
 same release page. The build instructions are in README.md. Dependencies are
 pinned in go.mod/go.sum; their source is available through the Go module proxy

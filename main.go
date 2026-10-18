@@ -36,8 +36,10 @@ var originalMITLicense string
 var extraAGPLLicense string
 var licenseText = distributionNotice + "\n" + originalMITLicense + "\n" + extraAGPLLicense
 
-const help = `Service Unlock v0.5.1 — original 35 checks + global 6 + selected region
-  --region global|tw|hk|jp|na|sa|eu|oc|kr|sea|af (default global)
+const help = `Service Unlock v0.5.2 — original 35 checks + global 6 + selected region
+  --region auto|global|tw|hk|jp|na|sa|eu|oc|kr|sea|af (default auto)
+               Auto detects exit country on the extra family's direct HTTPS path;
+               explicit global/group skips detection. Failure/unmapped -> global.
   --extra-family auto|4|6 (default auto; native35 remains system-selected)
   --machine    One JSON + ANSI envelope from the same measurement
 Usage: service-unlock [--json] [--timeout SECONDS] [--workers N]
@@ -129,17 +131,9 @@ func realRun(ctx context.Context, timeout time.Duration, workers int) (measureme
 		return measurements{}, err
 	}
 	defer stack.Close()
-	m, err := runGroups(ctx, stack, workers)
-	if err != nil {
-		return m, err
-	}
 	options, _ := ctx.Value(extraOptionsKey{}).(extraOptions)
 	if options.Region == "" {
-		options = extraOptions{"global", "auto"}
-	}
-	checks, err := extra.Selected(options.Region)
-	if err != nil {
-		return m, err
+		options = extraOptions{"auto", "auto"}
 	}
 	family, familyErr := extra.SelectFamily(options.Family)
 	client := extra.NewClient(family, timeout)
@@ -147,17 +141,7 @@ func realRun(ctx context.Context, timeout time.Duration, workers int) (measureme
 	if familyErr != nil {
 		client.Family = 0
 	}
-	m.Extra = extra.Run(ctx, client, options.Region, checks, workers)
-	if familyErr != nil {
-		for i := range m.Extra {
-			m.Extra[i].Status = "error"
-			detail := familyErr.Error()
-			m.Extra[i].Error = &detail
-			m.Extra[i].Detail = detail
-		}
-	}
-	m.Selection = makeSelection(options.Region, options.Family, family, checks)
-	return m, ctx.Err()
+	return runWithClients(ctx, workers, stack, client, familyErr)
 }
 
 // Groups run consecutively through the same direct stack. This preserves the
@@ -181,7 +165,7 @@ func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run ru
 	flags.Usage = func() {}
 	asJSON := flags.Bool("json", false, "JSON")
 	machine := flags.Bool("machine", false, "same-measurement JSON + ANSI envelope")
-	region := flags.String("region", "global", "global plus one inventory region")
+	region := flags.String("region", "auto", "auto exit country or explicit global/region override")
 	family := flags.String("extra-family", "auto", "auto, 4 or 6; extra checks only")
 	showLicense := flags.Bool("license", false, "show MIT license")
 	timeout := flags.Float64("timeout", 6, "per-request timeout seconds")
@@ -202,7 +186,8 @@ func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run ru
 		fmt.Fprint(stdout, licenseText, render.ThirdPartyLicenses)
 		return 0
 	}
-	if _, err := extra.Selected(*region); err != nil || (*family != "auto" && *family != "4" && *family != "6") || (*machine && *asJSON) {
+	_, regionErr := extra.Selected(*region)
+	if (*region != "auto" && regionErr != nil) || (*family != "auto" && *family != "4" && *family != "6") || (*machine && *asJSON) {
 		fmt.Fprintln(stderr, "Invalid region, extra-family or conflicting output flags")
 		return 2
 	}
@@ -228,7 +213,12 @@ func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run ru
 		encoder.SetEscapeHTML(false)
 		err = encoder.Encode(r)
 	} else {
-		err = render.WriteAccess(stdout, render.Report{Access: results.Access, Services: results.Services, AI: results.AI, Extra: results.Extra, Duration: elapsed})
+		if notice := selectionNotice(r.Selection); notice != "" {
+			_, err = fmt.Fprintln(stdout, notice)
+		}
+		if err == nil {
+			err = render.WriteAccess(stdout, render.Report{Access: results.Access, Services: results.Services, AI: results.AI, Extra: results.Extra, Duration: elapsed})
+		}
 	}
 	if err != nil {
 		fmt.Fprintln(stderr, "Output failed:", err)
