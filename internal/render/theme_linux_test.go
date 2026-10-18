@@ -6,9 +6,11 @@ package render
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	lg "charm.land/lipgloss/v2"
 	"github.com/charmbracelet/colorprofile"
@@ -41,7 +43,7 @@ func TestTTYWidthAndProfiles(t *testing.T) {
 	t.Setenv("COLORTERM", "truecolor")
 	for _, bg := range []string{"", "15;0", "0;15"} {
 		t.Setenv("COLORFGBG", bg)
-		for _, width := range []int{120, 40, 30, 20} {
+		for _, width := range []int{14, 18, 20, 30, 40, 80, 120, 160} {
 			if err = unix.IoctlSetWinsize(int(slave.Fd()), unix.TIOCSWINSZ, &unix.Winsize{Row: 24, Col: uint16(width)}); err != nil {
 				t.Fatal(err)
 			}
@@ -79,5 +81,72 @@ func TestTTYWidthAndProfiles(t *testing.T) {
 	o = NewOutput(slave)
 	if o.Color || o.W.(*colorprofile.Writer).Profile != colorprofile.NoTTY {
 		t.Fatal("dumb terminal behavior changed")
+	}
+}
+
+func TestActualPTYSingleBoxWritesDeepLightAndNoColor(t *testing.T) {
+	for _, width := range []int{14, 40, 100, 160} {
+		for _, bg := range []string{"15;0", "0;15"} {
+			for _, noColor := range []bool{false, true} {
+				master, e := os.OpenFile("/dev/ptmx", os.O_RDWR|unix.O_NOCTTY, 0)
+				if e != nil {
+					t.Fatal(e)
+				}
+				if e = unix.IoctlSetPointerInt(int(master.Fd()), unix.TIOCSPTLCK, 0); e != nil {
+					t.Fatal(e)
+				}
+				number, e := unix.IoctlGetInt(int(master.Fd()), unix.TIOCGPTN)
+				if e != nil {
+					t.Fatal(e)
+				}
+				slave, e := os.OpenFile(fmt.Sprintf("/dev/pts/%d", number), os.O_RDWR|unix.O_NOCTTY, 0)
+				if e != nil {
+					t.Fatal(e)
+				}
+				if e = unix.IoctlSetWinsize(int(slave.Fd()), unix.TIOCSWINSZ, &unix.Winsize{Row: 24, Col: uint16(width)}); e != nil {
+					t.Fatal(e)
+				}
+				t.Setenv("TERM", "xterm-256color")
+				t.Setenv("COLORTERM", "truecolor")
+				t.Setenv("COLORFGBG", bg)
+				t.Setenv("CLICOLOR_FORCE", "")
+				t.Setenv("CI", "")
+				if noColor {
+					t.Setenv("NO_COLOR", "1")
+				} else {
+					t.Setenv("NO_COLOR", "")
+				}
+				done := make(chan string, 1)
+				go func() { var b bytes.Buffer; io.Copy(&b, master); done <- b.String() }()
+				if e = WriteAccess(slave, completeMock(t)); e != nil {
+					t.Fatal(e)
+				}
+				slave.Close()
+				var raw string
+				select {
+				case raw = <-done:
+				case <-time.After(3 * time.Second):
+					master.Close()
+					t.Fatal("PTY capture timed out")
+				}
+				master.Close()
+				text := strings.ReplaceAll(ansi.Strip(raw), "\r\n", "\n")
+				if strings.Count(text, "╭") != 1 || strings.Count(text, "╰") != 1 {
+					t.Fatal("PTY lost frame", width)
+				}
+				for _, line := range strings.Split(text, "\n") {
+					if lg.Width(line) > width {
+						t.Fatal("PTY overflow", width, line)
+					}
+				}
+				// Existing ASCII profile preserves bold, but removes all colors.
+				if noColor && (strings.Contains(raw, "38;") || strings.Contains(raw, "48;") || strings.Contains(raw, "\x1b]")) {
+					t.Fatal("NO_COLOR lost on real PTY")
+				}
+				if !noColor && (!strings.Contains(raw, "\x1b[") || strings.Contains(raw, "\x1b]")) {
+					t.Fatal("PTY color/OSC contract")
+				}
+			}
+		}
 	}
 }

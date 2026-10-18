@@ -4,7 +4,6 @@ package render
 
 import (
 	"fmt"
-	"strings"
 	"time"
 
 	lg "charm.land/lipgloss/v2"
@@ -30,9 +29,8 @@ type displayRow struct {
 	style                   lg.Style
 }
 type displayGroup struct {
-	title   string
-	rows    []displayRow
-	summary string
+	title string
+	rows  []displayRow
 }
 
 func (o *Output) accessRows(results []access.Result) []displayRow {
@@ -70,19 +68,17 @@ func (o *Output) aiRows(results []ai.Result) []displayRow {
 	return rows
 }
 
-// Detailed summaries classify only the rows already selected for display.
-// They do not reinterpret HTTP replies, promote Unknown using a region, or
-// make an overall unlock/login verdict.
+// Groups preserve the original order and per-row semantics; no summaries.
 func (o *Output) groups(r Report) []displayGroup {
 	var groups []displayGroup
 	if rows := o.serviceRows(r.Services); len(rows) > 0 {
-		groups = append(groups, displayGroup{"Service regions & access", rows, serviceSummary(rows, r.Services)})
+		groups = append(groups, displayGroup{"Service regions & access", rows})
 	}
 	if rows := o.accessRows(r.Access); len(rows) > 0 {
-		groups = append(groups, displayGroup{"Service availability", rows, accessSummary(rows, r.Access)})
+		groups = append(groups, displayGroup{"Service availability", rows})
 	}
 	if rows := o.aiRows(r.AI); len(rows) > 0 {
-		groups = append(groups, displayGroup{"AI endpoints", rows, aiSummary(rows)})
+		groups = append(groups, displayGroup{"AI endpoints", rows})
 	}
 	for _, scope := range []string{"global", "regional"} {
 		selected := []extra.Result{}
@@ -97,7 +93,7 @@ func (o *Output) groups(r Report) []displayGroup {
 			if scope != "global" {
 				title = "Regional services"
 			}
-			groups = append(groups, displayGroup{title, rows, extraSummary(selected)})
+			groups = append(groups, displayGroup{title, rows})
 		}
 	}
 	return groups
@@ -143,63 +139,58 @@ func sharedWidths(groups []displayGroup, terminal int) (widths [3]int, padding i
 	return widths, padding
 }
 
-func (o *Output) threeColumnTable(rows []displayRow, widths [3]int, padding int) string {
-	wrap := func(s string, col int) string { return ansi.Hardwrap(s, widths[col], true) }
-	headers := []string{wrap("Service", 0), wrap("Result", 1), wrap("Region", 2)}
+// tablePart uses the existing table renderer for both regular three-column
+// rows and a single spanning section cell. Only the first/last parts get outer
+// rounded corners; the joins are full-width separators inside ONE frame.
+func (o *Output) tablePart(data [][]string, widths []int, padding int, heading, top, last bool) string {
+	border := lg.RoundedBorder()
+	if !last {
+		border.BottomLeft = border.MiddleLeft
+		border.BottomRight = border.MiddleRight
+	}
+	return table.New().Border(border).BorderStyle(o.Theme.Border).
+		BorderTop(top).BorderBottom(true).BorderHeader(false).BorderColumn(false).BorderRow(false).Wrap(true).Rows(data...).
+		StyleFunc(func(row, col int) lg.Style {
+			style := o.Theme.TableCell
+			if heading {
+				style = o.Theme.TableHead
+			}
+			height := 1
+			for _, cell := range data[row] {
+				if h := lg.Height(cell); h > height {
+					height = h
+				}
+			}
+			return style.Padding(0, padding).Width(widths[col] + 2*padding).Height(height)
+		}).Render()
+}
+func (o *Output) headerPart(widths [3]int, padding int) string {
+	headers := []string{}
+	for i, s := range []string{"Service", "Result", "Region"} {
+		headers = append(headers, ansi.Hardwrap(s, widths[i], true))
+	}
+	return o.tablePart([][]string{headers}, widths[:], padding, true, true, false)
+}
+func (o *Output) bodyPart(rows []displayRow, widths [3]int, padding int, last bool) string {
 	cells := make([][]string, 0, len(rows))
 	for _, r := range rows {
-		cells = append(cells, []string{wrap(r.service, 0), r.style.Render(wrap(r.result, 1)), wrap(r.region, 2)})
+		cells = append(cells, []string{ansi.Hardwrap(r.service, widths[0], true), r.style.Render(ansi.Hardwrap(r.result, widths[1], true)), ansi.Hardwrap(r.region, widths[2], true)})
 	}
-	// lipgloss intentionally truncates its built-in header to one line. Render
-	// the header as a wrapping table row and join its library-generated separator
-	// to the body. This is one visual rounded table with identical fixed widths,
-	// not a handcrafted border or a shortened/abbreviated header.
-	part := func(data [][]string, header bool) string {
-		border := lg.RoundedBorder()
-		if header {
-			border.BottomLeft = border.MiddleLeft
-			border.BottomRight = border.MiddleRight
-		}
-		return table.New().Border(border).BorderStyle(o.Theme.Border).
-			BorderTop(header).BorderBottom(true).BorderHeader(false).BorderColumn(false).BorderRow(false).Wrap(true).Rows(data...).
-			StyleFunc(func(row, col int) lg.Style {
-				style := o.Theme.TableCell
-				if header {
-					style = o.Theme.TableHead
-				}
-				height := 1
-				for _, cell := range data[row] {
-					if h := lg.Height(cell); h > height {
-						height = h
-					}
-				}
-				return style.Padding(0, padding).Width(widths[col] + 2*padding).Height(height)
-			}).Render()
-	}
-	return part([][]string{headers}, true) + "\n" + part(cells, false)
+	return o.tablePart(cells, widths[:], padding, false, false, last)
 }
-
-// Each status gets its own logical line. Word-wrap where possible; hard-wrap
-// only words longer than the actual table width so even narrow screens fit.
-func wrapSummary(text string, width int) string {
-	var lines []string
-	for _, line := range strings.Split(text, "\n") {
-		lines = append(lines, ansi.Wrap(line, width, ""))
-	}
-	return strings.Join(lines, "\n")
+func (o *Output) threeColumnTable(rows []displayRow, widths [3]int, padding int) string {
+	return o.headerPart(widths, padding) + "\n" + o.bodyPart(rows, widths, padding, true)
 }
-
 func (o *Output) printGroups(groups []displayGroup) {
+	if len(groups) == 0 {
+		return
+	}
 	widths, padding := sharedWidths(groups, o.Width)
-	outer := 2 + widths[0] + widths[1] + widths[2] + 6*padding
-	for _, g := range groups {
-		title := ansi.Hardwrap(g.title, outer, true)
-		if w := lg.Width(title); !strings.Contains(title, "\n") && w+1 < outer {
-			title += " " + strings.Repeat("─", outer-w-1)
-		}
-		fmt.Fprintln(o.W, o.Theme.Section.Render(title))
-		fmt.Fprintln(o.W, o.threeColumnTable(g.rows, widths, padding))
-		fmt.Fprintln(o.W, wrapSummary(g.summary, outer))
-		fmt.Fprintln(o.W)
+	interior := widths[0] + widths[1] + widths[2] + 6*padding
+	fmt.Fprintln(o.W, o.headerPart(widths, padding))
+	for i, g := range groups {
+		title := ansi.Hardwrap(g.title, interior-2*padding, true)
+		fmt.Fprintln(o.W, o.tablePart([][]string{{title}}, []int{interior - 2*padding}, padding, true, false, false))
+		fmt.Fprintln(o.W, o.bodyPart(g.rows, widths, padding, i == len(groups)-1))
 	}
 }

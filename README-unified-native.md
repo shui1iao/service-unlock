@@ -1,4 +1,6 @@
-# Service Unlock v0.5.2 — unified native implementation
+# Service Unlock v0.5.3 — unified native implementation
+
+> v0.5.3 presents the whole report in one rounded outer frame, with internal group sections and one shared column header. All per-group status counts and explanations are removed. Probe, JSON and default-auto semantics are unchanged.
 
 > v0.5.2 defaults to automatic exit-country selection. One unoverridden run each on Europe (DE -> eu, 71 checks), Singapore (SG -> sea, 52) and Japan (JP -> jp, 67) successfully identified and executed the mapped regional checks. These live tests used IPv4 and the primary country source; fallback and IPv6 behavior have offline coverage only. GUKO is not deployed by this release.
 
@@ -25,7 +27,7 @@ The earlier App/JCOM retest is historical only; neither is supported by this rel
 ./service-unlock_linux_amd64 --region na --extra-family auto --machine
 ```
 
-No Bash/curl/Node/Python/Go runtime is used for probing. The download launcher uses existing curl or GNU wget and a SHA256 tool; it downloads the fixed v0.5.2 static binary. The previous GUKO-only side entry is not part of this release; its local source now selects16 checks (1 access +7 services +8 AI), without changing the deployed old17 binary.
+No Bash/curl/Node/Python/Go runtime is used for probing. The download launcher uses existing curl or GNU wget and a SHA256 tool; it downloads the fixed v0.5.3 static binary. The previous GUKO-only side entry is not part of this release; its local source now selects16 checks (1 access +7 services +8 AI), without changing the deployed old17 binary.
 
 NotebookLM and ChatGPT App have been removed from the active access implementation/predicates/catalogue/fixtures/output by user request; JCOM is removed only from the JP extra group. Core checks are now 6 access + 21 services + 8 AI =35; results contains6 rows, without changing other field semantics. Removed dedicated tests are archived in the task artifact, not executed. New `extra_checks` and `selection` are additive schema-v1 fields. `source.port` remains a historical unchanged marker despite this authorized catalogue deletion, solely for old-field compatibility; `selection.extra_source_commit` identifies the RRC-derived addition. `--machine` returns `guko-unified-v1` containing the report and its ANSI rendering from ONE measurement. Normal terminal and --json remain available. Exit1 means at least one Unknown (including explicit unsupported IDs), not a negative unlock verdict. All-Unknown is a valid complete report; cancellation does not emit partial JSON.
 
@@ -81,8 +83,8 @@ Extra transport ignores proxy environment, uses system CA and strict HTTPS inclu
 
 ## Report and GUKO integration boundary
 
-One English Service | Result | Region layout with common widths/rounded borders: original three groups plus Global services and, if selected, Regional services. Yes green, No red, Limited yellow, Unknown bold default foreground. ISO2 or blank; no per-row time/detail. Detailed group summaries distinguish observed criteria from playback/login.
+One English Service | Result | Region layout in ONE rounded outer frame with one top header and shared column widths. Internal spanning section titles retain the original three groups plus Global services and, if selected, Regional services; no empty local section. Yes green, No red, Limited yellow, Unknown bold default foreground. ISO2 or blank; no per-row time/detail. All per-group status counts/explanations are removed, not relocated. The single automatic-region notice remains outside the frame; observation caveats remain documentation, not report footers.
 
 The --machine envelope supports one complete measurement and its matching JSON/ANSI report for downstream tools. GUKO integration is a separate deployment, not included in this script release. An offline integration candidate has been tested, but the running GUKO instance is not changed by publishing this CLI. Consumers must validate expected IDs/counts and keep rendering/delivery failures distinct from probe results.
 
-No GUKO image, compose switch or deployment is included/performed. The combined executable is not MIT-only: original MIT notices remain and AGPL-derived additions carry their full license. Exact Corresponding Source is published beside binaries and at the matching v0.5.2 source tag; see LICENSE, LICENSES and NOTICE.md. The scoped four-check retest is described above; it does not validate the rest of the catalogue against live platforms, and no Telegram test was sent. The earlier full JP comparison describes the unmodified public release.
+No GUKO image, compose switch or deployment is included/performed. The combined executable is not MIT-only: original MIT notices remain and AGPL-derived additions carry their full license. Exact Corresponding Source is published beside binaries and at the matching v0.5.3 source tag; see LICENSE, LICENSES and NOTICE.md. The scoped four-check retest is described above; it does not validate the rest of the catalogue against live platforms, and no Telegram test was sent. The earlier full JP comparison describes the unmodified public release.

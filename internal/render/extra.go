@@ -2,10 +2,8 @@
 package render
 
 import (
-	"fmt"
 	"io"
 	"serviceunlock/internal/extra"
-	"strings"
 )
 
 func NewMachineOutput(w io.Writer) *Output {
@@ -30,18 +28,4 @@ func (o *Output) extraRows(results []extra.Result) []displayRow {
 		out = append(out, displayRow{r.Name, label, region, style})
 	}
 	return out
-}
-func extraSummary(results []extra.Result) string {
-	counts := map[string]int{}
-	for _, r := range results {
-		counts[r.Status]++
-	}
-	lines := []string{}
-	for _, p := range []struct{ key, label, meaning string }{{"available", "Yes", "source access criterion met"}, {"blocked", "No", "source access criterion refused"}, {"restricted", "Limited", "partial catalogue or pending availability"}, {"error", "Unknown", "inconclusive, unsupported or safety-limited"}} {
-		if counts[p.key] > 0 {
-			lines = append(lines, fmt.Sprintf("%s %d: %s", p.label, counts[p.key], p.meaning))
-		}
-	}
-	lines = append(lines, "Access, edit permission and game API observations are not playback/login guarantees.")
-	return strings.Join(lines, "\n")
 }

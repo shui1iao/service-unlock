@@ -113,7 +113,7 @@ func TestUnifiedSelectionSameMeasurementEnvelope(t *testing.T) {
 				if e.Format != "guko-unified-v1" || len(e.Report.Results) != 6 || len(e.Report.Services) != 21 || len(e.Report.AIEndpoints) != 8 || len(e.Report.ExtraChecks)+35 != counts[region] || len(e.Report.Selection.ExpectedIDs) != len(m.Extra) {
 					t.Fatal("scope mismatch")
 				}
-				if !strings.Contains(e.Terminal, "\x1b[") || strings.Count(e.Terminal, "╭") != map[bool]int{true: 4, false: 5}[region == "global"] {
+				if !strings.Contains(e.Terminal, "\x1b[") || strings.Count(e.Terminal, "╭") != 1 {
 					t.Fatal("not a complete unified ANSI report")
 				}
 				if !reflect.DeepEqual(e.Report.Results, makeReport(m.Access, 6, 4).Results) {

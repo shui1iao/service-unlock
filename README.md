@@ -1,4 +1,6 @@
-# Service Unlock v0.5.2
+# Service Unlock v0.5.3
+
+> v0.5.3 将完整报告合并为一个圆角框，框内按检测组分区，仅顶部一套三列表头；删除所有组统计与解释。自动选区、检测逻辑和 JSON 内容保持不变。
 
 > v0.5.2 默认自动识别出口国家，执行全球＋对应区域服务，不再要求手动传地区参数。欧洲 DE→eu（71项）、新加坡 SG→sea（52项）、日本 JP→jp（67项）已各一轮真实默认参数验证通过。
 
@@ -56,7 +58,7 @@ sh check.sh --region na --json > result.json
 | sea | 52 |
 | af | 44 |
 
-不是每台服务器检测所有地区。auto只用出口国家调度一个已存在的当地组，不从Google/Netflix地区或库存投票猜所在地。旧 `check.sh` 固定旧版本，升级需重新下载。启动器固定下载 v0.5.2，对应架构二进制通过 SHA256 校验后在临时目录运行并清理；需现有 curl/GNU wget、SHA256 校验工具和系统 CA，不自动安装软件，不安装常驻服务。
+不是每台服务器检测所有地区。auto只用出口国家调度一个已存在的当地组，不从Google/Netflix地区或库存投票猜所在地。旧 `check.sh` 固定旧版本，升级需重新下载。启动器固定下载 v0.5.3，对应架构二进制通过 SHA256 校验后在临时目录运行并清理；需现有 curl/GNU wget、SHA256 校验工具和系统 CA，不自动安装软件，不安装常驻服务。
 
 ## 自动调度、安全与数据
 
@@ -72,8 +74,8 @@ sh check.sh --region na --json > result.json
 - 增补目录共 134 个 ID：125 项 Go 原生实现，9 项因账户、明文传输、弱 TLS 或非服务 GeoIP 判据而明确不启用，显示 `Unknown` 且不发请求；**不是 134 项全部启用**。
 - 同功能不重复跑；Prime Video 的地区与访问限制是不同检查，分别保留。
 - 不额外搬入旧脚本的定位、CDN、币种等 7 项纯信息/残余观察；不测速、不运行旧脚本广告/计数/主流程。
-- 全英文 `Service | Result | Region` 同宽圆角表格：Yes 绿、No 红、Limited 黄、Unknown 默认前景加粗。真实地区用 ES/HK/JP/US 等两字母代码，无地区留空。
-- 每组底部详细分类统计，不显示每行说明、耗时或总耗时。深浅终端均使用默认正文/边框前景。
+- 全英文 `Service | Result | Region`：整个报告一个圆角外框、顶部一套列标题，框内按原组顺序分区：Yes 绿、No 红、Limited 黄、Unknown 默认前景加粗。真实地区用 ES/HK/JP/US 等两字母代码，无地区留空。
+- 不再显示各组底部Yes/No/Limited/Unknown统计或解释，不把说明挪入框内。自动选区一行仍保留；不显示每行说明、耗时或总耗时。深浅终端均使用默认正文/边框前景。
 
 `Yes` 是展示归一标签，可表示识别到地区、未发现限制或 API 可达，**不是实际登录、播放或调用模型的保证**。
 
@@ -91,7 +93,7 @@ sh check.sh --region na --machine > report-envelope.json
 - `--json` 保留原 `schema_version/source/generated_at/network/results/services/ai_endpoints` 字段意义（删项与已证实判据修正对应的行值会改变），增加 `extra_checks`、`selection`。不把 JSON 原枚举翻译成 Yes/No；说明、耗时和 HTTP 诊断仍保留。
 - `--machine` 输出同一次测量的 JSON＋ANSI envelope（`guko-unified-v1`），不额外再跑一次检测或定位；与 `--json` 互斥。
 - `selection.region`仍是resolved group；新增`requested_region`（auto或显式组）、`detected_country`、`detection_source`、`detection_error`、`resolution_reason`。显式覆盖不声称定位过；失败原因安全化，定位信息不生成额外检查行。
-- `source.port` 保留 v0.4.0 历史实现标记（检测目录已按授权删除NotebookLM与App，JP额外删除JCOM）以维持原字段兼容；发行版本以 `--help` 的 v0.5.2 为准，新增来源见 `selection`。
+- `source.port` 保留 v0.4.0 历史实现标记（检测目录已按授权删除NotebookLM与App，JP额外删除JCOM）以维持原字段兼容；发行版本以 `--help` 的 v0.5.3 为准，新增来源见 `selection`。
 - 退出码 0＝全部得到结论（含 No/Limited）；1＝至少一项 Unknown 或运行失败；2＝参数错误；130/143＝中断。**0 不代表全部解锁，1 也不代表没有可用结果。** 由于 global 含安全排除项，完整报告仍可能正常返回 1。
 
 9 项未启用：HuluUS、AISPlay、trueID、Kancolle、Karaoke@DAM、DAnimeStore、NeonTV、SD Gundam、Crunchyroll。原因及 Optus/ESPN 移植差异、完整实现与网络限制见 [实现说明](README-unified-native.md)。
@@ -117,9 +119,9 @@ CGO_ENABLED=0 GOOS=linux GOARCH=arm64 GOARM64=v8.0 go build -buildvcs=false -tri
 
 完整许可见 `LICENSE`、`LICENSES/`、`internal/render/THIRD_PARTY_LICENSES.txt`；`--license` 可离线查看。
 
-v0.5.2 对应完整源码、构建文件、测试、固定数据和许可免费提供在：
+v0.5.3 对应完整源码、构建文件、测试、固定数据和许可免费提供在：
 
-- [固定版本源码](https://github.com/shui1iao/service-unlock/tree/v0.5.2)
-- [对应源码包](https://github.com/shui1iao/service-unlock/releases/download/v0.5.2/service-unlock-v0.5.2-source.zip)
+- [固定版本源码](https://github.com/shui1iao/service-unlock/tree/v0.5.3)
+- [对应源码包](https://github.com/shui1iao/service-unlock/releases/download/v0.5.3/service-unlock-v0.5.3-source.zip)
 
 源码包与同版本二进制在同一 Release 页面提供。网络部署的修改版还须向其交互用户提供实际对应源码；此脚本发布不代表 GUKO 已部署统一报告版。

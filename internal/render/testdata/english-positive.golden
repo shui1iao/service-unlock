@@ -1,6 +1,7 @@
-Service regions & access ───────────────────
 ╭──────────────────────────────────────────╮
 │ Service                Result     Region │
+├──────────────────────────────────────────┤
+│ Service regions & access                 │
 ├──────────────────────────────────────────┤
 │ Google                 ● Yes      US     │
 │ Google Search captcha  ● Yes             │
@@ -23,14 +24,8 @@ Service regions & access ──────────────────�
 │ Ookla Speedtest        ● Yes      US     │
 │ JetBrains              ● Yes      US     │
 │ Microsoft (Bing)       ● Yes      US     │
-╰──────────────────────────────────────────╯
-Yes 20: 15 regions identified, 4 accessible,
-1 without restriction markers
-Unknown 1: inconclusive
-
-Service availability ───────────────────────
-╭──────────────────────────────────────────╮
-│ Service                Result     Region │
+├──────────────────────────────────────────┤
+│ Service availability                     │
 ├──────────────────────────────────────────┤
 │ ChatGPT (web)          ● Yes             │
 │ YouTube Premium        ● Yes             │
@@ -38,15 +33,8 @@ Service availability ───────────────────�
 │ Claude                 ○ Unknown         │
 │ TikTok                 ● Yes             │
 │ Gemini                 ● No       CN     │
-╰──────────────────────────────────────────╯
-Yes 3: available
-No 1: blocked
-Limited 1: originals-only
-Unknown 1: inconclusive
-
-AI endpoints ───────────────────────────────
-╭──────────────────────────────────────────╮
-│ Service                Result     Region │
+├──────────────────────────────────────────┤
+│ AI endpoints                             │
 ├──────────────────────────────────────────┤
 │ OpenAI                 ● Yes             │
 │ Anthropic              ● No              │
@@ -57,7 +45,3 @@ AI endpoints ──────────────────────�
 │ Kimi / Moonshot        ● Yes             │
 │ Zhipu GLM              ○ Unknown         │
 ╰──────────────────────────────────────────╯
-Yes 6: API reachable
-No 1: region/request refused
-Unknown 1: inconclusive
-

@@ -24,8 +24,8 @@ func WriteAccess(w io.Writer, r Report) error {
 	return out.PrintAccess(r)
 }
 
-// PrintAccess keeps the three existing groups, sharing one measured column
-// layout. Per-row detail/time and the duration footer are intentionally absent.
+// PrintAccess renders one rounded frame with shared columns and internal
+// sections. No group summaries, per-row detail/time or duration footer.
 func (o *Output) PrintAccess(r Report) error {
 	var buf bytes.Buffer
 	inner := &Output{W: &buf, Theme: o.Theme, Color: o.Color, Width: o.Width}
