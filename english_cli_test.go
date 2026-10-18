@@ -31,7 +31,7 @@ func TestEnglishCLIMessagesAndUnchangedExitCodes(t *testing.T) {
 		args []string
 		code int
 		want string
-	}{{[]string{"--help"}, 0, "37 checks / 3 groups"}, {[]string{"--workers", "0"}, 2, "Invalid arguments:"}, {[]string{"--unknown"}, 2, "Invalid arguments:"}, {[]string{"--timeout", "NaN"}, 2, "Invalid arguments:"}} {
+	}{{[]string{"--help"}, 0, "original 37 checks + global 6 + selected region"}, {[]string{"--workers", "0"}, 2, "Invalid arguments:"}, {[]string{"--unknown"}, 2, "Invalid arguments:"}, {[]string{"--timeout", "NaN"}, 2, "Invalid arguments:"}} {
 		out, errout := new(bytes.Buffer), new(bytes.Buffer)
 		if code := runCLI(context.Background(), tc.args, out, errout, never); code != tc.code {
 			t.Fatal(code)
@@ -76,7 +76,7 @@ func TestLauncherEnglishDiagnosticsFixedVersionAndNoExecutionOnFailure(t *testin
 		t.Fatal(err)
 	}
 	assertEnglish(t, string(script))
-	if !strings.Contains(string(script), "BASE=https://github.com/shui1iao/service-unlock/releases/download/v0.4.3\n") {
+	if !strings.Contains(string(script), "BASE=https://github.com/shui1iao/service-unlock/releases/download/v0.5.0\n") {
 		t.Fatal("launcher version changed")
 	}
 	f := newLaunchFixture(t, "riscv64", "curl", "sha256sum")

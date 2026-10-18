@@ -1,0 +1,2176 @@
+{
+  "MediaUnlockTest_BilibiliHKMCTW": {
+    "positive": {
+      "status": 200,
+      "body": "{\"code\":0}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.bilibili.com/pgc/player/web/playurl"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"code\":-10403}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.bilibili.com/pgc/player/web/playurl"
+      ]
+    }
+  },
+  "MediaUnlockTest_BilibiliTW": {
+    "positive": {
+      "status": 200,
+      "body": "{\"code\":0}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.bilibili.com/pgc/player/web/playurl"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"code\":-10403}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.bilibili.com/pgc/player/web/playurl"
+      ]
+    }
+  },
+  "GameTest_PCRJP": {
+    "positive": {
+      "status": 404,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api-priconne-redive.cygames.jp/"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api-priconne-redive.cygames.jp/"
+      ]
+    }
+  },
+  "GameTest_UMAJP": {
+    "positive": {
+      "status": 404,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api-umamusume.cygames.jp/"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api-umamusume.cygames.jp/"
+      ]
+    }
+  },
+  "MediaUnlockTest_Lemino": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://if.lemino.docomo.ne.jp/v1/user/delivery/watch/ready"
+      ],
+      "request_body_sha256": "2bd5bad64e94161de1fc8fe030dad6fba6c6108c00384fcb402507084811d95c"
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://if.lemino.docomo.ne.jp/v1/user/delivery/watch/ready"
+      ],
+      "request_body_sha256": "2bd5bad64e94161de1fc8fe030dad6fba6c6108c00384fcb402507084811d95c"
+    }
+  },
+  "MediaUnlockTest_AnimeFesta": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api-animefesta.iowl.jp/v1/titles/1560"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api-animefesta.iowl.jp/v1/titles/1560"
+      ]
+    }
+  },
+  "MediaUnlockTest_mora": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://mora.jp/buy"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://mora.jp/buy"
+      ]
+    }
+  },
+  "MediaUnlockTest_Dazn": {
+    "positive": {
+      "status": 200,
+      "body": "{\"isAllowed\":true}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://startup.core.indazn.com/misl/v5/Startup"
+      ],
+      "request_body_sha256": "16d0c749b9629bb511b92651d6b37dbdb22e7d36731838744d93a4e2c5023dcd"
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"isAllowed\":false}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://startup.core.indazn.com/misl/v5/Startup"
+      ],
+      "request_body_sha256": "16d0c749b9629bb511b92651d6b37dbdb22e7d36731838744d93a4e2c5023dcd"
+    }
+  },
+  "MediaUnlockTest_NowE": {
+    "positive": {
+      "status": 200,
+      "body": "{\"OTTAPI_ResponseCode\":\"SUCCESS\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://webtvapi.nowe.com/16/1/getVodURL"
+      ],
+      "request_body_sha256": "ade9e2c86e59f5fb224fbc59b92e2fcf7849aa78616a3c8257b833453758fd7b"
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"OTTAPI_ResponseCode\":\"GEO_CHECK_FAIL\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://webtvapi.nowe.com/16/1/getVodURL"
+      ],
+      "request_body_sha256": "ade9e2c86e59f5fb224fbc59b92e2fcf7849aa78616a3c8257b833453758fd7b"
+    }
+  },
+  "MediaUnlockTest_ViuTV": {
+    "positive": {
+      "status": 200,
+      "body": "{\"responseCode\":\"SUCCESS\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://api.viu.now.com/p8/3/getLiveURL"
+      ],
+      "request_body_sha256": "6d294bd8d26be95ab5811d0df466595b0534c26aed44587537e12a29e2f156b8"
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"responseCode\":\"GEO_CHECK_FAIL\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://api.viu.now.com/p8/3/getLiveURL"
+      ],
+      "request_body_sha256": "6d294bd8d26be95ab5811d0df466595b0534c26aed44587537e12a29e2f156b8"
+    }
+  },
+  "MediaUnlockTest_unext": {
+    "positive": {
+      "status": 200,
+      "body": "{\"resultStatus\":475}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://cc.unext.jp"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"resultStatus\":467}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://cc.unext.jp"
+      ]
+    }
+  },
+  "MediaUnlockTest_HamiVideo": {
+    "positive": {
+      "status": 200,
+      "body": "{\"code\":\"06001-107\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://hamivideo.hinet.net/api/play.do"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"code\":\"06001-106\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://hamivideo.hinet.net/api/play.do"
+      ]
+    }
+  },
+  "MediaUnlockTest_4GTV": {
+    "positive": {
+      "status": 200,
+      "body": "{\"Data\":\"Y\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api2.4gtv.tv/Web/IsTaiwanArea"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"Data\":\"N\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api2.4gtv.tv/Web/IsTaiwanArea"
+      ]
+    }
+  },
+  "MediaUnlockTest_Channel4": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.channel4.com/simulcast/channels/C4"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.channel4.com/simulcast/channels/C4"
+      ]
+    }
+  },
+  "MediaUnlockTest_DSTV": {
+    "positive": {
+      "status": 404,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://authentication.dstv.com/favicon.ico"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://authentication.dstv.com/favicon.ico"
+      ]
+    }
+  },
+  "MediaUnlockTest_encoreTVB": {
+    "positive": {
+      "status": 200,
+      "body": "{\"error_subcode\":\"\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://edge.api.brightcove.com/playback/v1/accounts/5324042807001/videos/6005570109001"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"error_subcode\":\"CLIENT_GEO\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://edge.api.brightcove.com/playback/v1/accounts/5324042807001/videos/6005570109001"
+      ]
+    }
+  },
+  "MediaUnlockTest_Molotov": {
+    "positive": {
+      "status": 200,
+      "body": "{\"is_france\":true}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://fapi.molotov.tv/v1/open-europe/is-france"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"is_france\":false}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://fapi.molotov.tv/v1/open-europe/is-france"
+      ]
+    }
+  },
+  "MediaUnlockTest_FOD": {
+    "positive": {
+      "status": 200,
+      "body": "<FLAG TYPE=\"true\">",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://geocontrol1.stream.ne.jp/fod-geo/check.xml"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "<FLAG TYPE=\"false\">",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://geocontrol1.stream.ne.jp/fod-geo/check.xml"
+      ]
+    }
+  },
+  "MediaUnlockTest_Fox": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://x-live-fox-stgec.uplynk.com/ausw/slices/8d1/d8e6eec26bf544f084bad49a7fa2eac5/8d1de292bcc943a6b886d029e6c0dc87/G00000000.ts"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://x-live-fox-stgec.uplynk.com/ausw/slices/8d1/d8e6eec26bf544f084bad49a7fa2eac5/8d1de292bcc943a6b886d029e6c0dc87/G00000000.ts"
+      ]
+    }
+  },
+  "MediaUnlockTest_SpotvNow": {
+    "positive": {
+      "status": 200,
+      "body": "{\"error_subcode\":\"\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://edge.api.brightcove.com/playback/v1/accounts/5764318566001/videos/6349973203112"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"error_subcode\":\"CLIENT_GEO\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://edge.api.brightcove.com/playback/v1/accounts/5764318566001/videos/6349973203112"
+      ]
+    }
+  },
+  "MediaUnlockTest_SKY_DE": {
+    "positive": {
+      "status": 200,
+      "body": "{\"error_subcode\":\"\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://edge.api.brightcove.com/playback/v1/accounts/1050888051001/videos/6247131490001"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"error_subcode\":\"CLIENT_GEO\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://edge.api.brightcove.com/playback/v1/accounts/1050888051001/videos/6247131490001"
+      ]
+    }
+  },
+  "MediaUnlockTest_ZDF": {
+    "positive": {
+      "status": 404,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://ssl.zdf.de/geo/de/geo.txt/"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://ssl.zdf.de/geo/de/geo.txt/"
+      ]
+    }
+  },
+  "MediaUnlockTest_videoland": {
+    "positive": {
+      "status": 200,
+      "body": "{\"isOnboardingGeoBlocked\":false}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://api.videoland.com/subscribe/videoland-account/graphql"
+      ],
+      "request_body_sha256": "81f7ebb4dacdefa003a7a5e1b2356a1cdd06c89206630f50eae1f335be17e756"
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"isOnboardingGeoBlocked\":true}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://api.videoland.com/subscribe/videoland-account/graphql"
+      ],
+      "request_body_sha256": "81f7ebb4dacdefa003a7a5e1b2356a1cdd06c89206630f50eae1f335be17e756"
+    }
+  },
+  "MediaUnlockTest_MoviStarPlus": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://contratar.movistarplus.es/"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://contratar.movistarplus.es/"
+      ]
+    }
+  },
+  "MediaUnlockTest_RaiPlay": {
+    "positive": {
+      "status": 200,
+      "body": "<geoprotection>Y</geoprotection>",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://mediapolisvod.rai.it/relinker/relinkerServlet.htm"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "<geoprotection>N</geoprotection>",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://mediapolisvod.rai.it/relinker/relinkerServlet.htm"
+      ]
+    }
+  },
+  "MediaUnlockTest_TVBAnywhere": {
+    "positive": {
+      "status": 200,
+      "body": "{\"allow_in_this_country\":true}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://uapisfm.tvbanywhere.com.sg/geoip/check/platform/android"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"allow_in_this_country\":false}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://uapisfm.tvbanywhere.com.sg/geoip/check/platform/android"
+      ]
+    }
+  },
+  "GameTest_ProjectSekai": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://game-version.sekai.colorfulpalette.org/1.8.1/3ed70b6a-8352-4532-b819-108837926ff5"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://game-version.sekai.colorfulpalette.org/1.8.1/3ed70b6a-8352-4532-b819-108837926ff5"
+      ]
+    }
+  },
+  "GameTest_KonosubaFD": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://api.konosubafd.jp/api/masterlist"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://api.konosubafd.jp/api/masterlist"
+      ]
+    }
+  },
+  "MediaUnlockTest_Directv": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://stream.directv.com/watchnow"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://stream.directv.com/watchnow"
+      ]
+    }
+  },
+  "MediaUnlockTest_Binge": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://auth.streamotion.com.au"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://auth.streamotion.com.au"
+      ]
+    }
+  },
+  "MediaUnlockTest_OptusSports": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://sport.optus.com.au/api/userauth/validate/web/username/region-check@example.invalid"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://sport.optus.com.au/api/userauth/validate/web/username/region-check@example.invalid"
+      ]
+    }
+  },
+  "MediaUnlockTest_KayoSports": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://billingapi.streamotion.com.au/v2/offers/kayo/"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://billingapi.streamotion.com.au/v2/offers/kayo/"
+      ]
+    }
+  },
+  "MediaUnlockTest_SkyGONZ": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://login.sky.co.nz/authorize"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://login.sky.co.nz/authorize"
+      ]
+    }
+  },
+  "MediaUnlockTest_ThreeNow": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://bravo-livestream.fullscreen.nz/index.m3u8"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://bravo-livestream.fullscreen.nz/index.m3u8"
+      ]
+    }
+  },
+  "MediaUnlockTest_JCOM_ON_DEMAND": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://auth.id2.zaq.ne.jp/login"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://auth.id2.zaq.ne.jp/login"
+      ]
+    }
+  },
+  "MediaUnlockTest_Popcornflix": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://popcornflix-prod.cloud.seachange.com/cms/popcornflix/clientconfiguration/versions/2"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://popcornflix-prod.cloud.seachange.com/cms/popcornflix/clientconfiguration/versions/2"
+      ]
+    }
+  },
+  "MediaUnlockTest_Philo": {
+    "positive": {
+      "status": 200,
+      "body": "{\"status\":\"SUCCESS\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://content-us-east-2-fastly-b.www.philo.com/geo"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"status\":\"FAIL\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://content-us-east-2-fastly-b.www.philo.com/geo"
+      ]
+    }
+  },
+  "MediaUnlockTest_CWTV": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.cwtv.com/"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.cwtv.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_Wavve": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://apis.wavve.com/fz/streaming"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://apis.wavve.com/fz/streaming"
+      ]
+    }
+  },
+  "MediaUnlockTest_NaverTV": {
+    "positive": {
+      "status": 200,
+      "body": "{\"playable\":\"PLAYABLE\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": []
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"playable\":\"NOT_COUNTRY_AVAILABLE\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": []
+    }
+  },
+  "MediaUnlockTest_Watcha": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://watcha.com/"
+      ]
+    },
+    "negative": {
+      "status": 451,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://watcha.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_KOCOWA": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.kocowa.com/"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.kocowa.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_NBCTV": {
+    "positive": {
+      "status": 200,
+      "body": "{\"restricted\":false}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://geolocation.digitalsvc.apps.nbcuni.com/geolocation/live/usa"
+      ],
+      "request_body_sha256": "d8fef1db93ad300445a86f4aa91d2363b95c6877e7f16e826fd91437db265102"
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"restricted\":true}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://geolocation.digitalsvc.apps.nbcuni.com/geolocation/live/usa"
+      ],
+      "request_body_sha256": "d8fef1db93ad300445a86f4aa91d2363b95c6877e7f16e826fd91437db265102"
+    }
+  },
+  "MediaUnlockTest_BBCiPLAYER": {
+    "positive": {
+      "status": 200,
+      "body": "vs-hls-push-uk",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://open.live.bbc.co.uk/mediaselector/6/select/version/2.0/mediaset/pc/vpid/bbc_one_london/format/json/jsfunc/JS_callbacks0"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "geolocation",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://open.live.bbc.co.uk/mediaselector/6/select/version/2.0/mediaset/pc/vpid/bbc_one_london/format/json/jsfunc/JS_callbacks0"
+      ]
+    }
+  },
+  "MediaUnlockTest_ITVHUB": {
+    "positive": {
+      "status": 200,
+      "body": "Playlist",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://magni.itv.com/playlist/itvonline/ITV/10_4782_0001.001"
+      ],
+      "request_body_sha256": "6a94de5a484dc1bf94aae0e93d5d59cdf4f5ddaa3c2ff4f2b7ae46b3b63c7257"
+    },
+    "negative": {
+      "status": 200,
+      "body": "Outside Of Allowed Geographic",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://magni.itv.com/playlist/itvonline/ITV/10_4782_0001.001"
+      ],
+      "request_body_sha256": "6a94de5a484dc1bf94aae0e93d5d59cdf4f5ddaa3c2ff4f2b7ae46b3b63c7257"
+    }
+  },
+  "MediaUnlockTest_DMM": {
+    "positive": {
+      "status": 200,
+      "body": "暗号資産",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://bitcoin.dmm.com/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "This page is not available in your area",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://bitcoin.dmm.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_DMMTV": {
+    "positive": {
+      "status": 200,
+      "body": "UNAUTHORIZED",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://api.beacon.dmm.com/v1/streaming/start"
+      ],
+      "request_body_sha256": "7e4e362e6a16850a6ec7a1b83b508535b16895d5fe18a625f34f157269bfa279"
+    },
+    "negative": {
+      "status": 200,
+      "body": "FOREIGN",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://api.beacon.dmm.com/v1/streaming/start"
+      ],
+      "request_body_sha256": "7e4e362e6a16850a6ec7a1b83b508535b16895d5fe18a625f34f157269bfa279"
+    }
+  },
+  "MediaUnlockTest_NLZIET": {
+    "positive": {
+      "status": 200,
+      "body": "streamSessionId",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.nlziet.nl/v7/stream/handshake/Widevine/Dash/VOD/rzIL9rb-TkSn-ek_wBmvaw"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "CountryNotAllowed",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.nlziet.nl/v7/stream/handshake/Widevine/Dash/VOD/rzIL9rb-TkSn-ek_wBmvaw"
+      ]
+    }
+  },
+  "MediaUnlockTest_AcornTV": {
+    "positive": {
+      "status": 200,
+      "body": "signup.acorn.tv",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://acorn.tv/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "not yet available in your",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://acorn.tv/"
+      ]
+    }
+  },
+  "MediaUnlockTest_Crave": {
+    "positive": {
+      "status": 200,
+      "body": "video.9c9media.com",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://capi.9c9media.com/destinations/crave_atexace/platforms/desktop/playback/contents/2917721/contentPackages/6642701/manifest.mpd"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "Geo Constraint Restrictions",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://capi.9c9media.com/destinations/crave_atexace/platforms/desktop/playback/contents/2917721/contentPackages/6642701/manifest.mpd"
+      ]
+    }
+  },
+  "MediaUnlockTest_Channel9": {
+    "positive": {
+      "status": 200,
+      "body": "Log in to",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://login.nine.com.au"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "Geoblock",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://login.nine.com.au"
+      ]
+    }
+  },
+  "MediaUnlockTest_VideoMarket": {
+    "positive": {
+      "status": 200,
+      "body": "292072",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://www.videomarket.jp/graphql"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "OverseasAccess",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://www.videomarket.jp/graphql"
+      ]
+    }
+  },
+  "WebTest_MetaAI": {
+    "positive": {
+      "status": 200,
+      "body": "KadabraRootContainer",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.meta.ai/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "AbraGeoBlockedErrorRoot",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.meta.ai/"
+      ]
+    }
+  },
+  "MediaUnlockTest_HuluJP": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://id.hulu.jp/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://id.hulu.jp/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/restrict",
+      "request_method": "GET",
+      "request_contains": [
+        "https://id.hulu.jp/"
+      ]
+    }
+  },
+  "MediaUnlockTest_SlingTV": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.sling.com/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.sling.com/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/geo-block",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.sling.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_PlutoTV": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://pluto.tv/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://pluto.tv/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/plutotv-is-not-available",
+      "request_method": "GET",
+      "request_contains": [
+        "https://pluto.tv/"
+      ]
+    }
+  },
+  "MediaUnlockTest_PeacockTV": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.peacocktv.com/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.peacocktv.com/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/unavailable",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.peacocktv.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_BritBox": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.britbox.com/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.britbox.com/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/locationnotsupported",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.britbox.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_CanalPlus": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://boutique-tunnel.canalplus.com/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://boutique-tunnel.canalplus.com/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/other-country-blocking",
+      "request_method": "GET",
+      "request_contains": [
+        "https://boutique-tunnel.canalplus.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_Sky_CH": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://sky.ch/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://sky.ch/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/out-of-country",
+      "request_method": "GET",
+      "request_contains": [
+        "https://sky.ch/"
+      ]
+    }
+  },
+  "MediaUnlockTest_Amediateka": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.amediateka.ru/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.amediateka.ru/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/unavailable",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.amediateka.ru/"
+      ]
+    }
+  },
+  "MediaUnlockTest_Docplay": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.docplay.com/subscribe",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.docplay.com/subscribe"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/geoblocked",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.docplay.com/subscribe"
+      ]
+    }
+  },
+  "MediaUnlockTest_MyVideo": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.myvideo.net.tw/login.do",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.myvideo.net.tw/login.do"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/serviceAreaBlock",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.myvideo.net.tw/login.do"
+      ]
+    }
+  },
+  "MediaUnlockTest_CoupangPlay": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.coupangplay.com/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.coupangplay.com/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/not-available",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.coupangplay.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_NFLPlus": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.nfl.com/plus/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.nfl.com/plus/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/nfl-game-pass",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.nfl.com/plus/"
+      ]
+    }
+  },
+  "MediaUnlockTest_MyTVSuper": {
+    "positive": {
+      "status": 200,
+      "body": "{\"country_code\":\"HK\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.mytvsuper.com/api/auth/getSession/self/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"country_code\":\"ZZ\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.mytvsuper.com/api/auth/getSession/self/"
+      ]
+    }
+  },
+  "MediaUnlockTest_KKTV": {
+    "positive": {
+      "status": 200,
+      "body": "{\"country\":\"TW\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.kktv.me/v3/ipcheck"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"country\":\"ZZ\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.kktv.me/v3/ipcheck"
+      ]
+    }
+  },
+  "MediaUnlockTest_CBCGem": {
+    "positive": {
+      "status": 200,
+      "body": "{\"country\":\"CA\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.cbc.ca/g/stats/js/cbc-stats-top.js"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"country\":\"ZZ\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.cbc.ca/g/stats/js/cbc-stats-top.js"
+      ]
+    }
+  },
+  "MediaUnlockTest_SBSonDemand": {
+    "positive": {
+      "status": 200,
+      "body": "{\"country_code\":\"AU\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.sbs.com.au/api/v3/network"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"country_code\":\"ZZ\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.sbs.com.au/api/v3/network"
+      ]
+    }
+  },
+  "MediaUnlockTest_NBATV": {
+    "positive": {
+      "status": 200,
+      "body": "<html><title>MediaUnlockTest_NBATV</title><body>normal service landing</body></html>",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.nba.com/watch/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "<html><body>Service is not available in your region</body></html>",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.nba.com/watch/"
+      ]
+    }
+  },
+  "MediaUnlockTest_MegogoTV": {
+    "positive": {
+      "status": 200,
+      "body": "<html><title>MediaUnlockTest_MegogoTV</title><body>normal service landing</body></html>",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://megogo.net/en"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "<html><body>VPN</body></html>",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://megogo.net/en"
+      ]
+    }
+  },
+  "MediaUnlockTest_FXNOW": {
+    "positive": {
+      "status": 200,
+      "body": "<html>FX Movies</html>",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://fxnow.fxnetworks.com/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "is not accessible",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://fxnow.fxnetworks.com/"
+      ]
+    }
+  },
+  "WebTest_Wikipedia_Editable": {
+    "positive": {
+      "status": 200,
+      "body": "<textarea id=\"wpTextbox1\" name=\"wpTextbox1\">sandbox</textarea>",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://zh.wikipedia.org/w/index.php"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "Banned",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://zh.wikipedia.org/w/index.php"
+      ]
+    }
+  },
+  "WebTest_EroGameSpace": {
+    "positive": {
+      "status": 200,
+      "body": "<html><body>18歳</body></html>",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://erogamescape.org"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "<html><body>normal landing page</body></html>",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://erogamescape.org"
+      ]
+    }
+  },
+  "MediaUnlockTest_Afreeca": {
+    "positive": {
+      "status": 200,
+      "body": "<html><body>document.location.href='https://vod.afreecatv.com'</body></html>",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://vod.afreecatv.com/player/97464151"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "<html><body>normal landing page</body></html>",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://vod.afreecatv.com/player/97464151"
+      ]
+    }
+  },
+  "MediaUnlockTest_Catchplay": {
+    "positive": {
+      "status": 200,
+      "body": "{\"code\":\"0\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://sunapi.catchplay.com/geo"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"code\":\"100016\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://sunapi.catchplay.com/geo"
+      ]
+    }
+  },
+  "MediaUnlockTest_Channel5": {
+    "positive": {
+      "status": 200,
+      "body": "{\"code\":\"4003\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://cassie.channel5.com/api/v2/live_media/my5desktopng/C5.json"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"code\":\"3000\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://cassie.channel5.com/api/v2/live_media/my5desktopng/C5.json"
+      ]
+    }
+  },
+  "MediaUnlockTest_Channel10": {
+    "positive": {
+      "status": 200,
+      "body": "{\"allow\":true}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://e410fasadvz.global.ssl.fastly.net/geo"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"allow\":false}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://e410fasadvz.global.ssl.fastly.net/geo"
+      ]
+    }
+  },
+  "MediaUnlockTest_SetantaSports": {
+    "positive": {
+      "status": 200,
+      "body": "{\"outsideAllowedTerritories\":false}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://dce-frontoffice.imggaming.com/api/v2/consent-prompt"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"outsideAllowedTerritories\":true}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://dce-frontoffice.imggaming.com/api/v2/consent-prompt"
+      ]
+    }
+  },
+  "MediaUnlockTest_BGlobalSEA": {
+    "positive": {
+      "status": 200,
+      "body": "{\"code\":0}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.bilibili.tv/intl/gateway/web/playurl"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"code\":10003003}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.bilibili.tv/intl/gateway/web/playurl"
+      ]
+    }
+  },
+  "MediaUnlockTest_BGlobalTH": {
+    "positive": {
+      "status": 200,
+      "body": "{\"code\":0}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.bilibili.tv/intl/gateway/web/playurl"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"code\":10003003}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.bilibili.tv/intl/gateway/web/playurl"
+      ]
+    }
+  },
+  "MediaUnlockTest_BGlobalID": {
+    "positive": {
+      "status": 200,
+      "body": "{\"code\":0}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.bilibili.tv/intl/gateway/web/playurl"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"code\":10003003}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.bilibili.tv/intl/gateway/web/playurl"
+      ]
+    }
+  },
+  "MediaUnlockTest_BGlobalVN": {
+    "positive": {
+      "status": 200,
+      "body": "{\"code\":0}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.bilibili.tv/intl/gateway/web/playurl"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"code\":10003003}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.bilibili.tv/intl/gateway/web/playurl"
+      ]
+    }
+  },
+  "MediaUnlockTest_7plus": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://7plus-sevennetwork.akamaized.net/media/v1/dash/live/cenc/5303576322001/68dca38b-85d7-4dae-b1c5-c88acc58d51c/f4ea4711-514e-4cad-824f-e0c87db0a614/225ec0a0-ef18-4b7c-8fd6-8dcdd16cf03a/1x/segment0.m4f"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://7plus-sevennetwork.akamaized.net/media/v1/dash/live/cenc/5303576322001/68dca38b-85d7-4dae-b1c5-c88acc58d51c/f4ea4711-514e-4cad-824f-e0c87db0a614/225ec0a0-ef18-4b7c-8fd6-8dcdd16cf03a/1x/segment0.m4f"
+      ]
+    }
+  },
+  "MediaUnlockTest_TubiTV": {
+    "positive": {
+      "status": 200,
+      "body": "manifest",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://tubitv.com/home"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "not currently available in your area",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://tubitv.com/home"
+      ]
+    }
+  },
+  "MediaUnlockTest_Shudder": {
+    "positive": {
+      "status": 200,
+      "body": "movies",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.shudder.com/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "not available",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.shudder.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_Tving": {
+    "positive": {
+      "status": 200,
+      "body": "vod_type",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.tving.com/v2a/media/stream/info"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "available in South Korea",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.tving.com/v2a/media/stream/info"
+      ]
+    }
+  },
+  "MediaUnlockTest_Radiko": {
+    "positive": {
+      "status": 200,
+      "body": "JAPAN",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://radiko.jp/area"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "class=\"OUT\"",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://radiko.jp/area"
+      ]
+    }
+  },
+  "MediaUnlockTest_AbemaTV": {
+    "positive": {
+      "status": 200,
+      "body": "{\"isoCountryCode\":\"JP\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.abema.io/v1/ip/check"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"isoCountryCode\":\"US\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.abema.io/v1/ip/check"
+      ]
+    }
+  },
+  "MediaUnlockTest_HBOMax": {
+    "positive": {
+      "status": 200,
+      "body": "countryCode=US",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.max.com/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "countryCode=ZZ",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.max.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_Showmax": {
+    "positive": {
+      "status": 200,
+      "body": "activeTerritory=ZA;",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.showmax.com/"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "forbidden",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.showmax.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_ViuCom": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.viu.com/ott/hk/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.viu.com/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.viu.com/ott/no-service/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.viu.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_ParamountPlus": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.paramountplus.com/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.paramountplus.com/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.paramountplus.com/intl/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.paramountplus.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_PrimeVideo": {
+    "positive": {
+      "status": 200,
+      "body": "{\"currentTerritory\":\"US\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.primevideo.com"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "isServiceRestricted",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.primevideo.com"
+      ]
+    }
+  },
+  "MediaUnlockTest_HotStar": {
+    "positive": {
+      "status": 200,
+      "body": "geo=IN;",
+      "final": "https://www.hotstar.com/in",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.hotstar.com"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.hotstar.com"
+      ]
+    }
+  },
+  "MediaUnlockTest_LiTV": {
+    "positive": {
+      "status": 200,
+      "body": "{\"AssetURLs\":[]}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://www.litv.tv/api/get-urls-no-auth"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"code\":42000087}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://www.litv.tv/api/get-urls-no-auth"
+      ]
+    }
+  },
+  "MediaUnlockTest_FuboTV": {
+    "positive": {
+      "status": 200,
+      "body": "{\"network_allowed\":true,\"country_code2\":\"US\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.fubo.tv/v3/location"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"network_allowed\":false}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.fubo.tv/v3/location"
+      ]
+    }
+  },
+  "MediaUnlockTest_RakutenTV": {
+    "positive": {
+      "status": 200,
+      "body": "{\"iso3166_code\":\"US\",\"streaming_drm_types\":[]}",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://gizmo.rakuten.tv/v3/me/start"
+      ],
+      "request_body_sha256": "5fab403a7c7b864ea9d6ff4d1a6cdd77f89efce97d899c85af6fcd7f9bb98d58"
+    },
+    "negative": {
+      "status": 200,
+      "body": "VPN detected",
+      "final": "https://fixture.invalid/",
+      "request_method": "POST",
+      "request_contains": [
+        "https://gizmo.rakuten.tv/v3/me/start"
+      ],
+      "request_body_sha256": "5fab403a7c7b864ea9d6ff4d1a6cdd77f89efce97d899c85af6fcd7f9bb98d58"
+    }
+  },
+  "MediaUnlockTest_SkyGo": {
+    "positive": {
+      "status": 200,
+      "body": "Sign in</h3>",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://skyid.sky.com/authorise/skygo"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "Access Denied You don't have permission to access",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://skyid.sky.com/authorise/skygo"
+      ]
+    }
+  },
+  "MediaUnlockTest_DirecTVGO": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.directvgo.com/ar/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.directvgo.com/registrarse"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.directvgo.com/proximamente",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.directvgo.com/registrarse"
+      ]
+    }
+  },
+  "MediaUnlockTest_ABCiView": {
+    "positive": {
+      "status": 200,
+      "body": "{\"playable\":true}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.iview.abc.net.au/v2/show/abc-kids-live-stream/video/LS1604H001S00"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "unavailable outside Australia",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api.iview.abc.net.au/v2/show/abc-kids-live-stream/video/LS1604H001S00"
+      ]
+    }
+  },
+  "MediaUnlockTest_Telasa": {
+    "positive": {
+      "status": 200,
+      "body": "{\"type\":\"OK\"}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api-videopass-anon.kddi-video.com/v1/playback/system_status"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "IPLocationNotAllowed",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://api-videopass-anon.kddi-video.com/v1/playback/system_status"
+      ]
+    }
+  },
+  "MediaUnlockTest_musicjp": {
+    "positive": {
+      "status": 200,
+      "body": "checkIp(true)",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://overseaauth.music-book.jp/globalIpcheck.js"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://overseaauth.music-book.jp/globalIpcheck.js"
+      ]
+    }
+  },
+  "MediaUnlockTest_KBSDomestic": {
+    "positive": {
+      "status": 200,
+      "body": "ipck Domestic\\\":true",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://vod.kbs.co.kr/index.html"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ipck Domestic\\\":false",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://vod.kbs.co.kr/index.html"
+      ]
+    }
+  },
+  "MediaUnlockTest_Crackle": {
+    "positive": {
+      "status": 200,
+      "body": "x-crackle-region: US",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://prod-api.crackle.com/appconfig"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "x-crackle-region: GB",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://prod-api.crackle.com/appconfig"
+      ]
+    }
+  },
+  "MediaUnlockTest_SkyShowTime": {
+    "positive": {
+      "status": 200,
+      "body": "activeTerritory=US;",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.skyshowtime.com/"
+      ]
+    },
+    "negative": {
+      "status": 403,
+      "body": "ok",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.skyshowtime.com/"
+      ]
+    }
+  },
+  "MediaUnlockTest_MeWatch": {
+    "positive": {
+      "status": 200,
+      "body": "Stream",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://cdn.mewatch.sg/api/items/97098/videos"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "{\"code\":403}",
+      "final": "https://fixture.invalid/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://cdn.mewatch.sg/api/items/97098/videos"
+      ]
+    }
+  },
+  "MediaUnlockTest_AMCPlus": {
+    "positive": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.amcplus.com/",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.amcplus.com/"
+      ]
+    },
+    "negative": {
+      "status": 200,
+      "body": "ok",
+      "final": "https://www.amcplus.com/geographic-restriction",
+      "request_method": "GET",
+      "request_contains": [
+        "https://www.amcplus.com/"
+      ]
+    }
+  }
+}

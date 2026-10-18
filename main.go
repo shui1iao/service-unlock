@@ -1,5 +1,6 @@
-// Service Unlock v0.4.3. MIT License; Copyright (c) 2026 Remnawave.
-// Derived from remnawave/geocheck v0.3.0; see LICENSE and README.md.
+// Original Service Unlock v0.4.3 portions: MIT; Copyright (c) 2026 Remnawave.
+// Modified 2026-10-18: unified RRC-derived extra integration, AGPL-3.0-only.
+// Original geocheck v0.3.0 and additional provenance: see LICENSE/NOTICE.md.
 package main
 
 import (
@@ -19,15 +20,26 @@ import (
 
 	"serviceunlock/internal/access"
 	"serviceunlock/internal/ai"
+	"serviceunlock/internal/extra"
 	"serviceunlock/internal/geo"
 	"serviceunlock/internal/netx"
 	"serviceunlock/internal/render"
 )
 
 //go:embed LICENSE
-var licenseText string
+var distributionNotice string
 
-const help = `Service Unlock v0.4.3 — 37 checks / 3 groups
+//go:embed LICENSES/MIT.txt
+var originalMITLicense string
+
+//go:embed LICENSES/AGPL-3.0.txt
+var extraAGPLLicense string
+var licenseText = distributionNotice + "\n" + originalMITLicense + "\n" + extraAGPLLicense
+
+const help = `Service Unlock v0.5.0 — original 37 checks + global 6 + selected region
+  --region global|tw|hk|jp|na|sa|eu|oc|kr|sea|af (default global)
+  --extra-family auto|4|6 (default auto; native37 remains system-selected)
+  --machine    One JSON + ANSI envelope from the same measurement
 Usage: service-unlock [--json] [--timeout SECONDS] [--workers N]
   --json       Output JSON only; error means inconclusive, not blocked
   --timeout N  Total budget per HTTP request in seconds, default 6
@@ -57,6 +69,8 @@ type report struct {
 	Results       []item            `json:"results"`
 	Services      []serviceItem     `json:"services"`
 	AIEndpoints   []endpointItem    `json:"ai_endpoints"`
+	ExtraChecks   []extra.Result    `json:"extra_checks"`
+	Selection     *selection        `json:"selection"`
 }
 type networkInfo struct {
 	Mode           string  `json:"mode"`
@@ -101,9 +115,11 @@ func makeReport(results []access.Result, timeout float64, workers int) report {
 }
 
 type measurements struct {
-	Access   []access.Result
-	Services []geo.Result
-	AI       []ai.Result
+	Access    []access.Result
+	Services  []geo.Result
+	AI        []ai.Result
+	Extra     []extra.Result
+	Selection *selection
 }
 type runner func(context.Context, time.Duration, int) (measurements, error)
 
@@ -113,7 +129,35 @@ func realRun(ctx context.Context, timeout time.Duration, workers int) (measureme
 		return measurements{}, err
 	}
 	defer stack.Close()
-	return runGroups(ctx, stack, workers)
+	m, err := runGroups(ctx, stack, workers)
+	if err != nil {
+		return m, err
+	}
+	options, _ := ctx.Value(extraOptionsKey{}).(extraOptions)
+	if options.Region == "" {
+		options = extraOptions{"global", "auto"}
+	}
+	checks, err := extra.Selected(options.Region)
+	if err != nil {
+		return m, err
+	}
+	family, familyErr := extra.SelectFamily(options.Family)
+	client := extra.NewClient(family, timeout)
+	defer client.Close()
+	if familyErr != nil {
+		client.Family = 0
+	}
+	m.Extra = extra.Run(ctx, client, options.Region, checks, workers)
+	if familyErr != nil {
+		for i := range m.Extra {
+			m.Extra[i].Status = "error"
+			detail := familyErr.Error()
+			m.Extra[i].Error = &detail
+			m.Extra[i].Detail = detail
+		}
+	}
+	m.Selection = makeSelection(options.Region, options.Family, family, checks)
+	return m, ctx.Err()
 }
 
 // Groups run consecutively through the same direct stack. This preserves the
@@ -136,6 +180,9 @@ func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run ru
 	flags.SetOutput(io.Discard)
 	flags.Usage = func() {}
 	asJSON := flags.Bool("json", false, "JSON")
+	machine := flags.Bool("machine", false, "same-measurement JSON + ANSI envelope")
+	region := flags.String("region", "global", "global plus one inventory region")
+	family := flags.String("extra-family", "auto", "auto, 4 or 6; extra checks only")
 	showLicense := flags.Bool("license", false, "show MIT license")
 	timeout := flags.Float64("timeout", 6, "per-request timeout seconds")
 	workers := flags.Int("workers", 4, "concurrency")
@@ -155,6 +202,11 @@ func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run ru
 		fmt.Fprint(stdout, licenseText, render.ThirdPartyLicenses)
 		return 0
 	}
+	if _, err := extra.Selected(*region); err != nil || (*family != "auto" && *family != "4" && *family != "6") || (*machine && *asJSON) {
+		fmt.Fprintln(stderr, "Invalid region, extra-family or conflicting output flags")
+		return 2
+	}
+	ctx = context.WithValue(ctx, extraOptionsKey{}, extraOptions{*region, *family})
 	duration := time.Duration(math.Ceil(*timeout*1000)) * time.Millisecond
 	started := time.Now()
 	results, err := run(ctx, duration, *workers)
@@ -168,17 +220,24 @@ func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run ru
 		return 1
 	}
 	r := makeCompleteReport(results, *timeout, *workers)
-	if *asJSON {
+	if *machine {
+		err = writeMachine(stdout, r, results, elapsed)
+	} else if *asJSON {
 		encoder := json.NewEncoder(stdout)
 		encoder.SetIndent("", "  ")
 		encoder.SetEscapeHTML(false)
 		err = encoder.Encode(r)
 	} else {
-		err = render.WriteAccess(stdout, render.Report{Access: results.Access, Services: results.Services, AI: results.AI, Duration: elapsed})
+		err = render.WriteAccess(stdout, render.Report{Access: results.Access, Services: results.Services, AI: results.AI, Extra: results.Extra, Duration: elapsed})
 	}
 	if err != nil {
 		fmt.Fprintln(stderr, "Output failed:", err)
 		return 1
+	}
+	for _, result := range results.Extra {
+		if result.Status == "error" {
+			return 1
+		}
 	}
 	for _, r := range results.Access {
 		if r.State == access.StateError {

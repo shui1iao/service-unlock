@@ -12,6 +12,7 @@ import (
 	"github.com/charmbracelet/x/ansi"
 	"serviceunlock/internal/access"
 	"serviceunlock/internal/ai"
+	"serviceunlock/internal/extra"
 	"serviceunlock/internal/geo"
 )
 
@@ -22,6 +23,7 @@ type Report struct {
 	Services []geo.Result
 	AI       []ai.Result
 	Duration time.Duration
+	Extra    []extra.Result
 }
 type displayRow struct {
 	service, result, region string
@@ -81,6 +83,22 @@ func (o *Output) groups(r Report) []displayGroup {
 	}
 	if rows := o.aiRows(r.AI); len(rows) > 0 {
 		groups = append(groups, displayGroup{"AI endpoints", rows, aiSummary(rows)})
+	}
+	for _, scope := range []string{"global", "regional"} {
+		selected := []extra.Result{}
+		for _, result := range r.Extra {
+			if (scope == "global") == (result.Scope == "global") {
+				selected = append(selected, result)
+			}
+		}
+		if len(selected) > 0 {
+			rows := o.extraRows(selected)
+			title := "Global services"
+			if scope != "global" {
+				title = "Regional services"
+			}
+			groups = append(groups, displayGroup{title, rows, extraSummary(selected)})
+		}
 	}
 	return groups
 }

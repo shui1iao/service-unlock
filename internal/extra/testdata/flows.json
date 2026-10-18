@@ -1,0 +1,1154 @@
+{
+  "MediaUnlockTest_BahamutAnime": {
+    "positive": [
+      {
+        "body": "{\"deviceid\":\"MOCK_DEVICE\"}",
+        "status": 200,
+        "final": "",
+        "headers": {
+          "Set-Cookie": [
+            "fixture=MOCK; Path=/"
+          ]
+        },
+        "request_contains": [
+          "https://ani.gamer.com.tw/ajax/getdeviceid.php"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"animeSn\":37783}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_DEVICE",
+          "fixture=MOCK",
+          "https://ani.gamer.com.tw/ajax/token.php"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "<html data-geo=\"TW\">",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://ani.gamer.com.tw/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "negative": [
+      {
+        "body": "{\"deviceid\":\"MOCK_DEVICE\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://ani.gamer.com.tw/ajax/getdeviceid.php"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"error\":\"region\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://ani.gamer.com.tw/ajax/token.php"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "<html data-geo=\"TW\">",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://ani.gamer.com.tw/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_DisneyPlus": {
+    "positive": [
+      {
+        "body": "{\"assertion\":\"MOCK_ASSERTION\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://disney.api.edge.bamgrid.com/devices"
+        ],
+        "request_method": "POST"
+      },
+      {
+        "body": "{\"refresh_token\":\"MOCK_REFRESH\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_ASSERTION",
+          "https://disney.api.edge.bamgrid.com/token"
+        ],
+        "request_method": "POST"
+      },
+      {
+        "body": "{\"countryCode\":\"US\",\"inSupportedLocation\":true}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_REFRESH",
+          "https://disney.api.edge.bamgrid.com/graph/v1/device/graphql"
+        ],
+        "request_method": "POST"
+      },
+      {
+        "body": "landing",
+        "status": 200,
+        "final": "https://disneyplus.com/",
+        "headers": {},
+        "request_contains": [
+          "https://disneyplus.com"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "negative": [
+      {
+        "body": "{\"assertion\":\"MOCK_ASSERTION\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://disney.api.edge.bamgrid.com/devices"
+        ],
+        "request_method": "POST"
+      },
+      {
+        "body": "{\"error\":\"forbidden-location\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://disney.api.edge.bamgrid.com/token"
+        ],
+        "request_method": "POST"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_ESPNPlus": {
+    "positive": [
+      {
+        "body": "{\"refresh_token\":\"MOCK_REFRESH\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://espn.api.edge.bamgrid.com/token"
+        ],
+        "request_method": "POST"
+      },
+      {
+        "body": "{\"countryCode\":\"US\",\"inSupportedLocation\":true}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_REFRESH",
+          "https://espn.api.edge.bamgrid.com/graph/v1/device/graphql"
+        ],
+        "request_method": "POST"
+      }
+    ],
+    "negative": [
+      {
+        "body": "{\"refresh_token\":\"MOCK_REFRESH\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://espn.api.edge.bamgrid.com/token"
+        ],
+        "request_method": "POST"
+      },
+      {
+        "body": "{\"countryCode\":\"GB\",\"inSupportedLocation\":false}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://espn.api.edge.bamgrid.com/graph/v1/device/graphql"
+        ],
+        "request_method": "POST"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_LineTVTW": {
+    "positive": [
+      {
+        "body": "<script src=\"https://www.linetv.tw/main-abcd1234.js\">",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.linetv.tw/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "appId:\"MOCK_APP\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"countryCode\":228}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_APP",
+          "https://www.linetv.tw/api/part/11829/eps/1/part"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "negative": [
+      {
+        "body": "<script src=\"https://www.linetv.tw/main-abcd1234.js\">",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.linetv.tw/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "appId:\"MOCK_APP\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"countryCode\":840}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.linetv.tw/api/part/11829/eps/1/part"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_Niconico": {
+    "positive": [
+      {
+        "body": "ordinary video",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.nicovideo.jp/watch/so23017073"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "話 &quot;id&quot;:&quot;lv123456&quot; &quot;isOfficialChannelMemberFree&quot;:false",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://live.nicovideo.jp/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "ordinary watch",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://live.nicovideo.jp/watch/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "negative": [
+      {
+        "body": "ordinary video",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.nicovideo.jp/watch/so23017073"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "話 &quot;id&quot;:&quot;lv123456&quot; &quot;isOfficialChannelMemberFree&quot;:false",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://live.nicovideo.jp/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "notAllowedCountry",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://live.nicovideo.jp/watch/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_Joyn": {
+    "positive": [
+      {
+        "body": "{\"access_token\":\"MOCK_ACCESS\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://auth.joyn.de/auth/anonymous"
+        ],
+        "request_method": "POST"
+      },
+      {
+        "body": "{\"entitlement_token\":\"MOCK_ENTITLEMENT\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_ACCESS",
+          "https://api.joyn.de/content/entitlement-token"
+        ],
+        "request_method": "POST"
+      }
+    ],
+    "negative": [
+      {
+        "body": "{\"access_token\":\"MOCK_ACCESS\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://auth.joyn.de/auth/anonymous"
+        ],
+        "request_method": "POST"
+      },
+      {
+        "body": "{\"error\": \"ENT_AssetNotAvailableInCountry\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://api.joyn.de/content/entitlement-token"
+        ],
+        "request_method": "POST"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_EPIX": {
+    "positive": [
+      {
+        "body": "{\"session_token\":\"MOCK_SESSION\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://api.epix.com/v2/sessions"
+        ],
+        "request_method": "POST"
+      },
+      {
+        "body": "{\"data\":\"StartBilling\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_SESSION",
+          "https://api.epix.com/graphql"
+        ],
+        "request_method": "POST"
+      }
+    ],
+    "negative": [
+      {
+        "body": "{\"session_token\":\"MOCK_SESSION\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://api.epix.com/v2/sessions"
+        ],
+        "request_method": "POST"
+      },
+      {
+        "body": "{\"error\": \"MGM+ is only available in the United States\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://api.epix.com/graphql"
+        ],
+        "request_method": "POST"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_NPO_Start_Plus": {
+    "positive": [
+      {
+        "body": "{\"token\":\"MOCK_TOKEN\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.npo.nl/start/api/domain/player-token"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_TOKEN",
+          "https://prod.npoplayer.nl/stream-link"
+        ],
+        "request_method": "POST"
+      }
+    ],
+    "negative": [
+      {
+        "body": "{\"token\":\"MOCK_TOKEN\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.npo.nl/start/api/domain/player-token"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{}",
+        "status": 403,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://prod.npoplayer.nl/stream-link"
+        ],
+        "request_method": "POST"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_Starz": {
+    "positive": [
+      {
+        "body": "MOCK_AUTHORIZATION",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.starz.com/sapi/header/v1/starz/us/09b397fc9eb64d5080687fc8a218775b"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"isAllowedAccess\":true,\"isAllowedCountry\":true,\"isKnownProxy\":false}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_AUTHORIZATION",
+          "https://auth.starz.com/api/v4/User/geolocation"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "negative": [
+      {
+        "body": "MOCK_AUTHORIZATION",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.starz.com/sapi/header/v1/starz/us/09b397fc9eb64d5080687fc8a218775b"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"isAllowedAccess\":false,\"isAllowedCountry\":false,\"isKnownProxy\":true}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://auth.starz.com/api/v4/User/geolocation"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_DiscoveryPlus": {
+    "positive": [
+      {
+        "body": "{\"baseApiUrl\":\"https://fixture.disco-api.com\",\"realm\":\"dplus_us\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://global-prod.disco-api.com/bootstrapInfo"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"token\":\"MOCK_TOKEN\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "fixture.disco-api.com",
+          "dplus_us"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"relationships\":{},\"mainTerritoryCode\":\"US\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_TOKEN"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "negative": [
+      {
+        "body": "{\"baseApiUrl\":\"https://fixture.disco-api.com\",\"realm\":\"dplus_us\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://global-prod.disco-api.com/bootstrapInfo"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"token\":\"MOCK_TOKEN\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "fixture.disco-api.com",
+          "dplus_us"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"error\": \"not yet available\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [],
+        "request_method": "GET"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_TLCGO": {
+    "positive": [
+      {
+        "body": "{\"token\":\"MOCK_TOKEN\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://us1-prod-direct.tlc.com/token"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"Episodes\":[],\"mainTerritoryCode\":\"US\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_TOKEN",
+          "https://us1-prod-direct.tlc.com/cms/routes/home"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "negative": [
+      {
+        "body": "{\"token\":\"MOCK_TOKEN\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://us1-prod-direct.tlc.com/token"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"error\": \"is not yet available\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://us1-prod-direct.tlc.com/cms/routes/home"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_AETV": {
+    "positive": [
+      {
+        "body": "normal",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://link.theplatform.com/s/xc6n8B/UR27JDU0bu2s/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "normal",
+        "status": 200,
+        "final": "",
+        "headers": {
+          "Set-Cookie": [
+            "AETN-Country-Code=US; Path=/"
+          ]
+        },
+        "request_contains": [
+          "https://play.aetv.com/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "negative": [
+      {
+        "body": "normal",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://link.theplatform.com/s/xc6n8B/UR27JDU0bu2s/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "normal",
+        "status": 200,
+        "final": "",
+        "headers": {
+          "Set-Cookie": [
+            "AETN-Country-Code=GB; Path=/"
+          ]
+        },
+        "request_contains": [
+          "https://play.aetv.com/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "GameTest_MathsSpot": {
+    "positive": [
+      {
+        "body": "fetch(\"/api/mock/reportEvent\"); \"countryCode\":\"US\", \"NEXT_PUBLIC_FE_VERSION\":\"MOCK_VERSION\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://mathsspot.com/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"status\":\"Success\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "/api/mock/startSession",
+          "MOCK_VERSION",
+          "https://mathsspot.com/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "negative": [
+      {
+        "body": "fetch(\"/api/mock/reportEvent\"); \"countryCode\":\"US\", \"NEXT_PUBLIC_FE_VERSION\":\"MOCK_VERSION\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://mathsspot.com/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"status\":\"FailureProxyUserLimitExceeded\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://mathsspot.com/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_SonyLiv": {
+    "positive": [
+      {
+        "body": "\"securityToken\":{\"resultObj\":\"MOCK_SECURITY\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.sonyliv.com/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"country_code\":\"US\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_SECURITY",
+          "https://apiv2.sonyliv.com/AGL/1.4/A/ENG/WEB/ALL/USER/ULD"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"resultCode\":\"OK\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "/US/",
+          "MOCK_SECURITY",
+          "https://apiv2.sonyliv.com/AGL/3.8/A/ENG/WEB/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "negative": [
+      {
+        "body": "\"securityToken\":{\"resultObj\":\"MOCK_SECURITY\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.sonyliv.com/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"country_code\":\"US\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_SECURITY",
+          "https://apiv2.sonyliv.com/AGL/1.4/A/ENG/WEB/ALL/USER/ULD"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"resultCode\":\"KO\",\"message\":\"mock country refused\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://apiv2.sonyliv.com/AGL/3.8/A/ENG/WEB/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_RakutenTVJP": {
+    "positive": [
+      {
+        "body": "in_vod",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://api-live.tv.rakuten.co.jp/v1/contents/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"is_domestic\":true}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://webapi.nba.rakuten.co.jp/api/v1/system/geofilter"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "negative": [
+      {
+        "body": "in_vod",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://api-live.tv.rakuten.co.jp/v1/contents/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"is_domestic\":false}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://webapi.nba.rakuten.co.jp/api/v1/system/geofilter"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_MaoriTV": {
+    "positive": [
+      {
+        "body": "<script src=\"/assets/index-abcd1234.js\">",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.maoriplus.co.nz/live-tv/whakaata-maori"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "players.brightcove.net/1234567890123/abcdefghi_default/index.min.js",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.maoriplus.co.nz"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "policyKey:\"BCpkMOCK_POLICY\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"sources\":[]}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "1234567890123",
+          "6278939271001",
+          "BCpkMOCK_POLICY",
+          "https://edge.api.brightcove.com/playback/v1/accounts/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "negative": [
+      {
+        "body": "<script src=\"/assets/index-abcd1234.js\">",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.maoriplus.co.nz/live-tv/whakaata-maori"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "players.brightcove.net/1234567890123/abcdefghi_default/index.min.js",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.maoriplus.co.nz"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "policyKey:\"BCpkMOCK_POLICY\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"error_subcode\":\"CLIENT_GEO\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://edge.api.brightcove.com/playback/v1/accounts/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_TVer": {
+    "positive": [
+      {
+        "body": "{\"platform_uid\":\"MOCK_UID\",\"platform_token\":\"MOCK_PLATFORM\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://platform-api.tver.jp/v2/api/platform_users/browser/create"
+        ],
+        "request_method": "POST"
+      },
+      {
+        "body": "\"variety.catchup.recomend\" \"id\":\"abcd123456\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_UID",
+          "MOCK_PLATFORM",
+          "https://platform-api.tver.jp/service/api/v1/callHome"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"accountID\":\"1234567890123\",\"playerID\":\"abcdefghi\",\"videoID\":\"MOCK_VIDEO\",\"videoRefID\":\"MOCK_REF\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://statics.tver.jp/content/episode/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "policyKey:\"BCpkMOCK_POLICY\",deliveryConfigId:\"MOCK_CONFIG\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://players.brightcove.net/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"sources\":[]}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_REF",
+          "BCpkMOCK_POLICY",
+          "https://edge.api.brightcove.com/playback/v1/accounts/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "negative": [
+      {
+        "body": "{\"platform_uid\":\"MOCK_UID\",\"platform_token\":\"MOCK_PLATFORM\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://platform-api.tver.jp/v2/api/platform_users/browser/create"
+        ],
+        "request_method": "POST"
+      },
+      {
+        "body": "\"variety.catchup.recomend\" \"id\":\"abcd123456\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "MOCK_UID",
+          "MOCK_PLATFORM",
+          "https://platform-api.tver.jp/service/api/v1/callHome"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"accountID\":\"1234567890123\",\"playerID\":\"abcdefghi\",\"videoID\":\"MOCK_VIDEO\",\"videoRefID\":\"MOCK_REF\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://statics.tver.jp/content/episode/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "policyKey:\"BCpkMOCK_POLICY\",deliveryConfigId:\"MOCK_CONFIG\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://players.brightcove.net/"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"error_subcode\":\"CLIENT_GEO\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://edge.api.brightcove.com/playback/v1/accounts/"
+        ],
+        "request_method": "GET"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  },
+  "MediaUnlockTest_wowow": {
+    "positive": [
+      {
+        "body": "{\"link\":\"https://www.wowow.co.jp/drama/original/mock/\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.wowow.co.jp/drama/original/json/lineup.json"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "\"https://wod.wowow.co.jp/content/mock\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [],
+        "request_method": "GET"
+      },
+      {
+        "body": "\"https://wod.wowow.co.jp/watch/123456\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"playback_session_id\":\"MOCK_SESSION\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "123456",
+          "meta_id",
+          "https://mapi.wowow.co.jp/api/v1/playback/auth"
+        ],
+        "request_method": "POST"
+      }
+    ],
+    "negative": [
+      {
+        "body": "{\"link\":\"https://www.wowow.co.jp/drama/original/mock/\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://www.wowow.co.jp/drama/original/json/lineup.json"
+        ],
+        "request_method": "GET"
+      },
+      {
+        "body": "\"https://wod.wowow.co.jp/content/mock\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [],
+        "request_method": "GET"
+      },
+      {
+        "body": "\"https://wod.wowow.co.jp/watch/123456\"",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [],
+        "request_method": "GET"
+      },
+      {
+        "body": "{\"error\": \"VPN blocked\"}",
+        "status": 200,
+        "final": "",
+        "headers": {},
+        "request_contains": [
+          "https://mapi.wowow.co.jp/api/v1/playback/auth"
+        ],
+        "request_method": "POST"
+      }
+    ],
+    "positive_status": "available",
+    "negative_status": "blocked"
+  }
+}

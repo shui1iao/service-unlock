@@ -1,0 +1,89 @@
+{
+  "MediaUnlockTest_BahamutAnime": [
+    true,
+    true,
+    false
+  ],
+  "MediaUnlockTest_DisneyPlus": [
+    true,
+    true,
+    true,
+    false
+  ],
+  "MediaUnlockTest_ESPNPlus": [
+    true,
+    true
+  ],
+  "MediaUnlockTest_LineTVTW": [
+    false,
+    false,
+    true
+  ],
+  "MediaUnlockTest_Niconico": [
+    false,
+    false,
+    false
+  ],
+  "MediaUnlockTest_Joyn": [
+    true,
+    true
+  ],
+  "MediaUnlockTest_EPIX": [
+    true,
+    true
+  ],
+  "MediaUnlockTest_NPO_Start_Plus": [
+    true,
+    true
+  ],
+  "MediaUnlockTest_Starz": [
+    false,
+    true
+  ],
+  "MediaUnlockTest_DiscoveryPlus": [
+    true,
+    true,
+    true
+  ],
+  "MediaUnlockTest_TLCGO": [
+    true,
+    true
+  ],
+  "MediaUnlockTest_AETV": [
+    false,
+    false
+  ],
+  "GameTest_MathsSpot": [
+    false,
+    true
+  ],
+  "MediaUnlockTest_SonyLiv": [
+    false,
+    true,
+    true
+  ],
+  "MediaUnlockTest_RakutenTVJP": [
+    false,
+    true
+  ],
+  "MediaUnlockTest_MaoriTV": [
+    false,
+    false,
+    false,
+    true
+  ],
+  "MediaUnlockTest_TVer": [
+    true,
+    false,
+    true,
+    false,
+    true,
+    true
+  ],
+  "MediaUnlockTest_wowow": [
+    true,
+    true,
+    true,
+    true
+  ]
+}

@@ -1,0 +1,2226 @@
+{
+  "MediaUnlockTest_BahamutAnime": [
+    {
+      "method": "GET",
+      "url": "https://ani.gamer.com.tw/ajax/getdeviceid.php",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://ani.gamer.com.tw/ajax/token.php?adID=89422&sn=${sn}&device=${tempdeviceid}",
+      "headers": {
+        "Cookie": "bahamut_cookie.txt",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://ani.gamer.com.tw/",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "zh-CN,zh;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-model": "\"\"",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-ch-ua-platform-version": "\"15.0.0\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "Cookie": "bahamut_cookie.txt",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_BilibiliHKMCTW": [
+    {
+      "method": "GET",
+      "url": "https://api.bilibili.com/pgc/player/web/playurl?avid=18281381&cid=29892777&qn=0&type=&otype=json&ep_id=183799&fourk=1&fnver=0&fnval=16&session=${randsession}&module=bangumi",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_BilibiliTW": [
+    {
+      "method": "GET",
+      "url": "https://api.bilibili.com/pgc/player/web/playurl?avid=50762638&cid=100279344&qn=0&type=&otype=json&ep_id=268176&fourk=1&fnver=0&fnval=16&session=${randsession}&module=bangumi",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_AbemaTV": [
+    {
+      "method": "GET",
+      "url": "https://api.abema.io/v1/ip/check?device=android",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Linux; Android 10; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "GameTest_PCRJP": [
+    {
+      "method": "GET",
+      "url": "https://api-priconne-redive.cygames.jp/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Linux; Android 10; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "GameTest_UMAJP": [
+    {
+      "method": "GET",
+      "url": "https://api-umamusume.cygames.jp/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Linux; Android 10; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Lemino": [
+    {
+      "method": "POST",
+      "url": "https://if.lemino.docomo.ne.jp/v1/user/delivery/watch/ready",
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "accept-language": "en-US,en;q=0.9",
+        "content-type": "application/json",
+        "origin": "https://lemino.docomo.ne.jp",
+        "referer": "https://lemino.docomo.ne.jp/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "x-service-token": "f365771afd91452fa279863f240c233d",
+        "x-trace-id": "556db33f-d739-4a82-84df-dd509a8aa179",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"inflow_flows\":[null,\"crid://plala.iptvf.jp/group/b100ce3\"],\"play_type\":1,\"key_download_only\":null,\"quality\":null,\"groupcast\":null,\"avail_status\":\"1\",\"terminal_type\":3,\"test_account\":0,\"content_list\":[{\"kind\":\"main\",\"service_id\":null,\"cid\":\"00lm78dz30\",\"lid\":\"a0lsa6kum1\",\"crid\":\"crid://plala.iptvf.jp/vod/0000000000_00lm78dymn\",\"preview\":0,\"trailer\":0,\"auto_play\":0,\"stop_position\":0}]}"
+    }
+  ],
+  "MediaUnlockTest_AnimeFesta": [
+    {
+      "method": "GET",
+      "url": "https://api-animefesta.iowl.jp/v1/titles/1560",
+      "headers": {
+        "accept": "application/json",
+        "accept-language": "en-US,en;q=0.9",
+        "anime-user-tracking-id": "yEZr4P_U7JEdBucZOkv1Y",
+        "authorization": "",
+        "origin": "https://animefesta.iowl.jp",
+        "referer": "https://animefesta.iowl.jp/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "sec-gpc": "1",
+        "x-requested-with": "XMLHttpRequest",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_mora": [
+    {
+      "method": "GET",
+      "url": "https://mora.jp/buy?__requestToken=1713764407153&returnUrl=https%3A%2F%2Fmora.jp%2Fpackage%2F43000087%2FTFDS01006B00Z%2F%3Ffmid%3DTOPRNKS%26trackMaterialNo%3D31168909&fromMoraUx=false&deleteMaterial=",
+      "headers": {
+        "host": "mora.jp",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_BBCiPLAYER": [
+    {
+      "method": "GET",
+      "url": "https://open.live.bbc.co.uk/mediaselector/6/select/version/2.0/mediaset/pc/vpid/bbc_one_london/format/json/jsfunc/JS_callbacks0",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_DisneyPlus": [
+    {
+      "method": "POST",
+      "url": "https://disney.api.edge.bamgrid.com/devices",
+      "headers": {
+        "authorization": "Bearer ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84",
+        "content-type": "application/json; charset=UTF-8",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"deviceFamily\":\"browser\",\"applicationRuntime\":\"chrome\",\"deviceProfile\":\"windows\",\"attributes\":{}}"
+    },
+    {
+      "method": "POST",
+      "url": "https://disney.api.edge.bamgrid.com/token",
+      "headers": {
+        "authorization": "Bearer ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      "body": "${disneyCookie}"
+    },
+    {
+      "method": "POST",
+      "url": "https://disney.api.edge.bamgrid.com/graph/v1/device/graphql",
+      "headers": {
+        "authorization": "ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      "body": "${disneyContent}"
+    },
+    {
+      "method": "GET",
+      "url": "https://disneyplus.com",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Dazn": [
+    {
+      "method": "POST",
+      "url": "https://startup.core.indazn.com/misl/v5/Startup",
+      "headers": {
+        "accept": "*/*",
+        "accept-language": "zh-CN,zh;q=0.9",
+        "content-type": "application/json",
+        "origin": "https://www.dazn.com",
+        "priority": "u=1, i",
+        "referer": "https://www.dazn.com/",
+        "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Microsoft Edge\";v=\"138\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site",
+        "x-session-id": "fd264e77-79d5-480c-a514-a275b649da14",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"Version\":\"2\",\"LandingPageKey\":\"generic\",\"Languages\":\"zh-CN\",\"Platform\":\"web\",\"Manufacturer\":\"\",\"PromoCode\":\"\",\"PlatformAttributes\":{}}"
+    }
+  ],
+  "MediaUnlockTest_HuluJP": [
+    {
+      "method": "GET",
+      "url": "https://id.hulu.jp/",
+      "headers": {
+        "Accept": "*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Accept-Encoding": "none",
+        "Sec-GPC": "1",
+        "Upgrade-Insecure-Requests": "1",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "Priority": "u=1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_MyTVSuper": [
+    {
+      "method": "GET",
+      "url": "https://www.mytvsuper.com/api/auth/getSession/self/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_NowE": [
+    {
+      "method": "POST",
+      "url": "https://webtvapi.nowe.com/16/1/getVodURL",
+      "headers": {
+        "accept": "application/json, text/javascript, */*; q=0.01",
+        "accept-language": "zh-CN,zh;q=0.9,en-GB;q=0.8,en;q=0.7,en-US;q=0.6",
+        "content-type": "text/plain",
+        "origin": "https://www.nowe.com",
+        "priority": "u=1, i",
+        "referer": "https://www.nowe.com/",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/131.0.0.0"
+      },
+      "body": "{\"contentId\":\"202310181863841\",\"contentType\":\"Vod\",\"pin\":\"\",\"deviceName\":\"Browser\",\"deviceId\":\"w-678913af-3998-3998-3998-39983998\",\"deviceType\":\"WEB\",\"secureCookie\":null,\"callerReferenceNo\":\"W17370372345461425\",\"profileId\":null,\"mupId\":null,\"trackId\":\"738296446.226.1737037103860.2\",\"sessionId\":\"c39f03e6-9e74-4d24-a82f-e0d0f328bb70\"}"
+    }
+  ],
+  "MediaUnlockTest_ViuTV": [
+    {
+      "method": "POST",
+      "url": "https://api.viu.now.com/p8/3/getLiveURL",
+      "headers": {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"callerReferenceNo\":\"20210726112323\",\"contentId\":\"099\",\"contentType\":\"Channel\",\"channelno\":\"099\",\"mode\":\"prod\",\"deviceId\":\"29b3cb117a635d5b56\",\"deviceType\":\"ANDROID_WEB\"}"
+    }
+  ],
+  "MediaUnlockTest_unext": [
+    {
+      "method": "POST",
+      "url": "https://cc.unext.jp",
+      "headers": {
+        "content-type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"operationName\":\"cosmo_getPlaylistUrl\",\"variables\":{\"code\":\"ED00479780\",\"playMode\":\"caption\",\"bitrateLow\":192,\"bitrateHigh\":null,\"validationOnly\":false},\"query\":\"query cosmo_getPlaylistUrl($code: String, $playMode: String, $bitrateLow: Int, $bitrateHigh: Int, $validationOnly: Boolean) {\\n  webfront_playlistUrl(\\n    code: $code\\n    playMode: $playMode\\n    bitrateLow: $bitrateLow\\n    bitrateHigh: $bitrateHigh\\n    validationOnly: $validationOnly\\n  ) {\\n    subTitle\\n    playToken\\n    playTokenHash\\n    beaconSpan\\n    result {\\n      errorCode\\n      errorMessage\\n      __typename\\n    }\\n    resultStatus\\n    licenseExpireDate\\n    urlInfo {\\n      code\\n      startPoint\\n      resumePoint\\n      endPoint\\n      endrollStartPosition\\n      holderId\\n      saleTypeCode\\n      sceneSearchList {\\n        IMS_AD1\\n        IMS_L\\n        IMS_M\\n        IMS_S\\n        __typename\\n      }\\n      movieProfile {\\n        cdnId\\n        type\\n        playlistUrl\\n        movieAudioList {\\n          audioType\\n          __typename\\n        }\\n        licenseUrlList {\\n          type\\n          licenseUrl\\n          __typename\\n        }\\n        __typename\\n      }\\n      umcContentId\\n      movieSecurityLevelCode\\n      captionFlg\\n      dubFlg\\n      commodityCode\\n      movieAudioList {\\n        audioType\\n        __typename\\n      }\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n\"}"
+    }
+  ],
+  "MediaUnlockTest_wowow": [
+    {
+      "method": "GET",
+      "url": "https://www.wowow.co.jp/drama/original/json/lineup.json?_=${timestamp}",
+      "headers": {
+        "Accept": "application/json, text/javascript, */*; q=0.01",
+        "Referer": "https://www.wowow.co.jp/drama/original/",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "X-Requested-With": "XMLHttpRequest",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "${playUrl}",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "$wodUrl",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "POST",
+      "url": "https://mapi.wowow.co.jp/api/v1/playback/auth",
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "content-type": "application/json;charset=UTF-8",
+        "origin": "https://wod.wowow.co.jp",
+        "referer": "https://wod.wowow.co.jp/",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "x-requested-with": "XMLHttpRequest",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"meta_id\":${metaId},\"vuid\":\"${vUid}\",\"device_code\":1,\"app_id\":1,\"ua\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36\"}"
+    }
+  ],
+  "MediaUnlockTest_TVer": [
+    {
+      "method": "POST",
+      "url": "https://platform-api.tver.jp/v2/api/platform_users/browser/create",
+      "headers": {
+        "content-type": "application/x-www-form-urlencoded",
+        "origin": "https://s.tver.jp",
+        "referer": "https://s.tver.jp/",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "device_type=pc"
+    },
+    {
+      "method": "GET",
+      "url": "https://platform-api.tver.jp/service/api/v1/callHome?platform_uid=${platformUid}&platform_token=${platformToken}&require_data=mylist%2Cresume%2Clater",
+      "headers": {
+        "origin": "https://tver.jp",
+        "referer": "https://tver.jp/",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "x-tver-platform-type": "web",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://statics.tver.jp/content/episode/${episodeId}.json",
+      "headers": {
+        "origin": "https://tver.jp",
+        "referer": "https://tver.jp/",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://players.brightcove.net/${accountID}/${playerID}_default/index.min.js",
+      "headers": {
+        "Referer": "https://tver.jp/",
+        "Sec-Fetch-Dest": "script",
+        "Sec-Fetch-Mode": "no-cors",
+        "Sec-Fetch-Site": "cross-site",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://edge.api.brightcove.com/playback/v1/accounts/${accountID}/videos/${videoID}?config_id=${deliveryConfigId}",
+      "headers": {
+        "accept": "application/json;pk=${policyKey}",
+        "origin": "https://tver.jp",
+        "referer": "https://tver.jp/",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://edge.api.brightcove.com/playback/v1/accounts/${accountID}/videos/ref%3A${videoRefID}",
+      "headers": {
+        "accept": "application/json;pk=${policyKey}",
+        "origin": "https://tver.jp",
+        "referer": "https://tver.jp/",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_HamiVideo": [
+    {
+      "method": "GET",
+      "url": "https://hamivideo.hinet.net/api/play.do?id=OTT_VOD_0000249064&freeProduct=1",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_4GTV": [
+    {
+      "method": "GET",
+      "url": "https://api2.4gtv.tv/Web/IsTaiwanArea",
+      "headers": {
+        "origin": "https://www.4gtv.tv",
+        "referer": "https://www.4gtv.tv/",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_SlingTV": [
+    {
+      "method": "GET",
+      "url": "https://www.sling.com/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_PlutoTV": [
+    {
+      "method": "GET",
+      "url": "https://pluto.tv/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_HBOMax": [
+    {
+      "method": "GET",
+      "url": "https://www.max.com/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Showmax": [
+    {
+      "method": "GET",
+      "url": "https://www.showmax.com/",
+      "headers": {
+        "host": "www.showmax.com",
+        "connection": "keep-alive",
+        "sec-ch-ua": "\"Chromium\";v=\"124\", \"Microsoft Edge\";v=\"124\", \"Not-A.Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "upgrade-insecure-requests": "1",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0",
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "sec-fetch-site": "none",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-user": "?1",
+        "sec-fetch-dest": "document",
+        "accept-language": "zh-CN,zh;q=0.9"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Channel4": [
+    {
+      "method": "GET",
+      "url": "https://www.channel4.com/simulcast/channels/C4",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_ITVHUB": [
+    {
+      "method": "POST",
+      "url": "https://magni.itv.com/playlist/itvonline/ITV/10_4782_0001.001",
+      "headers": {
+        "Accept": "application/vnd.itv.vod.playlist.v2+json",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Content-Type": "application/json",
+        "Origin": "https://www.itv.com",
+        "Referer": "https://www.itv.com/",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-site",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"user\":{\"entitlements\":[]},\"device\":{\"manufacturer\":\"Chrome\",\"model\":\"125.0.0.0\",\"os\":{\"name\":\"Windows\",\"version\":\"10\",\"type\":\"desktop\"}},\"client\":{\"version\":\"4.1\",\"id\":\"browser\",\"supportsAdPods\":true,\"service\":\"itv.x\",\"appversion\":\"2.237.0\"},\"variantAvailability\":{\"player\":\"dash\",\"featureset\":{\"min\":[\"mpeg-dash\",\"widevine\",\"outband-webvtt\",\"hd\",\"single-track\"],\"max\":[\"mpeg-dash\",\"widevine\",\"outband-webvtt\",\"hd\",\"single-track\"]},\"platformTag\":\"dotcom\"}}"
+    }
+  ],
+  "MediaUnlockTest_DSTV": [
+    {
+      "method": "GET",
+      "url": "https://authentication.dstv.com/favicon.ico",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_encoreTVB": [
+    {
+      "method": "GET",
+      "url": "https://edge.api.brightcove.com/playback/v1/accounts/5324042807001/videos/6005570109001",
+      "headers": {
+        "Accept": "application/json;pk=BCpkADawqM2Gpjj8SlY2mj4FgJJMfUpxTNtHWXOItY1PvamzxGstJbsgc-zFOHkCVcKeeOhPUd9MNHEGJoVy1By1Hrlh9rOXArC5M5MTcChJGU6maC8qhQ4Y8W-QYtvi8Nq34bUb9IOvoKBLeNF4D9Avskfe9rtMoEjj6ImXu_i4oIhYS0dx7x1AgHvtAaZFFhq3LBGtR-ZcsSqxNzVg-4PRUI9zcytQkk_YJXndNSfhVdmYmnxkgx1XXisGv1FG5GOmEK4jZ_Ih0riX5icFnHrgniADr4bA2G7TYh4OeGBrYLyFN_BDOvq3nFGrXVWrTLhaYyjxOr4rZqJPKK2ybmMsq466Ke1ZtE-wNQ",
+        "Origin": "https://www.encoretvb.com",
+        "accept-language": "en-US,en;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Molotov": [
+    {
+      "method": "GET",
+      "url": "https://fapi.molotov.tv/v1/open-europe/is-france",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_LineTVTW": [
+    {
+      "method": "GET",
+      "url": "https://www.linetv.tw/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "${mainJsUrl}",
+      "headers": {
+        "referer": "https://www.linetv.tw/",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://www.linetv.tw/api/part/11829/eps/1/part?appId=${appId}&productType=FAST&version=10.38.0",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_ViuCom": [
+    {
+      "method": "GET",
+      "url": "https://www.viu.com/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Niconico": [
+    {
+      "method": "GET",
+      "url": "https://www.nicovideo.jp/watch/so23017073",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://live.nicovideo.jp/?cmnhd_ref=device=pc&site=nicolive&pos=header_servicelink&ref=WatchPage-Anchor",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://live.nicovideo.jp/watch/${liveID}",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_ParamountPlus": [
+    {
+      "method": "GET",
+      "url": "https://www.paramountplus.com/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_KKTV": [
+    {
+      "method": "GET",
+      "url": "https://api.kktv.me/v3/ipcheck",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_PeacockTV": [
+    {
+      "method": "GET",
+      "url": "https://www.peacocktv.com/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_FOD": [
+    {
+      "method": "GET",
+      "url": "https://geocontrol1.stream.ne.jp/fod-geo/check.xml?time=1624504256",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_BritBox": [
+    {
+      "method": "GET",
+      "url": "https://www.britbox.com/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_PrimeVideo": [
+    {
+      "method": "GET",
+      "url": "https://www.primevideo.com",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Radiko": [
+    {
+      "method": "GET",
+      "url": "https://radiko.jp/area?_=1625406539531",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_DMM": [
+    {
+      "method": "GET",
+      "url": "https://bitcoin.dmm.com/",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_DMMTV": [
+    {
+      "method": "POST",
+      "url": "https://api.beacon.dmm.com/v1/streaming/start",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      "body": "{\"player_name\":\"dmmtv_browser\",\"player_version\":\"0.0.0\",\"content_type_detail\":\"VOD_SVOD\",\"content_id\":\"11uvjcm4fw2wdu7drtd1epnvz\",\"purchase_product_id\":null}"
+    }
+  ],
+  "MediaUnlockTest_Catchplay": [
+    {
+      "method": "GET",
+      "url": "https://sunapi.catchplay.com/geo",
+      "headers": {
+        "authorization": "Basic NTQ3MzM0NDgtYTU3Yi00MjU2LWE4MTEtMzdlYzNkNjJmM2E0Ok90QzR3elJRR2hLQ01sSDc2VEoy",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_HotStar": [
+    {
+      "method": "GET",
+      "url": "https://www.hotstar.com",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_LiTV": [
+    {
+      "method": "POST",
+      "url": "https://www.litv.tv/api/get-urls-no-auth",
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "content-type": "application/json",
+        "accept-language": "en-US,en;q=0.9",
+        "origin": "https://www.litv.tv",
+        "referer": "https://www.litv.tv/drama/watch/VOD00328856",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"AssetId\":\"vod70810-000001M001_1500K\",\"MediaType\":\"vod\",\"puid\":\"${fakePUid}\"}"
+    }
+  ],
+  "MediaUnlockTest_FuboTV": [
+    {
+      "method": "GET",
+      "url": "https://api.fubo.tv/v3/location",
+      "headers": {
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9",
+        "origin": "https://www.fubo.tv",
+        "referer": "https://www.fubo.tv/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Fox": [
+    {
+      "method": "GET",
+      "url": "https://x-live-fox-stgec.uplynk.com/ausw/slices/8d1/d8e6eec26bf544f084bad49a7fa2eac5/8d1de292bcc943a6b886d029e6c0dc87/G00000000.ts?pbs=c61e60ee63ce43359679fb9f65d21564&cloud=aws&si=0",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Joyn": [
+    {
+      "method": "POST",
+      "url": "https://auth.joyn.de/auth/anonymous",
+      "headers": {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"client_id\":\"b74b9f27-a994-4c45-b7eb-5b81b1c856e7\",\"client_name\":\"web\",\"anon_device_id\":\"b74b9f27-a994-4c45-b7eb-5b81b1c856e7\"}"
+    },
+    {
+      "method": "POST",
+      "url": "https://api.joyn.de/content/entitlement-token",
+      "headers": {
+        "x-api-key": "36lp1t4wto5uu2i2nk57ywy9on1ns5yg",
+        "content-type": "application/json",
+        "authorization": "Bearer ${auth}",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"content_id\":\"daserste-de-hd\",\"content_type\":\"LIVE\"}"
+    }
+  ],
+  "MediaUnlockTest_SpotvNow": [
+    {
+      "method": "GET",
+      "url": "https://edge.api.brightcove.com/playback/v1/accounts/5764318566001/videos/6349973203112",
+      "headers": {
+        "accept": "application/json;pk=BCpkADawqM0U3mi_PT566m5lvtapzMq3Uy7ICGGjGB6v4Ske7ZX_ynzj8ePedQJhH36nym_5mbvSYeyyHOOdUsZovyg2XlhV6rRspyYPw_USVNLaR0fB_AAL2HSQlfuetIPiEzbUs1tpNF9NtQxt3BAPvXdOAsvy1ltLPWMVzJHiw9slpLRgI2NUufc",
+        "accept-language": "en-US,en;q=0.9",
+        "origin": "https://www.spotvnow.co.kr",
+        "referer": "https://www.spotvnow.co.kr/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_SKY_DE": [
+    {
+      "method": "GET",
+      "url": "https://edge.api.brightcove.com/playback/v1/accounts/1050888051001/videos/6247131490001",
+      "headers": {
+        "Accept": "application/json;pk=BCpkADawqM0OXCLe4eIkpyuir8Ssf3kIQAM62a1KMa4-1_vTOWQIxoHHD4-oL-dPmlp-rLoS-WIAcaAMKuZVMR57QY4uLAmP4Ov3V416hHbqr0GNNtzVXamJ6d4-rA3Xi98W-8wtypdEyjGEZNepUCt3D7UdMthbsG-Ean3V4cafT4nZX03st5HlyK1chp51SfA-vKcAOhHZ4_Oa9TTN61tEH6YqML9PWGyKrbuN5myICcGsFzP3R2aOF8c5rPCHT2ZAiG7MoavHx8WMjhfB0QdBr2fphX24CSpUKlcjEnQJnBiA1AdLg9iyReWrAdQylX4Eyhw5OwKiCGJznfgY6BDtbUmeq1I9r9RfmhP5bfxVGjILSEFZgXbMqGOvYdrdare0aW2fTCxeHdHt0vyKOWTC6CS1lrGJF2sFPKn1T1csjVR8s4MODqCBY1PTbHY4A9aZ-2MDJUVJDkOK52hGej6aXE5b9N9_xOT2B9wbXL1B1ZB4JLjeAdBuVtaUOJ44N0aCd8Ns0o02E1APxucQqrjnEociLFNB0Bobe1nkGt3PS74IQcs-eBvWYSpolldMH6TKLu8JqgdnM4WIp3FZtTWJRADgAmvF9tVDUG9pcJoRx_CZ4im-rn-AzN3FeOQrM4rTlU3Q8YhSmyEIoxYYqsFDwbFlhsAcvqQkgaElYtuciCL5i3U8N4W9rIhPhQJzsPafmLdWxBP_FXicyek25GHFdQzCiT8nf1o860Jv2cHQ4xUNcnP-9blIkLy9JmuB2RgUXOHzWsrLGGW6hq9wLUtqwEoxcEAAcNJgmoC0k8HE-Ga-NHXng6EFWnqiOg_mZ_MDd7gmHrrKLkQV",
+        "Origin": "https://www.sky.de",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_ZDF": [
+    {
+      "method": "GET",
+      "url": "https://ssl.zdf.de/geo/de/geo.txt/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Linux; Android 10; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_EPIX": [
+    {
+      "method": "POST",
+      "url": "https://api.epix.com/v2/sessions",
+      "headers": {
+        "host": "api.epix.com",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "traceparent": "00-000000000000000015b7efdb572b7bf2-4aefaea90903bd1f-01",
+        "sec-ch-ua-mobile": "?0",
+        "x-datadog-origin": "rum",
+        "x-datadog-sampling-priority": "1",
+        "accept": "application/json",
+        "x-datadog-trace-id": "1564983120873880562",
+        "x-datadog-parent-id": "5399726519264460063",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "origin": "https://www.mgmplus.com",
+        "sec-fetch-site": "cross-site",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-dest": "empty",
+        "referer": "https://www.mgmplus.com/",
+        "accept-language": "en-US,en;q=0.9",
+        "content-type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"device\":{\"guid\":\"7a0baaaf-384c-45cd-a21d-310ca5d3002a\",\"format\":\"console\",\"os\":\"web\",\"display_width\":1865,\"display_height\":942,\"app_version\":\"1.0.2\",\"model\":\"browser\",\"manufacturer\":\"google\"},\"apikey\":\"53e208a9bbaee479903f43b39d7301f7\"}"
+    },
+    {
+      "method": "POST",
+      "url": "https://api.epix.com/graphql",
+      "headers": {
+        "host": "api.epix.com",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "traceparent": "00-0000000000000000603047c112148412-32d64f8c890631ef-01",
+        "sec-ch-ua-mobile": "?0",
+        "x-datadog-origin": "rum",
+        "x-datadog-sampling-priority": "1",
+        "accept": "application/json",
+        "x-session-token": "${epixToken}",
+        "x-datadog-trace-id": "6931118721080787986",
+        "x-datadog-parent-id": "3663202811925377519",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "origin": "https://www.mgmplus.com",
+        "sec-fetch-site": "cross-site",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-dest": "empty",
+        "referer": "https://www.mgmplus.com/",
+        "accept-language": "en-US,en;q=0.9",
+        "content-type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"operationName\":\"PlayFlow\",\"variables\":{\"id\":\"c2VyaWVzOzEwMTc=\",\"supportedActions\":[\"open_url\",\"show_notice\",\"start_billing\",\"play_content\",\"log_in\",\"noop\",\"confirm_provider\",\"unlinked_provider\"],\"streamTypes\":[{\"encryptionScheme\":\"CBCS\",\"packagingSystem\":\"DASH\"},{\"encryptionScheme\":\"CENC\",\"packagingSystem\":\"DASH\"},{\"encryptionScheme\":\"NONE\",\"packagingSystem\":\"HLS\"},{\"encryptionScheme\":\"SAMPLE_AES\",\"packagingSystem\":\"HLS\"}]},\"query\":\"fragment ShowNotice on ShowNotice {\\n  type\\n  actions {\\n    continuationContext\\n    text\\n    __typename\\n  }\\n  description\\n  title\\n  __typename\\n}\\n\\nfragment OpenUrl on OpenUrl {\\n  type\\n  url\\n  __typename\\n}\\n\\nfragment Content on Content {\\n  title\\n  __typename\\n}\\n\\nfragment Movie on Movie {\\n  id\\n  shortName\\n  __typename\\n}\\n\\nfragment Episode on Episode {\\n  id\\n  series {\\n    shortName\\n    __typename\\n  }\\n  seasonNumber\\n  number\\n  __typename\\n}\\n\\nfragment Preroll on Preroll {\\n  id\\n  __typename\\n}\\n\\nfragment ContentUnion on ContentUnion {\\n  ...Content\\n  ...Movie\\n  ...Episode\\n  ...Preroll\\n  __typename\\n}\\n\\nfragment PlayContent on PlayContent {\\n  type\\n  continuationContext\\n  heartbeatToken\\n  currentItem {\\n    content {\\n      ...ContentUnion\\n      __typename\\n    }\\n    __typename\\n  }\\n  nextItem {\\n    content {\\n      ...ContentUnion\\n      __typename\\n    }\\n    showNotice {\\n      ...ShowNotice\\n      __typename\\n    }\\n    showNoticeAt\\n    __typename\\n  }\\n  amazonPlaybackData {\\n    pid\\n    playbackToken\\n    materialType\\n    __typename\\n  }\\n  playheadPosition\\n  vizbeeStreamInfo {\\n    customStreamInfo\\n    __typename\\n  }\\n  closedCaptions {\\n    ttml {\\n      location\\n      __typename\\n    }\\n    vtt {\\n      location\\n      __typename\\n    }\\n    xml {\\n      location\\n      __typename\\n    }\\n    __typename\\n  }\\n  hints {\\n    duration\\n    seekAllowed\\n    trackingEnabled\\n    trackingId\\n    __typename\\n  }\\n  streams(types: $streamTypes) {\\n    playlistUrl\\n    closedCaptionsEmbedded\\n    packagingSystem\\n    encryptionScheme\\n    videoQuality {\\n      height\\n      width\\n      __typename\\n    }\\n    widevine {\\n      authenticationToken\\n      licenseServerUrl\\n      __typename\\n    }\\n    playready {\\n      authenticationToken\\n      licenseServerUrl\\n      __typename\\n    }\\n    fairplay {\\n      authenticationToken\\n      certificateUrl\\n      licenseServerUrl\\n      __typename\\n    }\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment StartBilling on StartBilling {\\n  type\\n  __typename\\n}\\n\\nfragment LogIn on LogIn {\\n  type\\n  __typename\\n}\\n\\nfragment Noop on Noop {\\n  type\\n  __typename\\n}\\n\\nfragment PreviewContent on PreviewContent {\\n  type\\n  title\\n  description\\n  stream {\\n    sources {\\n      hls {\\n        location\\n        __typename\\n      }\\n      __typename\\n    }\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment ConfirmProvider on ConfirmProvider {\\n  type\\n  __typename\\n}\\n\\nfragment UnlinkedProvider on UnlinkedProvider {\\n  type\\n  __typename\\n}\\n\\nquery PlayFlow($id: String!, $supportedActions: [PlayFlowActionEnum!]!, $context: String, $behavior: BehaviorEnum = DEFAULT, $streamTypes: [StreamDefinition!]) {\\n  playFlow(\\n    id: $id\\n    supportedActions: $supportedActions\\n    context: $context\\n    behavior: $behavior\\n  ) {\\n    ...ShowNotice\\n    ...OpenUrl\\n    ...PlayContent\\n    ...StartBilling\\n    ...LogIn\\n    ...Noop\\n    ...PreviewContent\\n    ...ConfirmProvider\\n    ...UnlinkedProvider\\n    __typename\\n  }\\n}\"}"
+    }
+  ],
+  "MediaUnlockTest_NLZIET": [
+    {
+      "method": "GET",
+      "url": "https://api.nlziet.nl/v7/stream/handshake/Widevine/Dash/VOD/rzIL9rb-TkSn-ek_wBmvaw?playerName=BitmovinWeb",
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "accept-language": "en-US,en;q=0.9",
+        "authorization": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkM4M0YzQUFGOTRCOTM0ODA2NkQwRjZDRTNEODhGQkREIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE3MTIxMjY0NTMsImV4cCI6MTcxMjE1NTI0OCwiaXNzIjoiaHR0cHM6Ly9pZC5ubHppZXQubmwiLCJhdWQiOiJhcGkiLCJjbGllbnRfaWQiOiJ0cmlwbGUtd2ViIiwic3ViIjoiMDAzMTZiNGEtMDAwMC0wMDAwLWNhZmUtZjFkZTA1ZGVlZmVlIiwiYXV0aF90aW1lIjoxNzEyMTI2NDUzLCJpZHAiOiJsb2NhbCIsImVtYWlsIjoibXVsdGkuZG5zMUBvdXRsb29rLmNvbSIsInVzZXJJZCI6IjMyMzg3MzAiLCJjdXN0b21lcklkIjoiMCIsImRldmljZUlkZW50aWZpZXIiOiJJZGVudGl6aWV0LTI0NWJiNmYzLWM2ZjktNDNjZS05ODhmLTgxNDc2OTcwM2E5OCIsImV4dGVybmFsVXNlcklkIjoiZTM1ZjdkMzktMjQ0ZC00ZTkzLWFkOTItNGFjYzVjNGY0NGNlIiwicHJvZmlsZUlkIjoiMjdDMzM3RjktOTRDRS00NjBDLTlBNjktMTlDNjlCRTYwQUIzIiwicHJvZmlsZUNvbG9yIjoiRkY0MjdDIiwicHJvZmlsZVR5cGUiOiJBZHVsdCIsIm5hbWUiOiJTdHJlYW1pbmciLCJqdGkiOiI4Q0M1QzYzNkJGRjg3MEE2REJBOERBNUMwQTk0RUZDRiIsImlhdCI6MTcxMjEyNjQ1Mywic2NvcGUiOlsiYXBpIiwib3BlbmlkIl0sImFtciI6WyJwcm9maWxlIiwicHdkIl19.bk-ziFPJM00bpE7TcgPmIYFFx-2Q5N3BkUzEvQ_dDMK9O1F9f7DEe-Qzmnb5ym7ChlnXwrCV3QyOOA24hu_gCrlNlD7-vI3XGZR-54zFD-F7cRDOoL-1-iO_10tmgwb5Io-svY0bn0EDYKeRxYYBi0w_3bFVFDM2CxxA6tWeBYIfN5rCSzBHd3RPPjYtqX-sogyh_5W_7KJ83GK5kpsywT3mz8q7Cs1mtKs9QA1-o01N0RvTxZAcfzsHg3-qGgLnvaAuZ_XqRK9kLWqJWeJTWKWtUI6OlPex22sY3keKFpfZnUtFv-BvkCM6tvbIlMZAClk3lhI8rMFAWDpUcbcS3w",
+        "nlziet-appname": "WebApp",
+        "nlziet-appversion": "5.43.24",
+        "origin": "https://app.nlziet.nl",
+        "referer": "https://app.nlziet.nl/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_videoland": [
+    {
+      "method": "POST",
+      "url": "https://api.videoland.com/subscribe/videoland-account/graphql",
+      "headers": {
+        "host": "api.videoland.com",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "apollographql-client-name": "apollo_accounts_base",
+        "traceparent": "00-cab2dbd109bf1e003903ec43eb4c067d-623ef8e56174b85a-01",
+        "sec-ch-ua-mobile": "?0",
+        "accept": "*/*",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "origin": "https://www.videoland.com",
+        "sec-fetch-site": "same-site",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-dest": "empty",
+        "referer": "https://www.videoland.com/",
+        "accept-language": "en-US,en;q=0.9",
+        "content-type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"operationName\":\"IsOnboardingGeoBlocked\",\"variables\":{},\"query\":\"query IsOnboardingGeoBlocked {\\n  isOnboardingGeoBlocked\\n}\\n\"}"
+    }
+  ],
+  "MediaUnlockTest_NPO_Start_Plus": [
+    {
+      "method": "GET",
+      "url": "https://www.npo.nl/start/api/domain/player-token?productId=LI_NL1_4188102",
+      "headers": {
+        "host": "www.npo.nl",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "accept": "application/json, text/plain, */*",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-dest": "empty",
+        "referer": "https://www.npo.nl/start/live?channel=NPO1",
+        "accept-language": "en-US,en;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "POST",
+      "url": "https://prod.npoplayer.nl/stream-link",
+      "headers": {
+        "accept": "*/*",
+        "authorization": "${token}",
+        "content-type": "application/json",
+        "origin": "https://npo.nl",
+        "referer": "https://npo.nl/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site",
+        "accept-language": "en-US,en;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"profileName\":\"dash\",\"drmType\":\"playready\",\"referrerUrl\":\"https://npo.nl/start/live?channel=NPO1\"}"
+    }
+  ],
+  "MediaUnlockTest_RakutenTV": [
+    {
+      "method": "POST",
+      "url": "https://gizmo.rakuten.tv/v3/me/start?device_identifier=web&device_stream_audio_quality=2.0&device_stream_hdr_type=NONE&device_stream_video_quality=FHD",
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "accept-language": "en-US,en;q=0.9",
+        "content-type": "application/json",
+        "origin": "https://www.rakuten.tv",
+        "referer": "https://www.rakuten.tv/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"device_identifier\":\"web\",\"device_metadata\":{\"app_version\":\"v5.5.30\",\"audio_quality\":\"2.0\",\"brand\":\"chrome\",\"firmware\":\"XX.XX.XX\",\"hdr\":false,\"model\":\"GENERIC\",\"os\":\"Windows 10\",\"sdk\":\"125.0.0\",\"serial_number\":\"not implemented\",\"trusted_uid\":false,\"uid\":\"824b3fe9-e080-4c33-912b-3f67d96f5f99\",\"video_quality\":\"FHD\",\"year\":1970},\"ifa_id\":\"4ac8a156-b857-4335-96c1-fa8930430092\"}"
+    }
+  ],
+  "MediaUnlockTest_MoviStarPlus": [
+    {
+      "method": "GET",
+      "url": "https://contratar.movistarplus.es/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Starz": [
+    {
+      "method": "GET",
+      "url": "https://www.starz.com/sapi/header/v1/starz/us/09b397fc9eb64d5080687fc8a218775b",
+      "headers": {
+        "Referer": "https://www.starz.com/us/en/",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://auth.starz.com/api/v4/User/geolocation",
+      "headers": {
+        "AuthTokenAuthorization": "$authorization"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_CanalPlus": [
+    {
+      "method": "GET",
+      "url": "https://boutique-tunnel.canalplus.com/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Sky_CH": [
+    {
+      "method": "GET",
+      "url": "https://sky.ch/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_CBCGem": [
+    {
+      "method": "GET",
+      "url": "https://www.cbc.ca/g/stats/js/cbc-stats-top.js",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_AcornTV": [
+    {
+      "method": "GET",
+      "url": "https://acorn.tv/",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Crave": [
+    {
+      "method": "GET",
+      "url": "https://capi.9c9media.com/destinations/crave_atexace/platforms/desktop/playback/contents/2917721/contentPackages/6642701/manifest.mpd?action=reference&ssl=true&filter=fe&mca=false&uhd=false&mcv=false&hd=true&tpt=true&mta=true&stt=true&multilang=true",
+      "headers": {
+        "Content-Type": "application/json",
+        "Origin": "https://www.crave.ca",
+        "Referer": "https://www.crave.ca/",
+        "accept-language": "en-US,en;q=0.9",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "cross-site",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Amediateka": [
+    {
+      "method": "GET",
+      "url": "https://www.amediateka.ru/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_MegogoTV": [
+    {
+      "method": "GET",
+      "url": "https://megogo.net/en",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_RaiPlay": [
+    {
+      "method": "GET",
+      "url": "https://mediapolisvod.rai.it/relinker/relinkerServlet.htm?cont=VxXwi7UcqjApssSlashbjsAghviAeeqqEEqualeeqqEEqual&output=64",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_TVBAnywhere": [
+    {
+      "method": "GET",
+      "url": "https://uapisfm.tvbanywhere.com.sg/geoip/check/platform/android",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "GameTest_ProjectSekai": [
+    {
+      "method": "GET",
+      "url": "https://game-version.sekai.colorfulpalette.org/1.8.1/3ed70b6a-8352-4532-b819-108837926ff5",
+      "headers": {
+        "User-Agent": "pjsekai/48 CFNetwork/1240.0.4 Darwin/20.6.0"
+      },
+      "body": ""
+    }
+  ],
+  "GameTest_KonosubaFD": [
+    {
+      "method": "POST",
+      "url": "https://api.konosubafd.jp/api/masterlist",
+      "headers": {
+        "User-Agent": "pj0007/212 CFNetwork/1240.0.4 Darwin/20.6.0"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_NBATV": [
+    {
+      "method": "GET",
+      "url": "https://www.nba.com/watch/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Directv": [
+    {
+      "method": "GET",
+      "url": "https://stream.directv.com/watchnow",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_SkyGo": [
+    {
+      "method": "GET",
+      "url": "https://skyid.sky.com/authorise/skygo?response_type=token&client_id=sky&appearance=compact&redirect_uri=skygo://auth",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_DirecTVGO": [
+    {
+      "method": "GET",
+      "url": "https://www.directvgo.com/registrarse",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_DiscoveryPlus": [
+    {
+      "method": "GET",
+      "url": "https://global-prod.disco-api.com/bootstrapInfo",
+      "headers": {
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9",
+        "origin": "https://www.discoveryplus.com",
+        "referer": "https://www.discoveryplus.com/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site",
+        "x-disco-client": "WEB:UNKNOWN:dplus_us:2.46.0",
+        "x-disco-params": "bid=dplus,hn=www.discoveryplus.com",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "${baseApiUrl}/token?deviceId=${fakeDeviceId}&realm=${realm}&shortlived=true",
+      "headers": {
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9",
+        "origin": "https://www.discoveryplus.com",
+        "referer": "https://www.discoveryplus.com/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "x-device-info": "dplus_us/2.46.0 (desktop/desktop; Windows/NT 10.0; ${fakeDeviceId})",
+        "x-disco-client": "WEB:UNKNOWN:dplus_us:2.46.0",
+        "x-disco-params": "realm=${realm},bid=dplus,hn=www.discoveryplus.com,hth=,features=ar",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "${baseApiUrl}/cms/routes/tabbed-home?include=default&decorators=viewingHistory,isFavorite,playbackAllowed,contentAction",
+      "headers": {
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9",
+        "origin": "https://www.discoveryplus.com",
+        "referer": "https://www.discoveryplus.com/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "x-disco-client": "WEB:UNKNOWN:dplus_us:2.46.0",
+        "x-disco-params": "realm=dplay,bid=dplus,hn=www.discoveryplus.com,hth=,features=ar",
+        "Cookie": "st=${token}",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_ESPNPlus": [
+    {
+      "method": "POST",
+      "url": "https://espn.api.edge.bamgrid.com/token",
+      "headers": {
+        "authorization": "Bearer ZXNwbiZicm93c2VyJjEuMC4w.ptUt7QxsteaRruuPmGZFaJByOoqKvDP2a5YkInHrc7c",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      "body": "$espnCookies"
+    },
+    {
+      "method": "POST",
+      "url": "https://espn.api.edge.bamgrid.com/graph/v1/device/graphql",
+      "headers": {
+        "authorization": "ZXNwbiZicm93c2VyJjEuMC4w.ptUt7QxsteaRruuPmGZFaJByOoqKvDP2a5YkInHrc7c",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      "body": "$espnContent"
+    }
+  ],
+  "MediaUnlockTest_Binge": [
+    {
+      "method": "GET",
+      "url": "https://auth.streamotion.com.au",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Docplay": [
+    {
+      "method": "GET",
+      "url": "https://www.docplay.com/subscribe",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_OptusSports": [
+    {
+      "method": "GET",
+      "url": "https://sport.optus.com.au/api/userauth/validate/web/username/region-check@example.invalid",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_KayoSports": [
+    {
+      "method": "GET",
+      "url": "https://billingapi.streamotion.com.au/v2/offers/kayo/",
+      "headers": {
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9",
+        "origin": "https://kayosports.com.au",
+        "referer": "https://kayosports.com.au/",
+        "sec-ch-ua": "${SEC_CH_UA}",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_SkyGONZ": [
+    {
+      "method": "GET",
+      "url": "https://login.sky.co.nz/authorize?audience=https%3A%2F%2Fapi.sky.co.nz&client_id=dXhXjmK9G90mOX3B02R1kV7gsC4bp8yx&redirect_uri=https%3A%2F%2Fwww.skygo.co.nz&connection=Sky-Internal-Connection&scope=openid%20profile%20email%20offline_access&response_type=code&response_mode=query&state=OXg3QjBGTHpoczVvdG1fRnJFZXVoNDlPc01vNzZjWjZsT3VES2VhN1dDWA%3D%3D&nonce=OEdvci4xZHBHU3VLb1M0T1JRbTZ6WDZJVGQ3R3J0TTdpTndvWjNMZDM5ZA%3D%3D&code_challenge=My5fiXIl-cX79KOUe1yDFzA6o2EOGpJeb6w1_qeNkpI&code_challenge_method=S256&auth0Client=eyJuYW1lIjoiYXV0aDAtcmVhY3QiLCJ2ZXJzaW9uIjoiMS4zLjAifQ%3D%3D",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_ThreeNow": [
+    {
+      "method": "GET",
+      "url": "https://bravo-livestream.fullscreen.nz/index.m3u8",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_MaoriTV": [
+    {
+      "method": "GET",
+      "url": "https://www.maoriplus.co.nz/live-tv/whakaata-maori",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "${SEC_CH_UA}",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://www.maoriplus.co.nz${indexJsPath}",
+      "headers": {
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9",
+        "origin": "https://www.maoriplus.co.nz",
+        "referer": "https://www.maoriplus.co.nz/live-tv/whakaata-maori",
+        "sec-ch-ua": "${SEC_CH_UA}",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "script",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://${playerJsUrl}",
+      "headers": {
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9",
+        "referer": "https://www.maoriplus.co.nz/",
+        "sec-ch-ua": "${SEC_CH_UA}",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "script",
+        "sec-fetch-mode": "no-cors",
+        "sec-fetch-site": "cross-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://edge.api.brightcove.com/playback/v1/accounts/${accountId}/videos/${bcChannelId}",
+      "headers": {
+        "accept": "application/json;pk=${policyKey}",
+        "accept-language": "en-US,en;q=0.9",
+        "origin": "https://www.maoriplus.co.nz",
+        "referer": "https://www.maoriplus.co.nz/",
+        "sec-ch-ua": "${SEC_CH_UA}",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_SBSonDemand": [
+    {
+      "method": "GET",
+      "url": "https://www.sbs.com.au/api/v3/network?context=odwebsite",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_ABCiView": [
+    {
+      "method": "GET",
+      "url": "https://api.iview.abc.net.au/v2/show/abc-kids-live-stream/video/LS1604H001S00?embed=highlightVideo,selectedSeries",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Channel9": [
+    {
+      "method": "GET",
+      "url": "https://login.nine.com.au",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Telasa": [
+    {
+      "method": "GET",
+      "url": "https://api-videopass-anon.kddi-video.com/v1/playback/system_status",
+      "headers": {
+        "X-Device-ID": "d36f8e6b-e344-4f5e-9a55-90aeb3403799",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_SetantaSports": [
+    {
+      "method": "GET",
+      "url": "https://dce-frontoffice.imggaming.com/api/v2/consent-prompt",
+      "headers": {
+        "Realm": "dce.adjara",
+        "x-api-key": "857a1e5d-e35e-4fdf-805b-a87b6f8364bf",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Channel5": [
+    {
+      "method": "GET",
+      "url": "https://cassie.channel5.com/api/v2/live_media/my5desktopng/C5.json?timestamp=${timestamp}&auth=0_rZDiY0hp_TNcDyk2uD-Kl40HqDbXs7hOawxyqPnbI",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_MyVideo": [
+    {
+      "method": "GET",
+      "url": "https://www.myvideo.net.tw/login.do",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_7plus": [
+    {
+      "method": "GET",
+      "url": "https://7plus-sevennetwork.akamaized.net/media/v1/dash/live/cenc/5303576322001/68dca38b-85d7-4dae-b1c5-c88acc58d51c/f4ea4711-514e-4cad-824f-e0c87db0a614/225ec0a0-ef18-4b7c-8fd6-8dcdd16cf03a/1x/segment0.m4f?akamai_token=exp=1672500385~acl=/media/v1/dash/live/cenc/5303576322001/68dca38b-85d7-4dae-b1c5-c88acc58d51c/f4ea4711-514e-4cad-824f-e0c87db0a614/*~hmac=800e1e1d1943addf12b71339277c637c7211582fe12d148e486ae40d6549dbde",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Channel10": [
+    {
+      "method": "GET",
+      "url": "https://e410fasadvz.global.ssl.fastly.net/geo",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_VideoMarket": [
+    {
+      "method": "POST",
+      "url": "https://www.videomarket.jp/graphql",
+      "headers": {
+        "authority": "www.videomarket.jp",
+        "accept": "*/*",
+        "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+        "authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ4MTkxNTkyMDIsImlhdCI6MTY2NTU1OTIwMiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnZpZGVvbWFya2V0LmpwIiwic3ViIjoiY2ZjZDIwODQ5NWQ1NjVlZjY2ZTdkZmY5Zjk4NzY0ZGEiLCJ1c2VyX3R5cGUiOjAsInNpdGVfdHlwZSI6MiwiY2xpZW50X2lkIjoiYmVkNDdkOTFiMDVhYjgzMGM4YzBhYmFiYjQwNTg5MTFhY2E5NTdkMDBkMTUzNjA2MjI3NzNhOTQ0Y2RlNzRhNSIsInZtaWQiOjB9.Tq18RCxpVz1oV1lja52uRmF0nT6Oa0QsZMTVlPfANwb-RrcSn7PwE9vh7GdNIBc0ydDxRoUMuhStz_Kbu8KxvAh25eafFh7hf0DDqWKKU4ayPMueaR12t74SjFIRC7Cla1NR4uRn3_mgJfZFqOkIf6L5OR9LOVIBhrQPkhbMyqwZyh_kxTH7ToJIQoINb036ftqcF1KfR8ndtBlkrrWWnDpfkmE7-fJQHh92oKKd9l98W5awuEQo0MFspIdSNgt3gLi9t1RRKPDISGlzJkwMLPkHIUlWWZaAmnEkwSeZCPj_WJaqUqBATYKhi3yJZNGlHsScQ_KgAopxlsI6-c88Gps8i6yHvPVYw3hQ9XYq9gVL_SpyW9dKKSPE9MY6I19JHLBXuFXi5OJccqtQzTnKm_ZQM3EcKt5s0cNlXm9RMt0fNdRTQdJ53noD9o-b6hUIxDcHScJ_-30Emiv-55g5Sq9t5KPWO6o0Ggokkj42zin69MxCiUSHXk5FgeY8rX76yGBeLPLPIaaRPXEC1Jeo1VO56xNnQpyX_WHqHWDKhmOh1qSzaxiAiC5POMsTfwGr19TwXHUldYXxuNMIfeAaPZmNTzR5J6XdenFkLnrssVzXdThdlqHpfguLFvHnXTCAm0ZhFIJmacMNw1IxGmCQfkM4HtgKB9ZnWm6P0jIISdg",
+        "content-type": "application/json",
+        "cookie": "_gid=GA1.2.1853799793.1706147718; VM_REGIST_BANNER_REF_LINK=%2Ftitle%2F292072; __ulfpc=202401250957239984; _im_vid=01HMZ5C5GNNC6VWSPKD3E4W7YP; __td_signed=true; _td_global=0d11678b-5151-473e-b3a8-4f4d780f26a6; __juicer_sesid_9i3nsdfP_=d36a2e17-0117-47ce-95de-fbd5ffcda2d9; __juicer_session_referrer_9i3nsdfP_=d36a2e17-0117-47ce-95de-fbd5ffcda2d9___https%253A%252F%252Fwww.videomarket.jp%252Fplayer%252F292072%252FA292072001999H01; _gat_UA-221872486-2=1; _ga=GA1.2.777206008.1706147718; _ga_8HZQ9F8HV0=GS1.1.1706147717.1.1.1706147941.0.0.0; _td=3317738c-2329-4b61-ad5a-4e0ad230841d; dc_cl_id=ab38GzrmoV7muvtI",
+        "origin": "https://www.videomarket.jp",
+        "referer": "https://www.videomarket.jp/player/292072/A292072001999H01",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "x-videomarket-requested": "spa",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"operationName\":\"repPacks\",\"variables\":{\"repFullPackIds\":[\"A292072001999H01\"],\"isOnSale\":false,\"isOnlyLatest\":true},\"query\":\"query repPacks($repFullPackIds: [String], $fullPacksIds: [String], $isOnSale: Boolean!, $isOnlyLatest: Boolean!) {\\n  repPacks(\\n    repFullPackIds: $repFullPackIds\\n    fullPackIds: $fullPacksIds\\n    onSale: $isOnSale\\n    onlyLatest: $isOnlyLatest\\n  ) {\\n    repFullPackId\\n    groupType\\n    packName\\n    fullTitleId\\n    titleName\\n    storyImageUrl16x9\\n    playTime\\n    subtitleDubType\\n    outlines\\n    courseIds\\n    price\\n    discountRate\\n    couponPrice\\n    couponDiscountRate\\n    rentalDays\\n    viewDays\\n    deliveryExpiredAt\\n    salesType\\n    counter {\\n      currentPage\\n      currentResult\\n      totalPages\\n      totalResults\\n      __typename\\n    }\\n    undiscountedPrice\\n    packs {\\n      undiscountedPrice\\n      canPurchase\\n      fullPackId\\n      subGroupType\\n      fullTitleId\\n      qualityConsentType\\n      courseIds\\n      price\\n      discountRate\\n      couponPrice\\n      couponDiscountRate\\n      rentalDays\\n      viewDays\\n      deliveryExpiredAt\\n      salesType\\n      extId\\n      stories {\\n        fullStoryId\\n        subtitleDubType\\n        encodeVersion\\n        isDownloadable\\n        isBonusMaterial\\n        fileSize\\n        __typename\\n      }\\n      __typename\\n    }\\n    status {\\n      hasBeenPlayed\\n      isCourseRegistered\\n      isEstPurchased\\n      isNowPlaying\\n      isPlayable\\n      isRented\\n      playExpiredAt\\n      playableQualityType\\n      rentalExpiredAt\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n\"}"
+    }
+  ],
+  "MediaUnlockTest_JCOM_ON_DEMAND": [
+    {
+      "method": "GET",
+      "url": "https://auth.id2.zaq.ne.jp/login",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_musicjp": [
+    {
+      "method": "GET",
+      "url": "https://overseaauth.music-book.jp/globalIpcheck.js",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Popcornflix": [
+    {
+      "method": "GET",
+      "url": "https://popcornflix-prod.cloud.seachange.com/cms/popcornflix/clientconfiguration/versions/2",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_TubiTV": [
+    {
+      "method": "GET",
+      "url": "https://tubitv.com/home",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Philo": [
+    {
+      "method": "GET",
+      "url": "https://content-us-east-2-fastly-b.www.philo.com/geo",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_FXNOW": [
+    {
+      "method": "GET",
+      "url": "https://fxnow.fxnetworks.com/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_CWTV": [
+    {
+      "method": "GET",
+      "url": "https://www.cwtv.com/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Shudder": [
+    {
+      "method": "GET",
+      "url": "https://www.shudder.com/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_TLCGO": [
+    {
+      "method": "GET",
+      "url": "https://us1-prod-direct.tlc.com/token?deviceId=${fakeDeviceId}&realm=go&shortlived=true",
+      "headers": {
+        "accept-language": "en-US,en;q=0.9",
+        "origin": "https://go.tlc.com",
+        "referer": "https://go.tlc.com/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "x-device-info": "tlc/3.17.0 (desktop/desktop; Windows/NT 10.0; ${fakeDeviceId})",
+        "x-disco-client": "WEB:UNKNOWN:tlc:3.17.0",
+        "x-disco-params": "realm=go,siteLookupKey=tlc,bid=tlc,hn=go.tlc.com,hth=us,features=ar",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://us1-prod-direct.tlc.com/cms/routes/home?include=default&decorators=viewingHistory,isFavorite,playbackAllowed&page\\[items.number\\]=1&page\\[items.size\\]=8",
+      "headers": {
+        "accept-language": "en-US,en;q=0.9",
+        "Authorization": "Bearer ${token}",
+        "origin": "https://go.tlc.com",
+        "referer": "https://go.tlc.com/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "x-disco-client": "WEB:UNKNOWN:tlc:3.17.0",
+        "x-disco-params": "realm=go,siteLookupKey=tlc,bid=tlc,hn=go.tlc.com,hth=us,features=ar",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Wavve": [
+    {
+      "method": "GET",
+      "url": "https://apis.wavve.com/fz/streaming?device=pc&partner=pooq&apikey=E5F3E0D30947AA5440556471321BB6D9&credential=none&service=wavve&pooqzone=none&region=kor&drm=pr&targetage=all&contentid=MV_C3001_C300000012559&contenttype=movie&hdr=sdr&videocodec=avc&audiocodec=ac3&issurround=n&format=normal&withinsubtitle=n&action=dash&protocol=dash&quality=auto&deviceModelId=Windows%2010&guid=1a8e9c88-6a3b-11ed-8584-eed06ef80652&lastplayid=none&authtype=cookie&isabr=y&ishevc=n",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Tving": [
+    {
+      "method": "GET",
+      "url": "https://api.tving.com/v2a/media/stream/info?apiKey=1e7952d0917d6aab1f0293a063697610&mediaCode=RV60891248",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_CoupangPlay": [
+    {
+      "method": "GET",
+      "url": "https://www.coupangplay.com/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_NaverTV": [
+    {
+      "method": "GET",
+      "url": "${req_url}",
+      "headers": {
+        "User-Agent": "${UA_Browser}",
+        "host": "apis.naver.com",
+        "sec-ch-ua": "${UA_SecCHUA}",
+        "accept": "application/json, text/plain, */*",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "origin": "https://tv.naver.com",
+        "sec-fetch-site": "same-site",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-dest": "empty",
+        "referer": "https://tv.naver.com/v/31030608",
+        "accept-language": "en-US,en;q=0.9"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Afreeca": [
+    {
+      "method": "GET",
+      "url": "https://vod.afreecatv.com/player/97464151",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_KBSDomestic": [
+    {
+      "method": "GET",
+      "url": "https://vod.kbs.co.kr/index.html?source=episode&sname=vod&stype=vod&program_code=T2022-0690&program_id=PS-2022164275-01-000&broadcast_complete_yn=N&local_station_code=00&section_code=03",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_Watcha": [
+    {
+      "method": "GET",
+      "url": "https://watcha.com/",
+      "headers": {
+        "host": "watcha.com",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "upgrade-insecure-requests": "1",
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "sec-fetch-site": "none",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-user": "?1",
+        "sec-fetch-dest": "document",
+        "accept-language": "en-US,en;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_KOCOWA": [
+    {
+      "method": "GET",
+      "url": "https://www.kocowa.com/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_NBCTV": [
+    {
+      "method": "POST",
+      "url": "https://geolocation.digitalsvc.apps.nbcuni.com/geolocation/live/usa",
+      "headers": {
+        "accept": "application/media.geo-v2+json",
+        "accept-language": "en-US,en;q=0.9",
+        "app-session-id": "${fakeUuid}",
+        "authorization": "NBC-Basic key=\"usa_live\", version=\"3.0\", type=\"cpc\"",
+        "client": "oneapp",
+        "content-type": "application/json",
+        "origin": "https://www.nbc.com",
+        "referer": "https://www.nbc.com/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "cross-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": "{\"adobeMvpdId\":null,\"serviceZip\":null,\"device\":\"web\"}"
+    }
+  ],
+  "MediaUnlockTest_Crackle": [
+    {
+      "method": "GET",
+      "url": "https://prod-api.crackle.com/appconfig",
+      "headers": {
+        "Accept-Language": "en-US,en;q=0.9",
+        "Content-Type": "application/json",
+        "Origin": "https://www.crackle.com",
+        "Referer": "https://www.crackle.com/",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-site",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "x-crackle-apiversion": "v2.0.0",
+        "x-crackle-brand": "crackle",
+        "x-crackle-platform": "5FE67CCA-069A-42C6-A20F-4B47A8054D46",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_AETV": [
+    {
+      "method": "GET",
+      "url": "https://link.theplatform.com/s/xc6n8B/UR27JDU0bu2s/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://play.aetv.com/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_NFLPlus": [
+    {
+      "method": "GET",
+      "url": "https://www.nfl.com/plus/",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_SkyShowTime": [
+    {
+      "method": "GET",
+      "url": "https://www.skyshowtime.com/",
+      "headers": {
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "GameTest_MathsSpot": [
+    {
+      "method": "GET",
+      "url": "https://mathsspot.com/",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://mathsspot.com/${apiPath}/startSession?appId=5349&uaId=ua-${fakeUAId}&uaSessionId=uasess-${fakeSessId}&feSessionId=fesess-${fakeFesessId}&visitId=visitid-${fakeVisitId}&initialOrientation=landscape&utmSource=NA&utmMedium=NA&utmCampaign=NA&deepLinkUrl=&accessCode=&ngReferrer=NA&pageReferrer=NA&ngEntryPoint=https%3A%2F%2Fmathsspot.com%2F&ntmSource=NA&customData=&appLaunchExtraData=&feSessionTags=nowgg&sdpType=&eVar=&isIframe=false&feDeviceType=desktop&feOsName=window&userSource=direct&visitSource=direct&userCampaign=NA&visitCampaign=NA",
+      "headers": {
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9",
+        "referer": "https://mathsspot.com/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "x-ngg-skip-evar-check": "true",
+        "x-ngg-fe-version": "${nggFeVersion}"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_BGlobalSEA": [
+    {
+      "method": "GET",
+      "url": "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=347666",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_BGlobalTH": [
+    {
+      "method": "GET",
+      "url": "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=10077726",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_BGlobalID": [
+    {
+      "method": "GET",
+      "url": "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=11130043",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_BGlobalVN": [
+    {
+      "method": "GET",
+      "url": "https://api.bilibili.tv/intl/gateway/web/playurl?s_locale=en_US&platform=web&ep_id=11405745",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "WebTest_MetaAI": [
+    {
+      "method": "GET",
+      "url": "https://www.meta.ai/",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "WebTest_Wikipedia_Editable": [
+    {
+      "method": "GET",
+      "url": "https://zh.wikipedia.org/w/index.php?title=Wikipedia%3A%E6%B2%99%E7%9B%92&action=edit",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_MeWatch": [
+    {
+      "method": "GET",
+      "url": "https://cdn.mewatch.sg/api/items/97098/videos?delivery=stream%2Cprogressive&ff=idp%2Cldp%2Crpt%2Ccd&lang=en&resolution=External&segments=all",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_SonyLiv": [
+    {
+      "method": "GET",
+      "url": "https://www.sonyliv.com/",
+      "headers": {
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://apiv2.sonyliv.com/AGL/1.4/A/ENG/WEB/ALL/USER/ULD",
+      "headers": {
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "accept": "application/json, text/plain, */*",
+        "referer": "https://www.sonyliv.com/",
+        "device_id": "25a417c3b5f246a393fadb022adc82d5-1715309762699",
+        "app_version": "3.5.59",
+        "security_token": "${jwtToken}",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://apiv2.sonyliv.com/AGL/3.8/A/ENG/WEB/${region}/ALL/CONTENT/VIDEOURL/VOD/1000045427/prefetch",
+      "headers": {
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "accept": "application/json, text/plain, */*",
+        "origin": "https://www.sonyliv.com",
+        "referer": "https://www.sonyliv.com/",
+        "device_id": "25a417c3b5f246a393fadb022adc82d5-1715309762699",
+        "security_token": "${jwtToken}",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "WebTest_EroGameSpace": [
+    {
+      "method": "GET",
+      "url": "https://erogamescape.org",
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_RakutenTVJP": [
+    {
+      "method": "GET",
+      "url": "https://api-live.tv.rakuten.co.jp/v1/contents/${contentId}/playinfo?device_id=2",
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "accept-language": "en-US,en;q=0.9",
+        "origin": "https://live.tv.rakuten.co.jp",
+        "referer": "https://live.tv.rakuten.co.jp/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    },
+    {
+      "method": "GET",
+      "url": "https://webapi.nba.rakuten.co.jp/api/v1/system/geofilter?os_type=web&os_version=2.38.13",
+      "headers": {
+        "accept": "application/json, text/plain, */*",
+        "accept-language": "ja",
+        "origin": "https://nba.rakuten.co.jp",
+        "referer": "https://nba.rakuten.co.jp/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ],
+  "MediaUnlockTest_AMCPlus": [
+    {
+      "method": "GET",
+      "url": "https://www.amcplus.com/",
+      "headers": {
+        "accept": "*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "accept-language": "en-US,en;q=0.9",
+        "sec-ch-ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "document",
+        "sec-fetch-mode": "navigate",
+        "sec-fetch-site": "none",
+        "sec-fetch-user": "?1",
+        "upgrade-insecure-requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+      },
+      "body": ""
+    }
+  ]
+}

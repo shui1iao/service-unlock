@@ -1,0 +1,126 @@
+{
+  "MediaUnlockTest_BilibiliHKMCTW": [
+    "code",
+    "number"
+  ],
+  "MediaUnlockTest_BilibiliTW": [
+    "code",
+    "number"
+  ],
+  "MediaUnlockTest_Dazn": [
+    "isAllowed",
+    "bool"
+  ],
+  "MediaUnlockTest_NowE": [
+    "OTTAPI_ResponseCode",
+    "string"
+  ],
+  "MediaUnlockTest_ViuTV": [
+    "responseCode",
+    "string"
+  ],
+  "MediaUnlockTest_unext": [
+    "resultStatus",
+    "number"
+  ],
+  "MediaUnlockTest_HamiVideo": [
+    "code",
+    "string"
+  ],
+  "MediaUnlockTest_4GTV": [
+    "Data",
+    "string"
+  ],
+  "MediaUnlockTest_encoreTVB": [
+    "error_subcode",
+    "string"
+  ],
+  "MediaUnlockTest_Molotov": [
+    "is_france",
+    "bool"
+  ],
+  "MediaUnlockTest_SpotvNow": [
+    "error_subcode",
+    "string"
+  ],
+  "MediaUnlockTest_SKY_DE": [
+    "error_subcode",
+    "string"
+  ],
+  "MediaUnlockTest_videoland": [
+    "isOnboardingGeoBlocked",
+    "bool"
+  ],
+  "MediaUnlockTest_TVBAnywhere": [
+    "allow_in_this_country",
+    "bool"
+  ],
+  "MediaUnlockTest_Philo": [
+    "status",
+    "string"
+  ],
+  "MediaUnlockTest_NaverTV": [
+    "playable",
+    "string"
+  ],
+  "MediaUnlockTest_NBCTV": [
+    "restricted",
+    "bool"
+  ],
+  "MediaUnlockTest_MyTVSuper": [
+    "country_code",
+    "string"
+  ],
+  "MediaUnlockTest_KKTV": [
+    "country",
+    "string"
+  ],
+  "MediaUnlockTest_CBCGem": [
+    "country",
+    "string"
+  ],
+  "MediaUnlockTest_SBSonDemand": [
+    "country_code",
+    "string"
+  ],
+  "MediaUnlockTest_Catchplay": [
+    "code",
+    "string"
+  ],
+  "MediaUnlockTest_Channel5": [
+    "code",
+    "string"
+  ],
+  "MediaUnlockTest_Channel10": [
+    "allow",
+    "bool"
+  ],
+  "MediaUnlockTest_SetantaSports": [
+    "outsideAllowedTerritories",
+    "bool"
+  ],
+  "MediaUnlockTest_BGlobalSEA": [
+    "code",
+    "number"
+  ],
+  "MediaUnlockTest_BGlobalTH": [
+    "code",
+    "number"
+  ],
+  "MediaUnlockTest_BGlobalID": [
+    "code",
+    "number"
+  ],
+  "MediaUnlockTest_BGlobalVN": [
+    "code",
+    "number"
+  ],
+  "MediaUnlockTest_LiTV": [
+    "code",
+    "number"
+  ],
+  "MediaUnlockTest_Telasa": [
+    "type",
+    "string"
+  ]
+}

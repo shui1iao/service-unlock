@@ -76,12 +76,12 @@ func TestJSONUnchangedUnderForcedColor(t *testing.T) {
 	if err := json.Unmarshal(out.Bytes(), &object); err != nil {
 		t.Fatal(err)
 	}
-	for _, name := range []string{"schema_version", "source", "generated_at", "network", "results", "services", "ai_endpoints"} {
+	for _, name := range []string{"schema_version", "source", "generated_at", "network", "results", "services", "ai_endpoints", "extra_checks", "selection"} {
 		if _, ok := object[name]; !ok {
 			t.Fatal(name)
 		}
 	}
-	if len(object) != 7 {
+	if len(object) != 9 {
 		t.Fatal("changed JSON top-level fields")
 	}
 	var rows []map[string]json.RawMessage

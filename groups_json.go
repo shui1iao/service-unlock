@@ -62,5 +62,7 @@ func makeCompleteReport(m measurements, timeout float64, workers int) report {
 		}
 		r.AIEndpoints = append(r.AIEndpoints, out)
 	}
+	r.ExtraChecks = m.Extra
+	r.Selection = m.Selection
 	return r
 }

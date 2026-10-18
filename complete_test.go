@@ -164,7 +164,7 @@ func TestComplete37RealCallPathsAndAdditiveJSON(t *testing.T) {
 	if err = json.Unmarshal(data, &doc); err != nil {
 		t.Fatal(err)
 	}
-	if len(doc) != 7 || doc["services"] == nil || doc["ai_endpoints"] == nil || bytes.Contains(data, []byte("\x1b")) {
+	if len(doc) != 9 || doc["services"] == nil || doc["ai_endpoints"] == nil || bytes.Contains(data, []byte("\x1b")) {
 		t.Fatal("schema mismatch")
 	}
 	if report.Network.Mode != "direct" || report.Network.AddressFamily != "system-selected" {
