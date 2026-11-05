@@ -13,7 +13,7 @@ import (
 )
 
 func TestSingleBoxCompleteScopesAndMachineJSONUnchanged(t *testing.T) {
-	titles := []string{"Service regions & access", "Service availability", "AI endpoints", "Global services", "Regional services"}
+	titles := []string{"Video, live & sports", "Music & audio", "AI services", "Gaming", "Community", "General websites"}
 	for _, region := range []string{"global", "jp", "eu", "na"} {
 		t.Run(region, func(t *testing.T) {
 			m := unifiedFixture(region, false)
@@ -62,9 +62,6 @@ func TestSingleBoxCompleteScopesAndMachineJSONUnchanged(t *testing.T) {
 				t.Fatal("duplicate headers", text)
 			}
 			nsections := len(titles)
-			if region == "global" {
-				nsections--
-			}
 			last := -1
 			for _, title := range titles[:nsections] {
 				p := strings.Index(text, title)
@@ -78,43 +75,14 @@ func TestSingleBoxCompleteScopesAndMachineJSONUnchanged(t *testing.T) {
 					}
 				}
 			}
-			if region == "global" && strings.Contains(text, "Regional services") {
-				t.Fatal("empty local section")
-			}
 			count := len(r.Results) + len(r.Services) + len(r.AIEndpoints) + len(r.ExtraChecks)
 			statusLines := regexp.MustCompile(`(?m)^│.*[●○] (?:Yes|No|Limited|Unknown)`).FindAllString(text, -1)
 			if len(statusLines) != count {
 				t.Fatal("missing service rows", len(statusLines), count)
 			}
-			expectedRows := make([][]string, 5)
-			for _, row := range m.Services {
-				expectedRows[0] = append(expectedRows[0], row.Check.Name)
-			}
-			for _, row := range m.Access {
-				expectedRows[1] = append(expectedRows[1], row.Check.Name)
-			}
-			for _, row := range m.AI {
-				expectedRows[2] = append(expectedRows[2], row.Check.Name)
-			}
 			for _, row := range m.Extra {
-				group := 3
-				if row.Scope != "global" {
-					group = 4
-				}
-				expectedRows[group] = append(expectedRows[group], row.Name)
-			}
-			for i, title := range titles[:nsections] {
-				sectionText := strings.SplitN(text, title, 2)[1]
-				if i+1 < nsections {
-					sectionText = strings.SplitN(sectionText, titles[i+1], 2)[0]
-				}
-				remaining := sectionText
-				for _, name := range expectedRows[i] {
-					pos := strings.Index(remaining, name)
-					if pos < 0 {
-						t.Fatal("missing/out of order row", title, name)
-					}
-					remaining = remaining[pos+len(name):]
+				if !strings.Contains(text, row.Name) {
+					t.Fatal("missing extra product/sample", row.ID, row.Name)
 				}
 			}
 			if regexp.MustCompile(`(?m)^(?:│\s*)?(Yes|No|Limited|Unknown) [0-9]+:`).MatchString(text) {

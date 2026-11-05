@@ -1,4 +1,4 @@
-# Service Unlock v0.5.4 — source and license notice
+# Service Unlock v0.5.5 — source and license notice
 
 > Modified 2026-10-18 for v0.5.1: NotebookLM, ChatGPT App and JCOM removed; WOWOW, Spotify, Abema and DeepSeek response classification repaired; Hulu Japan receives one bounded HTTP/1.1 fallback but remains unresolved in live testing. The anonymous Spotify POST/strict classifier is derived from fixed RRC MediaUnlockTest_Spotify and is AGPL-3.0-only in internal/extra/spotify_signup.go; internal/geo contains its integration adapter, retaining original MIT notices. Other repair files in internal/extra retain AGPL. Exact modified Corresponding Source is included with this release; GUKO is not deployed by this script publication.
 
@@ -30,14 +30,20 @@ registration eligibility. Only the observed explicit legacy proxy refusal yields
 a scoped No; all other unproven outcomes are Unknown. Incomplete anonymous
 request fields, renderer, fonts and layout remain unchanged. No account was created.
 
+Modified 2026-11-05 for v0.5.5: remove the loose geo youtube_premium probe
+and its services row; retain strict access YouTube Premium. Terminal-only purpose
+classification, stable platform adjacency and capability labels replace source/scope
+sections. Raw retained measurements, safety rules and network selection are unchanged.
+Spotify classification is unchanged from v0.5.4; no GUKO deployment is included.
+
 Exact Corresponding Source, build files, fixed data, tests, license texts and
-modification notices for this release are available at no charge:
-https://github.com/shui1iao/service-unlock/tree/v0.5.4
-https://github.com/shui1iao/service-unlock/releases/download/v0.5.4/service-unlock-v0.5.4-source.zip
+modification notices for v0.5.5 are available at no charge:
+https://github.com/shui1iao/service-unlock/tree/v0.5.5
+https://github.com/shui1iao/service-unlock/releases/download/v0.5.5/service-unlock-v0.5.5-source.zip
 The source archive is offered beside the matching executable assets on the
 same release page. The build instructions are in README.md. Dependencies are
-pinned in go.mod/go.sum; their source is available through the Go module proxy
-and the respective upstream projects. Network deployments must continue to
+pinned in go.mod/go.sum; the source ZIP additionally includes vendor source and
+dependency licenses/notices for offline builds. Vendor is not tracked in Git. Network deployments must continue to
 provide their actual modified Corresponding Source to interacting users as
 required by AGPL sections 5, 6 and 13. This script release does not deploy GUKO.
 

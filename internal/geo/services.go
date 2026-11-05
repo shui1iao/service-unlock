@@ -49,7 +49,6 @@ func ServiceChecks() []Check {
 		google(),
 		googleSearchCaptcha(),
 		youtube(),
-		youtubePremium(),
 		youtubeMusic(),
 		twitch(),
 		chatGPT(),
@@ -185,15 +184,6 @@ func availabilityByPhrase(id, name, url, phrase string, headers map[string]strin
 			return yes, nil
 		},
 	}
-}
-
-func youtubePremium() Check {
-	return availabilityByPhrase(
-		"youtube_premium", "YouTube Premium",
-		"https://www.youtube.com/premium",
-		"youtube premium is not available in your country",
-		map[string]string{"Cookie": googleConsentCookie, "Accept-Language": "en-US,en;q=0.9"},
-	)
 }
 
 func youtubeMusic() Check {

@@ -54,7 +54,7 @@ func TestAppJCOMRemovedWithoutRemovingChatGPTWebRegionOrOpenAI(t *testing.T) {
 			t.Fatal("removed endpoint requested", endpoint)
 		}
 	}
-	counts := map[string]int{"global": 41, "tw": 52, "hk": 49, "jp": 67, "na": 78, "sa": 44, "eu": 71, "oc": 60, "kr": 49, "sea": 52, "af": 44}
+	counts := map[string]int{"global": 40, "tw": 51, "hk": 48, "jp": 66, "na": 77, "sa": 43, "eu": 70, "oc": 59, "kr": 48, "sea": 51, "af": 43}
 	if len(extra.Catalogue()) != 134 {
 		t.Fatal("extra catalogue")
 	}

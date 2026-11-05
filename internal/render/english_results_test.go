@@ -24,6 +24,9 @@ func englishFixture(t *testing.T, negative bool) Report {
 		case "spotify_signup":
 			if negative {
 				r.Services[i].Value = "no"
+			} else {
+				r.Services[i].Value = ""
+				r.Services[i].Err = errors.New("legacy signup endpoint inconclusive")
 			}
 		case "steam":
 			r.Services[i].Value = "HK"

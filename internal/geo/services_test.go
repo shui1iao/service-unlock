@@ -72,10 +72,10 @@ func check(t *testing.T, id string) Check {
 	t.Fatal(id)
 	return Check{}
 }
-func TestAll21CatalogueTypesMethodsPayloadsAndParsers(t *testing.T) {
+func TestAll20CatalogueTypesMethodsPayloadsAndParsers(t *testing.T) {
 	fs, checks := fixtures(t), ServiceChecks()
-	if len(fs) != 21 || len(checks) != 21 {
-		t.Fatal("not 21")
+	if len(fs) != 20 || len(checks) != 20 {
+		t.Fatal("not 20")
 	}
 	for i, c := range checks {
 		f := fs[i]
@@ -174,8 +174,8 @@ func TestServiceSpecificRefusalAndUnknownSemantics(t *testing.T) {
 		unknown    bool
 	}{
 		{"google_captcha", 403, "unusual traffic from this network", "yes", false}, {"google_captcha", 200, "ordinary page", "no", false}, {"google_captcha", 403, "Forbidden", "", true},
-		{"youtube_premium", 403, "YouTube Premium is not available in your country", "no", false}, {"youtube_music", 403, "YouTube Music is not available in your area", "no", false},
-		{"youtube_premium", 403, "Forbidden", "", true}, {"youtube_music", 200, " ", "", true},
+		{"youtube_music", 403, "YouTube Music is not available in your area", "no", false},
+		{"youtube_music", 200, " ", "", true},
 		{"spotify_signup", 200, `{"status":120}`, "", true}, {"spotify_signup", 200, `{"status":320}`, "", true}, {"spotify_signup", 200, `{"is_country_launched":false}`, "", true},
 		{"spotify_signup", 200, `{"status":"invalid"}`, "", true}, {"spotify_signup", 200, `{"is_country_launched":"invalid"}`, "", true},
 		{"reddit_guest", 403, "Forbidden", "no", false}, {"reddit_guest", 404, "not found", "", true}, {"reddit_guest", 200, "", "", true},
@@ -274,7 +274,7 @@ func TestDependencyOrderConcurrencyAndCancelledChecks(t *testing.T) {
 		}
 	}
 	got := Run(context.Background(), env, checks, 2)
-	if peak.Load() != 2 || active.Load() != 0 || len(got) != 21 {
+	if peak.Load() != 2 || active.Load() != 0 || len(got) != 20 {
 		t.Fatal(peak.Load(), active.Load())
 	}
 	ctx, cancel := context.WithCancel(context.Background())

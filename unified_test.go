@@ -84,7 +84,7 @@ func unifiedFixture(region string, unknown bool) measurements {
 	return m
 }
 func TestUnifiedSelectionSameMeasurementEnvelope(t *testing.T) {
-	counts := map[string]int{"global": 41, "tw": 52, "hk": 49, "jp": 67, "na": 78, "sa": 44, "eu": 71, "oc": 60, "kr": 49, "sea": 52, "af": 44}
+	counts := map[string]int{"global": 40, "tw": 51, "hk": 48, "jp": 66, "na": 77, "sa": 43, "eu": 70, "oc": 59, "kr": 48, "sea": 51, "af": 43}
 	for _, region := range extra.Regions() {
 		for _, unknown := range []bool{false, true} {
 			t.Run(region+map[bool]string{false: "-mixed", true: "-unknown"}[unknown], func(t *testing.T) {
@@ -110,7 +110,7 @@ func TestUnifiedSelectionSameMeasurementEnvelope(t *testing.T) {
 				if er := json.Unmarshal(out.Bytes(), &e); er != nil {
 					t.Fatal(er)
 				}
-				if e.Format != "guko-unified-v1" || len(e.Report.Results) != 6 || len(e.Report.Services) != 21 || len(e.Report.AIEndpoints) != 8 || len(e.Report.ExtraChecks)+35 != counts[region] || len(e.Report.Selection.ExpectedIDs) != len(m.Extra) {
+				if e.Format != "guko-unified-v1" || len(e.Report.Results) != 6 || len(e.Report.Services) != 20 || len(e.Report.AIEndpoints) != 8 || len(e.Report.ExtraChecks)+34 != counts[region] || len(e.Report.Selection.ExpectedIDs) != len(m.Extra) {
 					t.Fatal("scope mismatch")
 				}
 				if !strings.Contains(e.Terminal, "\x1b[") || strings.Count(e.Terminal, "╭") != 1 {
@@ -150,7 +150,7 @@ func TestUnifiedRejectsUnmappedFlagsWithoutRun(t *testing.T) {
 		}
 	}
 }
-func TestNative35JSONFieldsBytePreserved(t *testing.T) {
+func TestNative34JSONFieldsBytePreserved(t *testing.T) {
 	m := unifiedFixture("global", false)
 	r := makeCompleteReport(m, 6, 4)
 	old := makeReport(m.Access, 6, 4)

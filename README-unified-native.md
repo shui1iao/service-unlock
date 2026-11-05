@@ -1,4 +1,8 @@
-# Service Unlock v0.5.4 — unified native implementation
+# Service Unlock v0.5.5 — unified native implementation
+
+> **v0.5.5, 2026-11-05**: remove the loose geo YouTube Premium measurement and its `services` row (`id=youtube_premium`), retaining strict access. Core35 ->34, services21 ->20, each selected total decreases by one. This is a breaking catalogue removal, not row hiding; retained raw fields/names/order and predicates are unchanged. Terminal-only six-purpose groups, capability labels and stable platform adjacency preserve all other independent observations.
+>
+> The launcher now pins v0.5.5. Old launchers must be downloaded again. The runtime short link is switched separately after publication; the fixed GitHub release URL is available first. Spotify's conservative v0.5.4 legacy-endpoint semantics and running GUKO are unchanged. Current validation scope is offline/loopback plus help/license checks, not a new live platform scan; arm64 is cross-built only. Historical release evidence below is explicitly historical.
 
 > v0.5.4 narrows Spotify signup conclusions to the available evidence: no unverified positive eligibility verdict, Unknown when inconclusive, and a scoped No only for an explicit observed legacy-endpoint refusal. This audit read public official sources and replayed existing responses; no new signup endpoint request, account creation or login was performed. Renderer/font/layout/GUKO are unchanged.
 
@@ -8,7 +12,7 @@
 
 > v0.5.1 publishes the NotebookLM/App/JCOM removals and retained JP fixes. Scoped FXTRANSIT-JP retests verified Spotify signup, WOWOW, Abema and DeepSeek; Hulu Japan still times out, including a separate 15-second diagnostic. No full platform scan or GUKO deployment is claimed.
 
-This release extends the newer Service Unlock CLI itself. It is not a re-skin of a whole RRC run and not the previous original-image + 17-supplement design. Running probes contacts real services. Offline/loopback regressions remain; a separately authorized four-check live retest confirmed three explicit service refusals. Hulu's actual HTTP/1.1 fallback still timed out under the original6-second budget, so it remains Unknown. No Telegram/GUKO deployment or other machine was used.
+This release extends the newer Service Unlock CLI itself. It is not a re-skin of a whole RRC run and not the previous original-image + 17-supplement design. Running probes contacts real services. Offline/loopback regressions remain; an earlier separately authorized four-check live retest confirmed three explicit service refusals. Hulu's actual HTTP/1.1 fallback still timed out under the original6-second budget, so it remains Unknown. No Telegram/GUKO deployment or other machine was used.
 
 ## Repairs and remaining diagnostic limits
 
@@ -29,25 +33,27 @@ The earlier App/JCOM retest is historical only; neither is supported by this rel
 ./service-unlock_linux_amd64 --region na --extra-family auto --machine
 ```
 
-No Bash/curl/Node/Python/Go runtime is used for probing. The download launcher uses existing curl or GNU wget and a SHA256 tool; it downloads the fixed v0.5.4 static binary. The previous GUKO-only side entry is not part of this release; its local source now selects16 checks (1 access +7 services +8 AI), without changing the deployed old17 binary.
+No Bash/curl/Node/Python/Go runtime is used for probing. The download launcher uses existing curl or GNU wget and a SHA256 tool; it downloads the fixed v0.5.5 static binary. The previous GUKO-only side entry is not part of this release. The baseline audit noted its separate local source selected16 checks (1 access +7 services +8 AI), without changing the deployed old17 binary; that untracked cmd directory is deliberately absent from this isolated worktree/source delivery.
 
-NotebookLM and ChatGPT App have been removed from the active access implementation/predicates/catalogue/fixtures/output by user request; JCOM is removed only from the JP extra group. Core checks are now 6 access + 21 services + 8 AI =35; results contains6 rows, without changing other field semantics. Removed dedicated tests are archived in the task artifact, not executed. New `extra_checks` and `selection` are additive schema-v1 fields. `source.port` remains a historical unchanged marker despite this authorized catalogue deletion, solely for old-field compatibility; `selection.extra_source_commit` identifies the RRC-derived addition. `--machine` returns `guko-unified-v1` containing the report and its ANSI rendering from ONE measurement. Normal terminal and --json remain available. Exit1 means at least one Unknown (including explicit unsupported IDs), not a negative unlock verdict. All-Unknown is a valid complete report; cancellation does not emit partial JSON.
+NotebookLM and ChatGPT App have been removed from the active access implementation/predicates/catalogue/fixtures/output by user request; JCOM is removed only from the JP extra group. Core checks are now 6 access + 20 services + 8 AI =34; results contains6 rows, without changing other field semantics. Removed dedicated tests are archived in the task artifact, not executed. New `extra_checks` and `selection` are additive schema-v1 fields. `source.port` remains a historical unchanged marker despite this authorized catalogue deletion, solely for old-field compatibility; `selection.extra_source_commit` identifies the RRC-derived addition. `--machine` returns `guko-unified-v1` containing the report and its ANSI rendering from ONE measurement. Normal terminal and --json remain available. Exit1 means at least one Unknown (including explicit unsupported IDs), not a negative unlock verdict. All-Unknown is a valid complete report; cancellation does not emit partial JSON.
+
+v0.5.5 counts:
 
 | region | total checks |
 |---|---:|
-| global |41|
-| tw |52|
-| hk |49|
-| jp |67|
-| na |78|
-| sa |44|
-| eu |71|
-| oc |60|
-| kr |49|
-| sea |52|
-| af |44|
+| global |40|
+| tw |51|
+| hk |48|
+| jp |66|
+| na |77|
+| sa |43|
+| eu |70|
+| oc |59|
+| kr |48|
+| sea |51|
+| af |43|
 
-Only global + ONE region is selected. This independent CLI defaults to --region auto (not inventory or platform-locale inference). It first resolves the actual extra family by the unchanged route policy, then serially reads the exit country using that same direct/system-CA/family-pinned transport. Explicit global or a group always skips country lookup. Valid but unmapped countries (including CN/IN) resolve to global with unsupported_region_country; failed lookup resolves to global with detection_failed, while normal core/extra probes continue. No India/all/sport/Instagram menu expansion is added. Core35 duplicates are not rerun as old RRC functions. The audited implementation retains one anonymous incomplete legacy signup POST for spotify_signup, but no longer claims it establishes registration eligibility; no GET+POST voting or migration to an account-creation workflow. The endpoint receives no email/password/account token/Cookie/authorization/opaque identifier_token, send-email is disabled, and registration cannot be completed by this incomplete form. Fixed public RRC client key and non-identity validation fields are kept for their original validation purpose; a neutral synthetic display label replaces the upstream dummy label. The old status311/country/launched=true positive was an unverified heuristic with a synthetic fixture, NOT observed registration success. There is now NO anonymous Yes path: status1/configuration, status311, bare120/320 and launched=false are Unknown. Only the captured status320 plus its exact typed proxy-refusal message yields a scoped No for this legacy request, explicitly not a guarantee that all signup channels fail. Types, duplicate/conflicting keys, changed endpoints, HTTP/challenge and response-format guards remain conservative. Country/launch metadata do not vote on signup; optional country appears only in the existing error/detail channel, without schema changes. The RRC-derived helper is AGPL-labelled in internal/extra/spotify_signup.go; the geo adapter retains the service ID/type and existing direct/system-selected stack. No OneTrust/iQyi/GooglePlay-country/Steam-currency/YouTubeCDN/NetflixCDN/Bing-Risky information additions; the retained core country checks/fallbacks are untouched.
+Only global + ONE region is selected. This independent CLI defaults to --region auto (not inventory or platform-locale inference). It first resolves the actual extra family by the unchanged route policy, then serially reads the exit country using that same direct/system-CA/family-pinned transport. Explicit global or a group always skips country lookup. Valid but unmapped countries (including CN/IN) resolve to global with unsupported_region_country; failed lookup resolves to global with detection_failed, while normal core/extra probes continue. No India/all/sport/Instagram menu expansion is added. Core34 duplicates are not rerun as old RRC functions. The audited implementation retains one anonymous incomplete legacy signup POST for spotify_signup, but no longer claims it establishes registration eligibility; no GET+POST voting or migration to an account-creation workflow. The endpoint receives no email/password/account token/Cookie/authorization/opaque identifier_token, send-email is disabled, and registration cannot be completed by this incomplete form. Fixed public RRC client key and non-identity validation fields are kept for their original validation purpose; a neutral synthetic display label replaces the upstream dummy label. The old status311/country/launched=true positive was an unverified heuristic with a synthetic fixture, NOT observed registration success. There is now NO anonymous Yes path: status1/configuration, status311, bare120/320 and launched=false are Unknown. Only the captured status320 plus its exact typed proxy-refusal message yields a scoped No for this legacy request, explicitly not a guarantee that all signup channels fail. Types, duplicate/conflicting keys, changed endpoints, HTTP/challenge and response-format guards remain conservative. Country/launch metadata do not vote on signup; optional country appears only in the existing error/detail channel, without schema changes. The RRC-derived helper is AGPL-labelled in internal/extra/spotify_signup.go; the geo adapter retains the service ID/type and existing direct/system-selected stack. No OneTrust/iQyi/GooglePlay-country/Steam-currency/YouTubeCDN/NetflixCDN/Bing-Risky information additions; the retained core country checks/fallbacks are untouched.
 
 ## Native probes, provenance and safety
 
@@ -71,7 +77,7 @@ Every extra ID has a source function/line/hash in `internal/extra/catalogue-sour
 
 ## Network and limits
 
-Core35: unchanged direct/system-selected. Extra: `--extra-family auto|4|6`; auto performs local UDP socket route selection (no Write/datagram), prefers IPv4 route, otherwise IPv6. JSON states the actual selected extra family; the whole report is NOT labelled IPv4. Source IPv6-unsupported checks explicitly remain Unknown if selected IPv6; no false v4 flag. The independent CLI now determines its own exit country only in region=auto; it never reads GUKO inventory. A future GUKO consumer can explicitly pass a region to retain inventory scheduling and zero country requests; no GUKO code/deployment is changed here.
+Core34: unchanged direct/system-selected. Extra: `--extra-family auto|4|6`; auto performs local UDP socket route selection (no Write/datagram), prefers IPv4 route, otherwise IPv6. JSON states the actual selected extra family; the whole report is NOT labelled IPv4. Source IPv6-unsupported checks explicitly remain Unknown if selected IPv6; no false v4 flag. The independent CLI now determines its own exit country only in region=auto; it never reads GUKO inventory. A future GUKO consumer can explicitly pass a region to retain inventory scheduling and zero country requests; no GUKO code/deployment is changed here.
 
 Extra transport ignores proxy environment, uses system CA and strict HTTPS including redirects. No InsecureSkipVerify, -k, weak TLS, system install or account credential reads. Each request has a context budget including redirect/body, 4MiB compressed and decoded body limits, max10-redirect bound, bounded worker pool; groups run consecutively under one global workers budget. Cancellation releases bodies/connections. Some endpoint algorithms/opaque anonymous client constants may now be stale: offline correctness is not proof of current live service behavior.
 
@@ -85,8 +91,14 @@ Extra transport ignores proxy environment, uses system CA and strict HTTPS inclu
 
 ## Report and GUKO integration boundary
 
-One English Service | Result | Region layout in ONE rounded outer frame with one top header and shared column widths. Internal spanning section titles retain the original three groups plus Global services and, if selected, Regional services; no empty local section. Yes green, No red, Limited yellow, Unknown bold default foreground. ISO2 or blank; no per-row time/detail. All per-group status counts/explanations are removed, not relocated. The single automatic-region notice remains outside the frame; observation caveats remain documentation, not report footers.
+One English Service | Result | Region layout in ONE rounded outer frame with one top header and shared column widths. Internal spanning sections are Video, live & sports / Music & audio / AI services / Gaming / Community / General websites; empty sections are omitted. Source-qualified IDs determine purpose; explicit platform keys keep distinct capabilities adjacent in stable first-appearance order. Country labels say (region), Netflix distinguishes Fast region/catalogue, AI distinguishes Web/API, DMM says financial site, and Meta AI says Web. No status aggregation, result reruns or cross-family filling is performed. Region remains an extra-selection condition, not an industry section. Yes green, No red, Limited yellow, Unknown bold default foreground. ISO2 or blank; no per-row time/detail. All per-group status counts/explanations are removed, not relocated. The single automatic-region notice remains outside the frame; observation caveats remain documentation, not report footers.
 
-The --machine envelope supports one complete measurement and its matching JSON/ANSI report for downstream tools. GUKO integration is a separate deployment, not included in this script release. An offline integration candidate has been tested, but the running GUKO instance is not changed by publishing this CLI. Consumers must validate expected IDs/counts and keep rendering/delivery failures distinct from probe results.
+The --machine envelope supports one complete measurement and its matching JSON/ANSI report for downstream tools. Its report only loses the approved services.youtube_premium row; retained arrays, names, IDs, fields and order are unchanged. Terminal sections/labels change, so terminal consumers must accept that presentation. Shared renderer changes naturally affect any future build of the separate supplement source; no cmd source was copied/edited and no running GUKO was inspected or changed. GUKO integration is a separate deployment, not included in this script release. An offline integration candidate has been tested, but the running GUKO instance is not changed by publishing this CLI. Consumers must validate expected IDs/counts and keep rendering/delivery failures distinct from probe results.
 
-No GUKO image, compose switch or deployment is included/performed. The combined executable is not MIT-only: original MIT notices remain and AGPL-derived additions carry their full license. Exact Corresponding Source is published beside binaries and at the matching v0.5.4 source tag; see LICENSE, LICENSES and NOTICE.md. The scoped four-check retest is described above; it does not validate the rest of the catalogue against live platforms, and no Telegram test was sent. The earlier full JP comparison describes the unmodified public release.
+No GUKO image, compose switch or deployment is included/performed. The combined executable is not MIT-only: original MIT notices remain and AGPL-derived additions carry their full license. Exact Corresponding Source is published beside binaries and at the matching v0.5.5 source tag; see LICENSE, LICENSES and NOTICE.md. The historical scoped four-check retest is described above; it does not validate the rest of the catalogue against live platforms, and no Telegram test was sent. The earlier full JP comparison describes the unmodified public release.
+
+## Offline corresponding-source build
+
+The release source ZIP contains the tagged project files plus fixed `vendor/`, including dependency license/notice files; vendor is generated from go.mod/go.sum and is not committed in Git. With Go1.26+ locally installed, use `GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off CGO_ENABLED=0 go test -mod=vendor ./...`. See README.md for both static build commands and flags. Do not interpret offline parser correctness as live registration/playback/model success.
+
+Release validation used Go1.26.10: all packages passed `go test -mod=vendor -count=1 ./...` offline/loopback. Initial stale count assertions and the Apple fixed-index assertion were corrected without changing predicates, followed by targeted and full regressions. The suite covers168 IDs, retained safety Unknowns, purpose/capability adjacency, one strict Premium request and no retired raw row, JSON/selection/machine and launcher hash rejection/cleanup.

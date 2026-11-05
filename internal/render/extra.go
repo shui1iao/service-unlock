@@ -25,7 +25,7 @@ func (o *Output) extraRows(results []extra.Result) []displayRow {
 		if r.Region != nil {
 			region = regionCode(*r.Region)
 		}
-		out = append(out, displayRow{r.Name, label, region, style})
+		out = append(out, displayRow{terminalName("extra", r.ID, r.Name), label, region, style})
 	}
 	return out
 }

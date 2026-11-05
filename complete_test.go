@@ -119,14 +119,33 @@ func mockCompleteStack(t *testing.T) (*netx.Stack, *completeTransport) {
 	t.Cleanup(stack.Close)
 	return stack, tr
 }
-func TestComplete35RealCallPathsAndAdditiveJSON(t *testing.T) {
+func TestComplete34RealCallPathsAndAdditiveJSON(t *testing.T) {
 	stack, tr := mockCompleteStack(t)
 	m, err := runGroups(context.Background(), stack, 3)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(m.Access) != 6 || len(m.Services) != 21 || len(m.AI) != 8 {
+	if len(m.Access) != 6 || len(m.Services) != 20 || len(m.AI) != 8 {
 		t.Fatalf("counts=%d/%d/%d", len(m.Access), len(m.Services), len(m.AI))
+	}
+	// The loose geo probe is retired, not merely hidden. Only strict access
+	// may request Premium, and no compatibility alias is emitted in raw JSON.
+	if tr.seen["https://www.youtube.com/premium"] != 1 {
+		t.Fatal("duplicate Premium request", tr.seen)
+	}
+	premium := false
+	for _, row := range m.Access {
+		if row.Check.ID == "youtube_premium_access" {
+			premium = true
+		}
+	}
+	if !premium {
+		t.Fatal("strict Premium access removed")
+	}
+	for _, row := range m.Services {
+		if row.Check.ID == "youtube_premium" {
+			t.Fatal("retired geo Premium measured")
+		}
 	}
 	if !reflect.DeepEqual(tr.seen, tr.want) {
 		t.Fatalf("not all exact request paths executed\nseen=%v\nwant=%v", tr.seen, tr.want)
@@ -150,6 +169,11 @@ func TestComplete35RealCallPathsAndAdditiveJSON(t *testing.T) {
 		}
 	}
 	report := makeCompleteReport(m, 6, 3)
+	for _, row := range report.Services {
+		if row.ID == "youtube_premium" {
+			t.Fatal("retired raw services row")
+		}
+	}
 	baseline := makeReport(m.Access, 6, 3)
 	if !reflect.DeepEqual(report.Results, baseline.Results) {
 		t.Fatal("legacy results semantics changed")
@@ -201,7 +225,7 @@ func TestNewGroupErrorsAffectExitNotLegacyArray(t *testing.T) {
 		if err := json.Unmarshal(out.Bytes(), &r); err != nil {
 			t.Fatal(err)
 		}
-		if len(r.Results) != 6 || len(r.Services) != 21 || len(r.AIEndpoints) != 8 {
+		if len(r.Results) != 6 || len(r.Services) != 20 || len(r.AIEndpoints) != 8 {
 			t.Fatal("scope")
 		}
 		for _, r := range r.Results {
@@ -210,8 +234,17 @@ func TestNewGroupErrorsAffectExitNotLegacyArray(t *testing.T) {
 			}
 		}
 		if strings.Contains(failure, "apple") {
-			if r.Services[14].Status != "error" || r.Services[14].Value != nil || r.Services[14].Error == nil {
-				t.Fatal(r.Services[14])
+			found := false
+			for _, row := range r.Services {
+				if row.ID == "apple" {
+					found = true
+					if row.Status != "error" || row.Value != nil || row.Error == nil {
+						t.Fatal(row)
+					}
+				}
+			}
+			if !found {
+				t.Fatal("missing Apple measurement")
 			}
 		}
 		if strings.Contains(failure, "deepseek") {

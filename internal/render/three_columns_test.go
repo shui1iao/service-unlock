@@ -163,7 +163,7 @@ func TestThreeAlignedEnglishColumnsNoDetailsOrTime(t *testing.T) {
 				}
 			}
 		}
-		if rows != 39 || top != 1 || bottom != 1 || separator != 6 || len(headers) != 1 {
+		if rows != 41 || top != 1 || bottom != 1 || separator != 12 || len(headers) != 1 {
 			t.Fatalf("counts=%d/%d/%d/%d/%d", rows, top, bottom, separator, len(headers))
 		}
 
@@ -172,18 +172,13 @@ func TestThreeAlignedEnglishColumnsNoDetailsOrTime(t *testing.T) {
 				t.Fatalf("removed main-table content %q survived", word)
 			}
 		}
-		popular, stash, api := strings.Index(text, "Service regions & access"), strings.Index(text, "Service availability"), strings.Index(text, "AI endpoints")
-		if popular < 0 || stash <= popular || api <= stash {
-			t.Fatal("wrong group order")
-		}
-
-		last := -1
-		for _, res := range r.Services {
-			p := strings.Index(text[:stash], res.Check.Name)
-			if p <= last {
-				t.Fatal("service order changed", res.Check.Name)
+		lastTitle := -1
+		for _, title := range purposeTitles {
+			pos := strings.Index(text, title)
+			if pos <= lastTitle {
+				t.Fatal("wrong purpose group order", title)
 			}
-			last = p
+			lastTitle = pos
 		}
 		if profile == colorprofile.NoTTY && strings.Contains(raw, "\x1b") {
 			t.Fatal("non-TTY ANSI leak")
@@ -194,7 +189,8 @@ func compact(s string) string { return strings.Join(strings.Fields(s), "") }
 func TestCJKSharedWidthsAndLosslessWrappingOnNarrowScreens(t *testing.T) {
 	o := &Output{Theme: newTheme(nil)}
 	r := completeMock(t)
-	r.Services[0].Value = "GS"                      // Country code remains compact on narrow screens.
+	r.Services[0].Value = "GS" // Country code remains compact on narrow screens.
+	r.Services[0].Check.ID = "width_fixture"
 	r.Services[0].Check.Name = "Fixture 中文 e\u0301" // Synthetic width-only fixture, not a real brand.
 	r.Access[0].Region = "HKG"
 	groups := o.groups(r)

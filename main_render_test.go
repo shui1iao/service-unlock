@@ -69,7 +69,7 @@ func TestJSONUnchangedUnderForcedColor(t *testing.T) {
 	code := runCLI(context.Background(), []string{"--json"}, out, new(bytes.Buffer), func(context.Context, time.Duration, int) (measurements, error) {
 		return measurements{Access: fixtureResults()}, nil
 	})
-	if code != 0 || strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "Service availability") {
+	if code != 0 || strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "AI services") {
 		t.Fatal(code, out.String())
 	}
 	var object map[string]json.RawMessage

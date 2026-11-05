@@ -4,6 +4,7 @@ package render
 
 import (
 	"fmt"
+	"sort"
 	"time"
 
 	lg "charm.land/lipgloss/v2"
@@ -47,7 +48,7 @@ func (o *Output) accessRows(results []access.Result) []displayRow {
 				label, style = "● No", o.Theme.Bad
 			}
 		}
-		rows = append(rows, displayRow{r.Check.Name, label, regionCode(r.Region), style})
+		rows = append(rows, displayRow{terminalName("access", r.Check.ID, r.Check.Name), label, regionCode(r.Region), style})
 	}
 	return rows
 }
@@ -63,38 +64,55 @@ func (o *Output) aiRows(results []ai.Result) []displayRow {
 				label, style = "● No", o.Theme.Bad
 			}
 		}
-		rows = append(rows, displayRow{r.Check.Name, label, "", style})
+		rows = append(rows, displayRow{terminalName("ai", r.Check.ID, r.Check.Name), label, "", style})
 	}
 	return rows
 }
 
-// Groups preserve the original order and per-row semantics; no summaries.
+// Purpose groups preserve first platform appearance and each platform's row
+// order. They only move display rows; measurements, scope and outcomes stay put.
 func (o *Output) groups(r Report) []displayGroup {
+	type keyedRow struct {
+		platform string
+		row      displayRow
+	}
+	var buckets [len(purposeTitles)][]keyedRow
+	add := func(source, id string, row displayRow) {
+		p := presentationFor(source, id)
+		buckets[p.purpose] = append(buckets[p.purpose], keyedRow{p.platform, row})
+	}
+	// Match the previous presentation traversal, independent of execution order.
+	for i, row := range o.serviceRows(r.Services) {
+		add("geo", r.Services[i].Check.ID, row)
+	}
+	for i, row := range o.accessRows(r.Access) {
+		add("access", r.Access[i].Check.ID, row)
+	}
+	for i, row := range o.aiRows(r.AI) {
+		add("ai", r.AI[i].Check.ID, row)
+	}
+	for i, row := range o.extraRows(r.Extra) {
+		add("extra", r.Extra[i].ID, row)
+	}
 	var groups []displayGroup
-	if rows := o.serviceRows(r.Services); len(rows) > 0 {
-		groups = append(groups, displayGroup{"Service regions & access", rows})
-	}
-	if rows := o.accessRows(r.Access); len(rows) > 0 {
-		groups = append(groups, displayGroup{"Service availability", rows})
-	}
-	if rows := o.aiRows(r.AI); len(rows) > 0 {
-		groups = append(groups, displayGroup{"AI endpoints", rows})
-	}
-	for _, scope := range []string{"global", "regional"} {
-		selected := []extra.Result{}
-		for _, result := range r.Extra {
-			if (scope == "global") == (result.Scope == "global") {
-				selected = append(selected, result)
+	for category, rows := range buckets {
+		if len(rows) == 0 {
+			continue
+		}
+		first := map[string]int{}
+		for i, row := range rows {
+			if _, ok := first[row.platform]; !ok {
+				first[row.platform] = i
 			}
 		}
-		if len(selected) > 0 {
-			rows := o.extraRows(selected)
-			title := "Global services"
-			if scope != "global" {
-				title = "Regional services"
-			}
-			groups = append(groups, displayGroup{title, rows})
+		sort.SliceStable(rows, func(i, j int) bool {
+			return first[rows[i].platform] < first[rows[j].platform]
+		})
+		group := displayGroup{title: purposeTitles[category]}
+		for _, row := range rows {
+			group.rows = append(group.rows, row.row)
 		}
+		groups = append(groups, group)
 	}
 	return groups
 }

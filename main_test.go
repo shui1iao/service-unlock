@@ -44,7 +44,7 @@ func TestCLIJSONScopeFieldsAndExitCodes(t *testing.T) {
 		if code != want {
 			t.Fatal(code)
 		}
-		if strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "Service availability") {
+		if strings.Contains(out.String(), "\x1b") || strings.Contains(out.String(), "AI services") {
 			t.Fatal("renderer polluted JSON")
 		}
 		var r report
@@ -83,7 +83,7 @@ func TestCLIHelpValidationAndHumanOutput(t *testing.T) {
 		out, errout := new(bytes.Buffer), new(bytes.Buffer)
 		code := runCLI(context.Background(), args, out, errout, never)
 		if args[0] == "--help" || args[0] == "-h" {
-			if code != 0 || !strings.Contains(out.String(), "35 checks") {
+			if code != 0 || !strings.Contains(out.String(), "34 core checks") {
 				t.Fatal(code, out)
 			}
 		} else if code != 2 || out.Len() != 0 {
@@ -94,7 +94,7 @@ func TestCLIHelpValidationAndHumanOutput(t *testing.T) {
 	code := runCLI(context.Background(), nil, out, new(bytes.Buffer), func(context.Context, time.Duration, int) (measurements, error) {
 		return measurements{Access: fixtureResults()}, nil
 	})
-	if code != 0 || !strings.Contains(out.String(), "ChatGPT (web)") || !strings.Contains(out.String(), "Service availability") || strings.Contains(out.String(), "completed in") {
+	if code != 0 || !strings.Contains(out.String(), "ChatGPT (Web)") || !strings.Contains(out.String(), "AI services") || strings.Contains(out.String(), "completed in") {
 		t.Fatal(code, out)
 	}
 }

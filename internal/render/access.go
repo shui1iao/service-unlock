@@ -1,4 +1,4 @@
-// Three-group adapter around the original geocheck v0.3.0 renderer.
+// Purpose-group adapter around the original geocheck v0.3.0 renderer.
 // MIT License; Copyright (c) 2026 Remnawave. See LICENSE.
 package render
 
@@ -10,7 +10,7 @@ import (
 	"github.com/charmbracelet/colorprofile"
 )
 
-// WriteAccess writes the selected three groups using upstream terminal detection.
+// WriteAccess writes the nonempty purpose groups using upstream terminal detection.
 // Other io.Writers have no terminal fd, so they use the upstream plain profile.
 func WriteAccess(w io.Writer, r Report) error {
 	var out *Output

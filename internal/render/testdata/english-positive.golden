@@ -1,47 +1,55 @@
-╭──────────────────────────────────────────╮
-│ Service                Result     Region │
-├──────────────────────────────────────────┤
-│ Service regions & access                 │
-├──────────────────────────────────────────┤
-│ Google                 ● Yes      US     │
-│ Google Search captcha  ● Yes             │
-│ YouTube                ● Yes      US     │
-│ YouTube Premium        ● Yes             │
-│ YouTube Music          ● Yes             │
-│ Twitch                 ● Yes      US     │
-│ ChatGPT                ● Yes      US     │
-│ Netflix                ● Yes      US     │
-│ Spotify                ● Yes      US     │
-│ Spotify signup         ● Yes             │
-│ Deezer                 ● Yes      US     │
-│ Reddit                 ● Yes      US     │
-│ Reddit guest access    ● Yes             │
-│ Amazon Prime Video     ● Yes      US     │
-│ Apple                  ○ Unknown         │
-│ Steam                  ● Yes      HK     │
-│ PlayStation            ● Yes      JP     │
-│ TikTok                 ● Yes      US     │
-│ Ookla Speedtest        ● Yes      US     │
-│ JetBrains              ● Yes      US     │
-│ Microsoft (Bing)       ● Yes      US     │
-├──────────────────────────────────────────┤
-│ Service availability                     │
-├──────────────────────────────────────────┤
-│ ChatGPT (web)          ● Yes             │
-│ YouTube Premium        ● Yes             │
-│ Netflix                ● Limited  FR     │
-│ Claude                 ○ Unknown         │
-│ TikTok                 ● Yes             │
-│ Gemini                 ● No       CN     │
-├──────────────────────────────────────────┤
-│ AI endpoints                             │
-├──────────────────────────────────────────┤
-│ OpenAI                 ● Yes             │
-│ Anthropic              ● No              │
-│ Google Gemini          ● Yes             │
-│ DeepSeek               ● Yes             │
-│ Qwen (Singapore)       ● Yes             │
-│ Qwen (Beijing)         ● Yes             │
-│ Kimi / Moonshot        ● Yes             │
-│ Zhipu GLM              ○ Unknown         │
-╰──────────────────────────────────────────╯
+╭─────────────────────────────────────────────────────╮
+│ Service                           Result     Region │
+├─────────────────────────────────────────────────────┤
+│ Video, live & sports                                │
+├─────────────────────────────────────────────────────┤
+│ YouTube (region)                  ● Yes      US     │
+│ YouTube Premium                   ● Yes             │
+│ Twitch (region)                   ● Yes      US     │
+│ Netflix (Fast region)             ● Yes      US     │
+│ Netflix (catalogue)               ● Limited  FR     │
+│ Amazon Prime Video (region)       ● Yes      US     │
+│ TikTok (region)                   ● Yes      US     │
+│ TikTok (Web)                      ● Yes             │
+├─────────────────────────────────────────────────────┤
+│ Music & audio                                       │
+├─────────────────────────────────────────────────────┤
+│ YouTube Music                     ● Yes             │
+│ Spotify (region)                  ● Yes      US     │
+│ Spotify (legacy signup endpoint)  ○ Unknown         │
+│ Deezer (region)                   ● Yes      US     │
+├─────────────────────────────────────────────────────┤
+│ AI services                                         │
+├─────────────────────────────────────────────────────┤
+│ ChatGPT (region)                  ● Yes      US     │
+│ ChatGPT (Web)                     ● Yes             │
+│ OpenAI (API)                      ● Yes             │
+│ Claude (Web)                      ○ Unknown         │
+│ Anthropic (API)                   ● No              │
+│ Gemini (Web)                      ● No       CN     │
+│ Google Gemini (API)               ● Yes             │
+│ DeepSeek (API)                    ● Yes             │
+│ Qwen (Singapore) (API)            ● Yes             │
+│ Qwen (Beijing) (API)              ● Yes             │
+│ Kimi / Moonshot (API)             ● Yes             │
+│ Zhipu GLM (API)                   ○ Unknown         │
+├─────────────────────────────────────────────────────┤
+│ Gaming                                              │
+├─────────────────────────────────────────────────────┤
+│ Steam (store region)              ● Yes      HK     │
+│ PlayStation (region)              ● Yes      JP     │
+├─────────────────────────────────────────────────────┤
+│ Community                                           │
+├─────────────────────────────────────────────────────┤
+│ Reddit (region)                   ● Yes      US     │
+│ Reddit (guest access)             ● Yes             │
+├─────────────────────────────────────────────────────┤
+│ General websites                                    │
+├─────────────────────────────────────────────────────┤
+│ Google (region)                   ● Yes      US     │
+│ Google Search captcha             ● Yes             │
+│ Apple (region)                    ○ Unknown         │
+│ Ookla Speedtest (region)          ● Yes      US     │
+│ JetBrains (region)                ● Yes      US     │
+│ Microsoft (Bing) (region)         ● Yes      US     │
+╰─────────────────────────────────────────────────────╯

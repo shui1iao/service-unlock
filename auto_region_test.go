@@ -116,7 +116,7 @@ func TestDefaultAutoActualPipelineCountrySelectsRegionalChecks(t *testing.T) {
 	for _, tc := range []struct {
 		country, group string
 		total          int
-	}{{"JP", "jp", 67}, {"US", "na", 78}, {"ES", "eu", 71}, {"DE", "eu", 71}, {"SG", "sea", 52}, {"HK", "hk", 49}, {"MO", "hk", 49}, {"KR", "kr", 49}, {"TW", "tw", 52}, {"AU", "oc", 60}, {"ZA", "af", 44}, {"BR", "sa", 44}, {"GB", "eu", 71}} {
+	}{{"JP", "jp", 66}, {"US", "na", 77}, {"ES", "eu", 70}, {"DE", "eu", 70}, {"SG", "sea", 51}, {"HK", "hk", 48}, {"MO", "hk", 48}, {"KR", "kr", 48}, {"TW", "tw", 51}, {"AU", "oc", 59}, {"ZA", "af", 43}, {"BR", "sa", 43}, {"GB", "eu", 70}} {
 		t.Run(tc.country, func(t *testing.T) {
 			// No --region flag: execute the real resolver + actual core/extra Run paths.
 			r, terminal, code, n := autoRunFixture(t, []string{"--machine"}, "h=www.cloudflare.com\nloc="+tc.country+"\nip=203.0.113.55\n", `{"country_code":"ZZ"}`)
@@ -166,7 +166,7 @@ func TestAutoFallbackUnsupportedAndFailureStillRunsGlobal(t *testing.T) {
 			if n != tc.calls || r.Selection.Region != tc.region || r.Selection.ResolutionReason != tc.reason || r.Selection.DetectedCountry != tc.country {
 				t.Fatal(r.Selection, n)
 			}
-			if tc.region == "global" && len(r.ExtraChecks)+35 != 41 {
+			if tc.region == "global" && len(r.ExtraChecks)+34 != 40 {
 				t.Fatal("fallback did not select global")
 			}
 			found := false
@@ -201,7 +201,7 @@ func TestAutoJSONAndHumanOutputHaveOneSameSelection(t *testing.T) {
 		t.Fatal(r.Selection, n)
 	}
 	_, plain, _, n := autoRunFixture(t, nil, "h=www.cloudflare.com\nloc=JP", `{}`)
-	if n != 1 || strings.Contains(plain, "\x1b") || strings.Count(plain, "Automatic region:") != 1 || !strings.Contains(plain, "Regional services") {
+	if n != 1 || strings.Contains(plain, "\x1b") || strings.Count(plain, "Automatic region:") != 1 || !strings.Contains(plain, "Video, live & sports") {
 		t.Fatal(plain, n)
 	}
 }

@@ -11,6 +11,7 @@ import (
 
 func TestSingleFrameNarrowSectionTitlesAndAllRowsLossless(t *testing.T) {
 	r := completeMock(t)
+	r.Services[0].Check.ID = "width_fixture"
 	r.Services[0].Check.Name = "Fixture 中文 e\u0301"
 	for _, width := range []int{14, 18, 20, 24, 30, 40, 60, 80, 100, 160} {
 		var buf bytes.Buffer
