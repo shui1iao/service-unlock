@@ -1,8 +1,10 @@
 package render
 
 import (
+	"encoding/json"
 	"errors"
 	"os"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -24,6 +26,7 @@ func englishFixture(t *testing.T, negative bool) Report {
 		case "spotify_signup":
 			if negative {
 				r.Services[i].Value = "no"
+				r.Services[i].Err = nil
 			} else {
 				r.Services[i].Value = ""
 				r.Services[i].Err = errors.New("legacy signup endpoint inconclusive")
@@ -36,20 +39,43 @@ func englishFixture(t *testing.T, negative bool) Report {
 	}
 	return r
 }
-func TestEnglishGoldenResults(t *testing.T) {
+
+// Old34-row .golden files remain historical, not falsely regenerated here.
+// Exact platform/capability/region cells replace the superseded row-per-probe
+// snapshot; full frame/wrapping/ANSI assertions remain in the layout tests.
+func TestEnglishPlatformCellsAndProfiles(t *testing.T) {
+	type fixtureGroup struct {
+		Title string      `json:"title"`
+		Rows  [][3]string `json:"rows"`
+	}
 	for _, tc := range []struct {
 		name     string
 		negative bool
 	}{{"positive", false}, {"negative", true}} {
-		expected, err := os.ReadFile("testdata/english-" + tc.name + ".golden")
+		raw, err := os.ReadFile("testdata/platform-" + tc.name + ".json")
 		if err != nil {
 			t.Fatal(err)
 		}
+		var want []fixtureGroup
+		if err = json.Unmarshal(raw, &want); err != nil {
+			t.Fatal(err)
+		}
 		r := englishFixture(t, tc.negative)
+		var got []fixtureGroup
+		for _, g := range (&Output{Theme: newTheme(nil)}).groups(r) {
+			f := fixtureGroup{Title: g.title}
+			for _, row := range g.rows {
+				f.Rows = append(f.Rows, [3]string{row.service, row.result, row.region})
+			}
+			got = append(got, f)
+		}
+		if !reflect.DeepEqual(got, want) {
+			t.Fatalf("%s: logical platform cells differ\ngot%+v\nwant%+v", tc.name, got, want)
+		}
+		plain := renderProfile(t, r, colorprofile.NoTTY)
 		for _, profile := range []colorprofile.Profile{colorprofile.NoTTY, colorprofile.Ascii, colorprofile.TrueColor} {
-			actual := ansi.Strip(renderProfile(t, r, profile))
-			if actual != string(expected) {
-				t.Fatalf("%s: English layout/golden differs\n%s", tc.name, actual)
+			if actual := ansi.Strip(renderProfile(t, r, profile)); actual != plain {
+				t.Fatalf("%s: profile changed layout/text", tc.name)
 			}
 		}
 	}

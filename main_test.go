@@ -94,7 +94,7 @@ func TestCLIHelpValidationAndHumanOutput(t *testing.T) {
 	code := runCLI(context.Background(), nil, out, new(bytes.Buffer), func(context.Context, time.Duration, int) (measurements, error) {
 		return measurements{Access: fixtureResults()}, nil
 	})
-	if code != 0 || !strings.Contains(out.String(), "ChatGPT (Web)") || !strings.Contains(out.String(), "AI services") || strings.Contains(out.String(), "completed in") {
+	if code != 0 || !strings.Contains(out.String(), "ChatGPT  Web ● Yes") || strings.Contains(out.String(), "ChatGPT (Web)") || !strings.Contains(out.String(), "AI services") || strings.Contains(out.String(), "completed in") {
 		t.Fatal(code, out)
 	}
 }

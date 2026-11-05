@@ -4,7 +4,6 @@ package render
 
 import (
 	"fmt"
-	"sort"
 	"time"
 
 	lg "charm.land/lipgloss/v2"
@@ -26,8 +25,9 @@ type Report struct {
 	Extra    []extra.Result
 }
 type displayRow struct {
-	service, result, region string
-	style                   lg.Style
+	service, result, region  string
+	style                    lg.Style
+	resultParts, regionParts []cellPart
 }
 type displayGroup struct {
 	title string
@@ -48,7 +48,7 @@ func (o *Output) accessRows(results []access.Result) []displayRow {
 				label, style = "● No", o.Theme.Bad
 			}
 		}
-		rows = append(rows, displayRow{terminalName("access", r.Check.ID, r.Check.Name), label, regionCode(r.Region), style})
+		rows = append(rows, displayRow{service: terminalName("access", r.Check.ID, r.Check.Name), result: label, region: regionCode(r.Region), style: style})
 	}
 	return rows
 }
@@ -64,57 +64,9 @@ func (o *Output) aiRows(results []ai.Result) []displayRow {
 				label, style = "● No", o.Theme.Bad
 			}
 		}
-		rows = append(rows, displayRow{terminalName("ai", r.Check.ID, r.Check.Name), label, "", style})
+		rows = append(rows, displayRow{service: terminalName("ai", r.Check.ID, r.Check.Name), result: label, style: style})
 	}
 	return rows
-}
-
-// Purpose groups preserve first platform appearance and each platform's row
-// order. They only move display rows; measurements, scope and outcomes stay put.
-func (o *Output) groups(r Report) []displayGroup {
-	type keyedRow struct {
-		platform string
-		row      displayRow
-	}
-	var buckets [len(purposeTitles)][]keyedRow
-	add := func(source, id string, row displayRow) {
-		p := presentationFor(source, id)
-		buckets[p.purpose] = append(buckets[p.purpose], keyedRow{p.platform, row})
-	}
-	// Match the previous presentation traversal, independent of execution order.
-	for i, row := range o.serviceRows(r.Services) {
-		add("geo", r.Services[i].Check.ID, row)
-	}
-	for i, row := range o.accessRows(r.Access) {
-		add("access", r.Access[i].Check.ID, row)
-	}
-	for i, row := range o.aiRows(r.AI) {
-		add("ai", r.AI[i].Check.ID, row)
-	}
-	for i, row := range o.extraRows(r.Extra) {
-		add("extra", r.Extra[i].ID, row)
-	}
-	var groups []displayGroup
-	for category, rows := range buckets {
-		if len(rows) == 0 {
-			continue
-		}
-		first := map[string]int{}
-		for i, row := range rows {
-			if _, ok := first[row.platform]; !ok {
-				first[row.platform] = i
-			}
-		}
-		sort.SliceStable(rows, func(i, j int) bool {
-			return first[rows[i].platform] < first[rows[j].platform]
-		})
-		group := displayGroup{title: purposeTitles[category]}
-		for _, row := range rows {
-			group.rows = append(group.rows, row.row)
-		}
-		groups = append(groups, group)
-	}
-	return groups
 }
 
 // Measure ALL groups before rendering any table. Widths are terminal cell
@@ -192,7 +144,7 @@ func (o *Output) headerPart(widths [3]int, padding int) string {
 func (o *Output) bodyPart(rows []displayRow, widths [3]int, padding int, last bool) string {
 	cells := make([][]string, 0, len(rows))
 	for _, r := range rows {
-		cells = append(cells, []string{ansi.Hardwrap(r.service, widths[0], true), r.style.Render(ansi.Hardwrap(r.result, widths[1], true)), ansi.Hardwrap(r.region, widths[2], true)})
+		cells = append(cells, []string{ansi.Hardwrap(r.service, widths[0], true), ansi.Hardwrap(r.resultCell(), widths[1], true), ansi.Hardwrap(r.regionCell(), widths[2], true)})
 	}
 	return o.tablePart(cells, widths[:], padding, false, false, last)
 }

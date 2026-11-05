@@ -1,4 +1,11 @@
-# Service Unlock v0.5.5 — source and license notice
+# Service Unlock v0.5.6 — source and license notice
+
+Modified 2026-11-05 for v0.5.6, based on v0.5.5: replace capability
+adjacency with one terminal row per explicitly mapped platform. All independent
+capability states and source-specific country observations remain; raw168 IDs,
+serializers, selection, probe/network and Spotify predicates are unchanged.
+This is presentation-only aggregation, without request savings or a new raw removal.
+No running GUKO deployment is changed. Verification scope is in the Release notes.
 
 > Modified 2026-10-18 for v0.5.1: NotebookLM, ChatGPT App and JCOM removed; WOWOW, Spotify, Abema and DeepSeek response classification repaired; Hulu Japan receives one bounded HTTP/1.1 fallback but remains unresolved in live testing. The anonymous Spotify POST/strict classifier is derived from fixed RRC MediaUnlockTest_Spotify and is AGPL-3.0-only in internal/extra/spotify_signup.go; internal/geo contains its integration adapter, retaining original MIT notices. Other repair files in internal/extra retain AGPL. Exact modified Corresponding Source is included with this release; GUKO is not deployed by this script publication.
 
@@ -37,9 +44,9 @@ sections. Raw retained measurements, safety rules and network selection are unch
 Spotify classification is unchanged from v0.5.4; no GUKO deployment is included.
 
 Exact Corresponding Source, build files, fixed data, tests, license texts and
-modification notices for v0.5.5 are available at no charge:
-https://github.com/shui1iao/service-unlock/tree/v0.5.5
-https://github.com/shui1iao/service-unlock/releases/download/v0.5.5/service-unlock-v0.5.5-source.zip
+modification notices for v0.5.6 are available at no charge:
+https://github.com/shui1iao/service-unlock/tree/v0.5.6
+https://github.com/shui1iao/service-unlock/releases/download/v0.5.6/service-unlock-v0.5.6-source.zip
 The source archive is offered beside the matching executable assets on the
 same release page. The build instructions are in README.md. Dependencies are
 pinned in go.mod/go.sum; the source ZIP additionally includes vendor source and

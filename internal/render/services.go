@@ -31,7 +31,7 @@ func (o *Output) serviceRows(results []geo.Result) []displayRow {
 				}
 			}
 		}
-		rows = append(rows, displayRow{terminalName("geo", r.Check.ID, r.Check.Name), label, region, style})
+		rows = append(rows, displayRow{service: terminalName("geo", r.Check.ID, r.Check.Name), result: label, region: region, style: style})
 	}
 	return rows
 }

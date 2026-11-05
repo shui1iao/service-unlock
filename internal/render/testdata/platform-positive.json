@@ -1,0 +1,147 @@
+[
+  {
+    "title": "Video, live & sports",
+    "rows": [
+      [
+        "YouTube",
+        "Premium ● Yes",
+        "US"
+      ],
+      [
+        "Twitch",
+        "Region ● Yes",
+        "US"
+      ],
+      [
+        "Netflix",
+        "Catalogue ● Limited",
+        "Catalogue FR · Fast US"
+      ],
+      [
+        "Amazon Prime Video",
+        "Region ● Yes",
+        "Geo US"
+      ],
+      [
+        "TikTok",
+        "Web ● Yes",
+        "US"
+      ]
+    ]
+  },
+  {
+    "title": "Music & audio",
+    "rows": [
+      [
+        "YouTube Music",
+        "● Yes",
+        ""
+      ],
+      [
+        "Spotify",
+        "Legacy signup ○ Unknown",
+        "US"
+      ],
+      [
+        "Deezer",
+        "Region ● Yes",
+        "US"
+      ]
+    ]
+  },
+  {
+    "title": "AI services",
+    "rows": [
+      [
+        "ChatGPT",
+        "Web ● Yes · API ● Yes",
+        "US"
+      ],
+      [
+        "Claude",
+        "Web ○ Unknown · API ● No",
+        "Geo Unknown"
+      ],
+      [
+        "Gemini",
+        "Web ● No · API ● Yes",
+        "CN"
+      ],
+      [
+        "DeepSeek",
+        "API ● Yes",
+        ""
+      ],
+      [
+        "Qwen",
+        "API SG ● Yes · API CN ● Yes",
+        ""
+      ],
+      [
+        "Kimi / Moonshot",
+        "API ● Yes",
+        ""
+      ],
+      [
+        "Zhipu GLM",
+        "API ○ Unknown",
+        ""
+      ]
+    ]
+  },
+  {
+    "title": "Gaming",
+    "rows": [
+      [
+        "Steam",
+        "Store region ● Yes",
+        "HK"
+      ],
+      [
+        "PlayStation",
+        "Region ● Yes",
+        "JP"
+      ]
+    ]
+  },
+  {
+    "title": "Community",
+    "rows": [
+      [
+        "Reddit",
+        "Guest ● Yes",
+        "US"
+      ]
+    ]
+  },
+  {
+    "title": "General websites",
+    "rows": [
+      [
+        "Google",
+        "Search ● Yes",
+        "US"
+      ],
+      [
+        "Apple",
+        "Region ○ Unknown",
+        "Geo Unknown"
+      ],
+      [
+        "Ookla Speedtest",
+        "Region ● Yes",
+        "US"
+      ],
+      [
+        "JetBrains",
+        "Region ● Yes",
+        "US"
+      ],
+      [
+        "Microsoft (Bing)",
+        "Region ● Yes",
+        "US"
+      ]
+    ]
+  }
+]

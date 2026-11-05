@@ -2,11 +2,13 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"github.com/charmbracelet/x/ansi"
 	"os"
 	"path/filepath"
 	"regexp"
+	"serviceunlock/internal/extra"
 	"strings"
 	"testing"
 	"time"
@@ -14,7 +16,7 @@ import (
 
 func TestSingleBoxCompleteScopesAndMachineJSONUnchanged(t *testing.T) {
 	titles := []string{"Video, live & sports", "Music & audio", "AI services", "Gaming", "Community", "General websites"}
-	for _, region := range []string{"global", "jp", "eu", "na"} {
+	for _, region := range extra.Regions() {
 		t.Run(region, func(t *testing.T) {
 			m := unifiedFixture(region, false)
 			if region == "jp" {
@@ -58,8 +60,10 @@ func TestSingleBoxCompleteScopesAndMachineJSONUnchanged(t *testing.T) {
 					t.Fatal("not one frame", corner)
 				}
 			}
-			if strings.Count(text, "Service                Result") > 1 || strings.Count(text, "Result") != 1 || strings.Count(text, "Region │") != 1 {
-				t.Fatal("duplicate headers", text)
+			// Aggregated source-region text can widen Region; do not assume
+			// the old six-cell column or its exact padding in header matching.
+			if strings.Count(text, "Result") != 1 || len(regexp.MustCompile(`(?m)^│\s*Service\s+Result\s+Region\s*│$`).FindAllString(text, -1)) != 1 {
+				t.Fatal("duplicate/missing headers", text)
 			}
 			nsections := len(titles)
 			last := -1
@@ -75,15 +79,54 @@ func TestSingleBoxCompleteScopesAndMachineJSONUnchanged(t *testing.T) {
 					}
 				}
 			}
-			count := len(r.Results) + len(r.Services) + len(r.AIEndpoints) + len(r.ExtraChecks)
-			statusLines := regexp.MustCompile(`(?m)^│.*[●○] (?:Yes|No|Limited|Unknown)`).FindAllString(text, -1)
-			if len(statusLines) != count {
-				t.Fatal("missing service rows", len(statusLines), count)
+			// Physical lines/status bullets are no longer probe counts: one
+			// platform row can wrap and can contain multiple independent states.
+			// Exact per-scope logical counts/all168 source identities are covered
+			// in render/platforms_test.go and catalogue_test.go.
+			for _, name := range []string{"ChatGPT", "Claude", "Gemini", "Qwen", "Netflix", "TikTok", "Spotify", "Reddit"} {
+				pattern := regexp.MustCompile(`(?m)^│\s*` + regexp.QuoteMeta(name) + `\s{2,}`)
+				if len(pattern.FindAllString(text, -1)) != 1 {
+					t.Fatal("platform not one Service cell", name, text)
+				}
+			}
+			aliases := map[string][2]string{
+				"MediaUnlockTest_PrimeVideo":     {"Amazon Prime Video", "Access"},
+				"MediaUnlockTest_BilibiliTW":     {"Bilibili", "TW"},
+				"MediaUnlockTest_BilibiliHKMCTW": {"Bilibili", "HK-MO-TW"},
+				"MediaUnlockTest_BGlobalSEA":     {"Bilibili", "Global SEA"},
+				"MediaUnlockTest_BGlobalTH":      {"Bilibili", "Global TH"},
+				"MediaUnlockTest_BGlobalID":      {"Bilibili", "Global ID"},
+				"MediaUnlockTest_BGlobalVN":      {"Bilibili", "Global VN"},
+				"MediaUnlockTest_SkyGo":          {"Sky", "Go UK"},
+				"MediaUnlockTest_SKY_DE":         {"Sky", "DE"},
+				"MediaUnlockTest_Sky_CH":         {"Sky", "CH"},
+				"MediaUnlockTest_SkyGONZ":        {"Sky", "Go NZ"},
+				"MediaUnlockTest_HuluUS":         {"Hulu", "US"},
+				"MediaUnlockTest_HuluJP":         {"Hulu", "JP"},
+				"MediaUnlockTest_RakutenTV":      {"Rakuten TV", "EU"},
+				"MediaUnlockTest_RakutenTVJP":    {"Rakuten TV", "JP"},
+				"MediaUnlockTest_Directv":        {"DIRECTV", "Stream"},
+				"MediaUnlockTest_DirecTVGO":      {"DIRECTV", "Go"},
 			}
 			for _, row := range m.Extra {
-				if !strings.Contains(text, row.Name) {
-					t.Fatal("missing extra product/sample", row.ID, row.Name)
+				name, capability := row.Name, ""
+				if a, ok := aliases[row.ID]; ok {
+					name, capability = a[0], a[1]
 				}
+				// A sample label may wrap within the combined Result cell.
+				// Exact label/status retention is checked on logical cells and
+				// lossless narrow reconstruction inside render's tests.
+				if !strings.Contains(text, name) {
+					t.Fatal("missing extra platform", row.ID, name, capability)
+				}
+			}
+			// CLI and machine must use the same aggregation and existing one
+			// completed measurement, not perform a second request for merging.
+			var ordinary, stderr bytes.Buffer
+			calls := 0
+			code := runCLI(context.Background(), []string{"--region", region, "--extra-family", "4"}, &ordinary, &stderr, func(context.Context, time.Duration, int) (measurements, error) { calls++; return m, nil })
+			if code != 1 || calls != 1 || stderr.Len() != 0 || ordinary.String() != text {
+				t.Fatal("normal/machine presentation diverged or reran", code, calls, stderr.String())
 			}
 			if regexp.MustCompile(`(?m)^(?:│\s*)?(Yes|No|Limited|Unknown) [0-9]+:`).MatchString(text) {
 				t.Fatal("retired summaries remain")

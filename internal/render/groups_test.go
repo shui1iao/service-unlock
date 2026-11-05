@@ -24,6 +24,10 @@ func completeMock(t *testing.T) Report {
 			res.Value = ""
 			res.Err = errors.New("mock timeout; result unknown")
 		}
+		if c.ID == "spotify_signup" {
+			res.Value = ""
+			res.Err = errors.New("legacy signup endpoint inconclusive; never a registration Yes")
+		}
 		r.Services = append(r.Services, res)
 	}
 	for _, c := range ai.Checks() {
