@@ -46,6 +46,7 @@ type Check struct {
 type Result struct {
 	Check         Check
 	Value, Detail string
+	Region        string
 	Err           error
 	CheckedAt     time.Time
 	RTT           time.Duration
@@ -165,6 +166,9 @@ func Run(ctx context.Context, env *Env, checks []Check, workers int) []Result {
 					case KindBlocked:
 						r.Detail = "yes = captcha/block observed; no = marker not observed"
 					}
+				}
+				if c.Kind != KindCountry {
+					r.Region = RegionMetadata(ctx, env.Stack, 0, c.ID)
 				}
 				results[i] = r
 			}(i)

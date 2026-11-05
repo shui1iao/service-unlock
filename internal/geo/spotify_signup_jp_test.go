@@ -41,6 +41,12 @@ func TestJPSpotifySignupRegistrationNotConfiguration(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			calls := 0
 			r := single(t, check(t, "spotify_signup"), func(req *http.Request) (*http.Response, error) {
+				if req.URL.String() == "https://accounts.spotify.com/status" {
+					if req.Method != "GET" {
+						t.Error("country metadata method")
+					}
+					return response(req, 200, `{"geoLocationCountryCode":"JP"}`, nil), nil
+				}
 				calls++
 				if req.Method != "POST" || req.URL.String() != "https://spclient.wg.spotify.com/signup/public/v1/account" {
 					t.Errorf("not anonymous registration validation POST: %s %s", req.Method, req.URL)
@@ -66,7 +72,7 @@ func TestJPSpotifySignupRegistrationNotConfiguration(t *testing.T) {
 				}
 				return response(req, 200, tc.body, nil), nil
 			})
-			if calls != 1 || r.Value != tc.want || (r.Err != nil) != tc.unknown {
+			if calls != 1 || r.Region != "JP" || r.Value != tc.want || (r.Err != nil) != tc.unknown {
 				t.Fatalf("calls=%d result=%+v want=%s unknown=%v", calls, r, tc.want, tc.unknown)
 			}
 			if tc.name == "captured_POST_proxy_denied" && !strings.Contains(r.Detail, "actual registration/login not tested") {

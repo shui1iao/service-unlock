@@ -84,7 +84,17 @@ func TestAll12CatalogueTypesMethodsPayloadsAndParsers(t *testing.T) {
 				t.Fatalf("catalogue mismatch: %+v %+v", c, f)
 			}
 			calls := 0
+			auxCalls := 0
 			r := single(t, c, func(req *http.Request) (*http.Response, error) {
+				for _, meta := range metadataCases {
+					if req.URL.String() == meta.url {
+						auxCalls++
+						if req.Method != meta.method {
+							t.Errorf("auxiliary method mismatch")
+						}
+						return response(req, 200, meta.body, nil), nil
+					}
+				}
 				calls++
 				if req.URL.String() != f.URL || req.Method != f.Method {
 					t.Errorf("endpoint/method mismatch: %s %s", req.Method, req.URL)
@@ -131,6 +141,13 @@ func TestAll12CatalogueTypesMethodsPayloadsAndParsers(t *testing.T) {
 				}
 				return response(req, 200, f.Body, f.ResponseHeaders), nil
 			})
+			wantAux := 0
+			if c.ID == "google_captcha" || c.ID == "spotify_signup" || c.ID == "reddit_guest" {
+				wantAux = 1
+			}
+			if auxCalls != wantAux || wantAux == 1 && r.Region != "JP" {
+				t.Fatal("aux metadata", auxCalls, r.Region)
+			}
 			if calls != 1 || r.Err != nil || r.Value != f.Value || r.CheckedAt.IsZero() || r.RTT <= 0 {
 				t.Fatalf("calls=%d result=%+v", calls, r)
 			}

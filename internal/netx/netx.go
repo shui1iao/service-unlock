@@ -77,6 +77,9 @@ func New(_ context.Context, opts Options) (*Stack, error) {
 	}
 	return &Stack{client: client, timeout: opts.Timeout}, nil
 }
+
+// Timeout is the configured request budget, also used to bound optional metadata.
+func (s *Stack) Timeout() time.Duration     { return s.timeout }
 func (s *Stack) HTTP(_ Family) *http.Client { return s.client }
 func (s *Stack) Close()                     { s.client.CloseIdleConnections() }
 

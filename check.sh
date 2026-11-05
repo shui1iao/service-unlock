@@ -1,8 +1,8 @@
 #!/bin/sh
-# Service Unlock v0.5.7 launcher. MIT; Copyright (c) 2026 Remnawave.
+# Service Unlock v0.5.8 launcher. MIT; Copyright (c) 2026 Remnawave.
 # The release URLs below are fixed. No installation and no persistent binary.
 
-BASE=https://github.com/shui1iao/service-unlock/releases/download/v0.5.7
+BASE=https://github.com/shui1iao/service-unlock/releases/download/v0.5.8
 work=
 child=
 interrupted=0

@@ -76,9 +76,6 @@ func googleSearchCaptcha() Check {
 	}
 }
 
-// youtube reads the region YouTube serves; it falls back to the Google answer
-// because the two normally agree and YouTube's marker is not always present.
-
 // availabilityByPhrase is the shape shared by the "is this product offered
 // here" checks: fetch a page, look for the refusal sentence.
 func availabilityByPhrase(id, name, url, phrase string, headers map[string]string) Check {

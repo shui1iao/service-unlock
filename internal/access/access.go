@@ -20,6 +20,7 @@ import (
 	"sync"
 	"time"
 
+	"serviceunlock/internal/geo"
 	"serviceunlock/internal/netx"
 )
 
@@ -110,6 +111,10 @@ func Run(ctx context.Context, stack *netx.Stack, f netx.Family, checks []Check, 
 			res.Check = c
 			if res.RTT == 0 {
 				res.RTT = time.Since(start)
+			}
+			// Preserve primary timing/state; optional country uses this same worker.
+			if res.Region == "" {
+				res.Region = geo.RegionMetadata(ctx, stack, f, c.ID)
 			}
 			results[i] = res
 		}()

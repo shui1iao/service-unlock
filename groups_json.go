@@ -7,6 +7,7 @@ import (
 )
 
 type serviceItem struct {
+	Region    *string `json:"region,omitempty"`
 	ID        string  `json:"id"`
 	Name      string  `json:"name"`
 	Type      string  `json:"type"`
@@ -38,6 +39,10 @@ func makeCompleteReport(m measurements, timeout float64, workers int) report {
 	r.AIEndpoints = make([]endpointItem, 0, len(m.AI))
 	for _, res := range m.Services {
 		out := serviceItem{ID: res.Check.ID, Name: res.Check.Name, Type: res.Check.Kind.String(), Status: "observed", Detail: res.Detail, CheckedAt: utc(res.CheckedAt), ElapsedMS: milliseconds(res.RTT)}
+		if res.Region != "" {
+			region := res.Region
+			out.Region = &region
+		}
 		if res.Err != nil {
 			out.Status = "error"
 			message := res.Err.Error()

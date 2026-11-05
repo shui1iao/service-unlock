@@ -37,6 +37,9 @@ func TestSpotifySignupAuditHTTPAndChallengeGuards(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			calls := 0
 			r := single(t, check(t, "spotify_signup"), func(req *http.Request) (*http.Response, error) {
+				if req.URL.Host == "accounts.spotify.com" {
+					return response(req, 503, "metadata unavailable", nil), nil
+				}
 				calls++
 				h := http.Header{}
 				h.Set("Content-Type", tc.ctype)
@@ -58,14 +61,16 @@ func TestSpotifySignupAuditHTTPAndChallengeGuards(t *testing.T) {
 		})
 	}
 }
-func TestDeletedSpotifyCountryNeverRunsAndMetadataCannotPromoteSignup(t *testing.T) {
+func TestSpotifyCountryIsOnlyMetadataAndCannotPromoteSignup(t *testing.T) {
 	calls := 0
 	env := environment(t, func(req *http.Request) (*http.Response, error) {
 		calls++
 		switch req.URL.Host {
 		case "accounts.spotify.com":
-			t.Fatal("deleted geo.spotify was requested")
-			return nil, nil
+			if req.URL.String() != "https://accounts.spotify.com/status" || req.Method != "GET" {
+				t.Fatal("auxiliary request changed", req.URL)
+			}
+			return response(req, 200, `{"geoLocationCountryCode":"JP"}`, nil), nil
 		case "spclient.wg.spotify.com":
 			return response(req, 200, `{"status":311,"country":"JP","is_country_launched":true}`, nil), nil
 		}
@@ -73,7 +78,7 @@ func TestDeletedSpotifyCountryNeverRunsAndMetadataCannotPromoteSignup(t *testing
 		return nil, nil
 	})
 	results := Run(context.Background(), env, []Check{check(t, "spotify_signup")}, 1)
-	if calls != 1 || results[0].Value != "" || results[0].Err == nil {
+	if calls != 2 || results[0].Region != "JP" || results[0].Value != "" || results[0].Err == nil {
 		t.Fatal("country/launch observations promoted signup", results, calls)
 	}
 	if !strings.Contains(results[0].Err.Error(), "actual registration/login not tested") {

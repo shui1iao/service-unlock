@@ -102,6 +102,13 @@ func mockCompleteStack(t *testing.T) (*netx.Stack, *completeTransport) {
 		}
 	}
 	for _, f := range []requestFixture{
+        {URL: "https://ab.chatgpt.com/v1/initialize",Method:"POST",Body:`{"derived_fields":{"country":"JP"}}`},
+        {URL: "https://www.youtube.com",Body:`{"countryCode":"JP"}`},
+        {URL: "https://www.tiktok.com/api/v1/web-cookie-privacy/config?appId=1988",Body:`{"body":{"appProps":{"region":"JP"}}}`},
+        {URL: "https://accounts.spotify.com/status",Body:`{"geoLocationCountryCode":"JP"}`},
+        {URL: "https://www.reddit.com/svc/shreddit/reddit-chat",Body:`<widget country="JP">`},
+        {URL: "https://www.google.com",Body:`"ja_JP"`},
+
 		{URL: "https://api.openai.com/compliance/cookie_requirements", Body: `{}`},
 		{URL: "https://www.youtube.com/premium", Body: "ad-free offer"},
 		{URL: "https://www.netflix.com/title/70143836", Body: "licensed title"},

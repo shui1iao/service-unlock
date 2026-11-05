@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strings"
 
+	"serviceunlock/internal/geo"
 	"serviceunlock/internal/netx"
 )
 
@@ -46,17 +47,19 @@ func youTubePremium() Check {
 				return Result{State: StateError, Detail: problem}
 			}
 
+			region := geo.YouTubePrimaryRegion(resp)
 			body := strings.ToLower(resp.Text())
 			switch {
 			case strings.Contains(body, "youtube premium is not available in your country"):
-				return Result{State: StateBlocked, Detail: "not offered in this country"}
+				return Result{State: StateBlocked, Region: region, Detail: "not offered in this country"}
 			case resp.Status < 200 || resp.Status >= 400:
 				return Result{State: StateError, Detail: "unexpected HTTP " + itoa(resp.Status)}
 			case strings.Contains(body, "ad-free"):
-				return Result{State: StateAvailable}
+				return Result{State: StateAvailable, Region: region}
 			}
 			return Result{
 				State:  StateError,
+				Region: region,
 				Detail: "neither the offer nor the refusal wording was present",
 			}
 		},
