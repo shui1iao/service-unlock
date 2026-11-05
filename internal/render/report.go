@@ -21,13 +21,13 @@ type Report struct {
 	Access   []access.Result
 	Services []geo.Result
 	AI       []ai.Result
+	Region   string // resolved selection, not a second region detector
 	Duration time.Duration
 	Extra    []extra.Result
 }
 type displayRow struct {
-	service, result, region  string
-	style                    lg.Style
-	resultParts, regionParts []cellPart
+	service, result, region string
+	style                   lg.Style
 }
 type displayGroup struct {
 	title string

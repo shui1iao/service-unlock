@@ -38,11 +38,10 @@ func (k Kind) String() string {
 
 type RunFunc func(context.Context, *Env, netx.Family) (string, error)
 type Check struct {
-	ID, Name  string
-	Group     Group
-	Kind      Kind
-	Run       RunFunc
-	DependsOn string
+	ID, Name string
+	Group    Group
+	Kind     Kind
+	Run      RunFunc
 }
 type Result struct {
 	Check         Check
@@ -54,23 +53,9 @@ type Result struct {
 type Env struct {
 	Stack   *netx.Stack
 	mu      sync.RWMutex
-	shared  map[string]string
 	details map[string]string
 }
 
-func (e *Env) share(key string, _ netx.Family, value string) {
-	e.mu.Lock()
-	defer e.mu.Unlock()
-	if e.shared == nil {
-		e.shared = map[string]string{}
-	}
-	e.shared[key] = value
-}
-func (e *Env) lookupShared(key string, _ netx.Family) string {
-	e.mu.RLock()
-	defer e.mu.RUnlock()
-	return e.shared[key]
-}
 func (e *Env) note(key, text string) {
 	e.mu.Lock()
 	defer e.mu.Unlock()
@@ -132,27 +117,16 @@ func normalize(value string, kind Kind) string {
 	return ""
 }
 
-// Run retains the upstream dependency-wave order (Google before YouTube), but
-// has exactly one system-selected outcome instead of fabricated V4/V6 columns.
+// Run executes only the registered independent probes, with one system-selected outcome.
 func Run(ctx context.Context, env *Env, checks []Check, workers int) []Result {
 	if workers < 1 {
 		workers = 4
 	}
 	results := make([]Result, len(checks))
-	needed := map[string]bool{}
-	for _, c := range checks {
-		if c.DependsOn != "" {
-			needed[c.DependsOn] = true
-		}
-	}
-	first, second := []int{}, []int{}
+	indices := make([]int, len(checks))
 	for i, c := range checks {
 		results[i].Check = c
-		if needed[c.ID] {
-			first = append(first, i)
-		} else {
-			second = append(second, i)
-		}
+		indices[i] = i
 	}
 	wave := func(indices []int) {
 		sem := make(chan struct{}, workers)
@@ -180,8 +154,6 @@ func Run(ctx context.Context, env *Env, checks []Check, workers int) []Result {
 					r.Value = normalize(raw, c.Kind)
 					if r.Value == "" {
 						r.Err = fmt.Errorf("could not parse a %s result", c.Kind)
-					} else {
-						env.share(c.ID, 0, r.Value)
 					}
 				}
 				if r.Detail == "" {
@@ -199,7 +171,6 @@ func Run(ctx context.Context, env *Env, checks []Check, workers int) []Result {
 		}
 		wg.Wait()
 	}
-	wave(first)
-	wave(second)
+	wave(indices)
 	return results
 }

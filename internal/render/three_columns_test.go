@@ -164,7 +164,7 @@ func TestThreeAlignedEnglishColumnsNoDetailsOrTime(t *testing.T) {
 				}
 			}
 		}
-		if rows != 30 || top != 1 || bottom != 1 || separator != 12 || len(headers) != 1 {
+		if rows != 29 || top != 1 || bottom != 1 || separator != 12 || len(headers) != 1 {
 			t.Fatalf("counts=%d/%d/%d/%d/%d", rows, top, bottom, separator, len(headers))
 		}
 

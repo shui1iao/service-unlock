@@ -79,48 +79,30 @@ func TestSingleBoxCompleteScopesAndMachineJSONUnchanged(t *testing.T) {
 					}
 				}
 			}
-			// Physical lines/status bullets are no longer probe counts: one
-			// platform row can wrap and can contain multiple independent states.
-			// Exact per-scope logical counts/all168 source identities are covered
-			// in render/platforms_test.go and catalogue_test.go.
-			for _, name := range []string{"ChatGPT", "Claude", "Gemini", "Qwen", "Netflix", "TikTok", "Spotify", "Reddit"} {
+			// Every primary probe has one status; long names may wrap naturally.
+			for _, name := range []string{"ChatGPT", "Claude", "Gemini", "Qwen Intl (API)", "Netflix", "TikTok", "Spotify (Legacy signup endpoint)", "Reddit (guest)"} {
 				pattern := regexp.MustCompile(`(?m)^│\s*` + regexp.QuoteMeta(name) + `\s{2,}`)
 				if len(pattern.FindAllString(text, -1)) != 1 {
-					t.Fatal("platform not one Service cell", name, text)
+					t.Fatal("primary not exactly one Service cell", name, text)
 				}
-			}
-			aliases := map[string][2]string{
-				"MediaUnlockTest_PrimeVideo":     {"Amazon Prime Video", "Access"},
-				"MediaUnlockTest_BilibiliTW":     {"Bilibili", "TW"},
-				"MediaUnlockTest_BilibiliHKMCTW": {"Bilibili", "HK-MO-TW"},
-				"MediaUnlockTest_BGlobalSEA":     {"Bilibili", "Global SEA"},
-				"MediaUnlockTest_BGlobalTH":      {"Bilibili", "Global TH"},
-				"MediaUnlockTest_BGlobalID":      {"Bilibili", "Global ID"},
-				"MediaUnlockTest_BGlobalVN":      {"Bilibili", "Global VN"},
-				"MediaUnlockTest_SkyGo":          {"Sky", "Go UK"},
-				"MediaUnlockTest_SKY_DE":         {"Sky", "DE"},
-				"MediaUnlockTest_Sky_CH":         {"Sky", "CH"},
-				"MediaUnlockTest_SkyGONZ":        {"Sky", "Go NZ"},
-				"MediaUnlockTest_HuluUS":         {"Hulu", "US"},
-				"MediaUnlockTest_HuluJP":         {"Hulu", "JP"},
-				"MediaUnlockTest_RakutenTV":      {"Rakuten TV", "EU"},
-				"MediaUnlockTest_RakutenTVJP":    {"Rakuten TV", "JP"},
-				"MediaUnlockTest_Directv":        {"DIRECTV", "Stream"},
-				"MediaUnlockTest_DirecTVGO":      {"DIRECTV", "Go"},
 			}
 			for _, row := range m.Extra {
-				name, capability := row.Name, ""
-				if a, ok := aliases[row.ID]; ok {
-					name, capability = a[0], a[1]
+				name := row.Name
+				if row.ID == "MediaUnlockTest_PrimeVideo" {
+					name = "Amazon Prime Video"
 				}
-				// A sample label may wrap within the combined Result cell.
-				// Exact label/status retention is checked on logical cells and
-				// lossless narrow reconstruction inside render's tests.
+				if row.ID == "MediaUnlockTest_DMM" {
+					name = "DMM (financial site)"
+				}
+				// Default width fits these original names; no brand aliases.
 				if !strings.Contains(text, name) {
-					t.Fatal("missing extra platform", row.ID, name, capability)
+					t.Fatal("missing original extra name", row.ID, name)
 				}
 			}
-			// CLI and machine must use the same aggregation and existing one
+			if region != "global" && !strings.Contains(text, "Regional media — ") {
+				t.Fatal("missing regional section", region)
+			}
+			// CLI and machine must use the same direct layout and existing one
 			// completed measurement, not perform a second request for merging.
 			var ordinary, stderr bytes.Buffer
 			calls := 0

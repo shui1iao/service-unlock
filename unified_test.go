@@ -41,6 +41,10 @@ func unifiedFixture(region string, unknown bool) measurements {
 			r.Err = errors.New("OFFLINE MOCK unknown")
 			r.Value = ""
 		}
+		if c.ID == "spotify_signup" && !unknown {
+			r.Value = ""
+			r.Err = errors.New("OFFLINE MOCK legacy signup inconclusive")
+		}
 		m.Services = append(m.Services, r)
 	}
 	for _, c := range ai.Checks() {
@@ -84,7 +88,7 @@ func unifiedFixture(region string, unknown bool) measurements {
 	return m
 }
 func TestUnifiedSelectionSameMeasurementEnvelope(t *testing.T) {
-	counts := map[string]int{"global": 40, "tw": 51, "hk": 48, "jp": 66, "na": 77, "sa": 43, "eu": 70, "oc": 59, "kr": 48, "sea": 51, "af": 43}
+	counts := map[string]int{"global": 28, "tw": 39, "hk": 36, "jp": 54, "na": 65, "sa": 31, "eu": 58, "oc": 47, "kr": 36, "sea": 39, "af": 31}
 	for _, region := range extra.Regions() {
 		for _, unknown := range []bool{false, true} {
 			t.Run(region+map[bool]string{false: "-mixed", true: "-unknown"}[unknown], func(t *testing.T) {
@@ -110,7 +114,7 @@ func TestUnifiedSelectionSameMeasurementEnvelope(t *testing.T) {
 				if er := json.Unmarshal(out.Bytes(), &e); er != nil {
 					t.Fatal(er)
 				}
-				if e.Format != "guko-unified-v1" || len(e.Report.Results) != 6 || len(e.Report.Services) != 20 || len(e.Report.AIEndpoints) != 8 || len(e.Report.ExtraChecks)+34 != counts[region] || len(e.Report.Selection.ExpectedIDs) != len(m.Extra) {
+				if e.Format != "guko-unified-v1" || len(e.Report.Results) != 6 || len(e.Report.Services) != 12 || len(e.Report.AIEndpoints) != 4 || len(e.Report.ExtraChecks)+22 != counts[region] || len(e.Report.Selection.ExpectedIDs) != len(m.Extra) {
 					t.Fatal("scope mismatch")
 				}
 				if !strings.Contains(e.Terminal, "\x1b[") || strings.Count(e.Terminal, "╭") != 1 {
@@ -150,7 +154,7 @@ func TestUnifiedRejectsUnmappedFlagsWithoutRun(t *testing.T) {
 		}
 	}
 }
-func TestNative34JSONFieldsBytePreserved(t *testing.T) {
+func TestNative22JSONFieldsBytePreserved(t *testing.T) {
 	m := unifiedFixture("global", false)
 	r := makeCompleteReport(m, 6, 4)
 	old := makeReport(m.Access, 6, 4)

@@ -1,32 +1,9 @@
 // Derived from remnawave/geocheck v0.3.0, commit 50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc.
 // MIT License; Copyright (c) 2026 Remnawave.
-// Package ai answers whether the model providers' APIs will talk to this
-// address, which is a different question from whether their consumer websites
-// will.
-//
-// The websites sit behind bot protection: claude.ai and gemini.google.com hand
-// out Cloudflare challenges to anything that is not a browser, so a check
-// against them is inconclusive on exactly the hosts people most want to test.
-// The APIs have no such defence, and they answer in their own vocabulary.
-//
-// That vocabulary is what these checks read, and it makes an unauthenticated
-// probe useful:
-//
-//   - an authentication error means the request reached the service. It looked
-//     at the credentials and found them missing, which it can only do after
-//     deciding it is willing to serve the caller at all.
-//   - a refusal naming the region means the opposite, and says so outright:
-//     OpenAI answers "unsupported_country_region_territory", Anthropic answers
-//     "Request not allowed".
-//
-// So no API key is needed to learn the thing worth knowing. A key would only
-// upgrade "reachable" to "usable", which is a question about the account
-// rather than about the network.
-//
-// The verdict is deliberately "reachable" rather than "available": without
-// credentials the check proves the endpoint answers and does not refuse this
-// region, and stops short of claiming the service would actually serve a
-// request.
+// Package ai retains the four independent unauthenticated API probes without
+// an existing web-client counterpart: DeepSeek, Qwen International, Kimi and GLM.
+// Reachable means the endpoint answered without refusing the region; it is not
+// evidence of authenticated model use. Web counterparts are checked only by access.
 package ai
 
 import (

@@ -72,10 +72,10 @@ func check(t *testing.T, id string) Check {
 	t.Fatal(id)
 	return Check{}
 }
-func TestAll20CatalogueTypesMethodsPayloadsAndParsers(t *testing.T) {
+func TestAll12CatalogueTypesMethodsPayloadsAndParsers(t *testing.T) {
 	fs, checks := fixtures(t), ServiceChecks()
-	if len(fs) != 20 || len(checks) != 20 {
-		t.Fatal("not 20")
+	if len(fs) != 12 || len(checks) != 12 {
+		t.Fatal("not 12")
 	}
 	for i, c := range checks {
 		f := fs[i]
@@ -179,7 +179,7 @@ func TestServiceSpecificRefusalAndUnknownSemantics(t *testing.T) {
 		{"spotify_signup", 200, `{"status":120}`, "", true}, {"spotify_signup", 200, `{"status":320}`, "", true}, {"spotify_signup", 200, `{"is_country_launched":false}`, "", true},
 		{"spotify_signup", 200, `{"status":"invalid"}`, "", true}, {"spotify_signup", 200, `{"is_country_launched":"invalid"}`, "", true},
 		{"reddit_guest", 403, "Forbidden", "no", false}, {"reddit_guest", 404, "not found", "", true}, {"reddit_guest", 200, "", "", true},
-		{"reddit", 200, "blocked by network security", "", true}, {"apple", 200, "US123", "", true}, {"apple", 200, "ZZ", "", true},
+		{"apple", 200, "US123", "", true}, {"apple", 200, "ZZ", "", true},
 	}
 	for _, tc := range cases {
 		t.Run(tc.id+fmt.Sprint(tc.status, tc.body), func(t *testing.T) {
@@ -191,7 +191,7 @@ func TestServiceSpecificRefusalAndUnknownSemantics(t *testing.T) {
 	}
 }
 func TestJSONAndMissingCountryParseFailures(t *testing.T) {
-	for _, id := range []string{"twitch", "chatgpt", "netflix", "spotify", "spotify_signup", "deezer", "reddit", "prime", "apple", "steam", "playstation", "tiktok", "ookla", "jetbrains", "bing"} {
+	for _, id := range []string{"twitch", "spotify_signup", "deezer", "apple", "steam", "playstation", "ookla", "jetbrains", "bing"} {
 		for _, body := range []string{"{}", "{broken", "", "<html>no marker</html>"} {
 			r := single(t, check(t, id), func(req *http.Request) (*http.Response, error) { return response(req, 200, body, nil), nil })
 			if r.Err == nil {
@@ -201,39 +201,6 @@ func TestJSONAndMissingCountryParseFailures(t *testing.T) {
 	}
 }
 func TestUpstreamFallbacksAreExplicitAndDoNotHideHTTPFailure(t *testing.T) {
-	env := environment(t, func(req *http.Request) (*http.Response, error) {
-		switch req.URL.Host {
-		case "www.google.com":
-			return response(req, 200, "no locale marker", nil), nil
-		case "play.google.com":
-			return response(req, 200, `<div class="yVZQTb">United States`, nil), nil
-		case "www.youtube.com":
-			return response(req, 200, "no country marker", nil), nil
-		}
-		t.Errorf("unexpected fallback URL %s", req.URL)
-		return nil, errors.New("unexpected request")
-	})
-	r := Run(context.Background(), env, []Check{youtube(), google()}, 2)
-	if r[0].Value != "US" || r[1].Value != "US" || !strings.Contains(r[0].Detail, "Google served") || !strings.Contains(r[1].Detail, "Google Play") {
-		t.Fatalf("%+v", r)
-	}
-	for _, host := range []string{"www.google.com", "www.youtube.com"} {
-		env = environment(t, func(req *http.Request) (*http.Response, error) {
-			if req.URL.Host == host {
-				return response(req, 500, "error", nil), nil
-			}
-			return response(req, 200, `"en_US"`, nil), nil
-		})
-		env.share("google", 0, "US")
-		id := "google"
-		if host == "www.youtube.com" {
-			id = "youtube"
-		}
-		got := Run(context.Background(), env, []Check{check(t, id)}, 1)[0]
-		if got.Err == nil {
-			t.Fatalf("HTTP failure hidden: %+v", got)
-		}
-	}
 	for _, body := range []string{`Region: "WW"`, "no market"} {
 		got := single(t, bing(), func(req *http.Request) (*http.Response, error) {
 			if req.URL.Host == "login.live.com" {
@@ -246,21 +213,17 @@ func TestUpstreamFallbacksAreExplicitAndDoNotHideHTTPFailure(t *testing.T) {
 		}
 	}
 }
-func TestDependencyOrderConcurrencyAndCancelledChecks(t *testing.T) {
+func TestIndependentConcurrencyAndCancelledChecks(t *testing.T) {
 	var active, peak atomic.Int32
 	checks := ServiceChecks()
 	env := &Env{}
 	for i := range checks {
 		c := &checks[i]
-		id := c.ID
 		kind := c.Kind
 		c.Run = func(ctx context.Context, e *Env, _ netx.Family) (string, error) {
 			n := active.Add(1)
 			defer active.Add(-1)
 			for old := peak.Load(); n > old && !peak.CompareAndSwap(old, n); old = peak.Load() {
-			}
-			if id == "youtube" && e.lookupShared("google", 0) != "US" {
-				t.Error("Google dependency not complete")
 			}
 			select {
 			case <-ctx.Done():
@@ -274,7 +237,7 @@ func TestDependencyOrderConcurrencyAndCancelledChecks(t *testing.T) {
 		}
 	}
 	got := Run(context.Background(), env, checks, 2)
-	if peak.Load() != 2 || active.Load() != 0 || len(got) != 20 {
+	if peak.Load() != 2 || active.Load() != 0 || len(got) != 12 {
 		t.Fatal(peak.Load(), active.Load())
 	}
 	ctx, cancel := context.WithCancel(context.Background())

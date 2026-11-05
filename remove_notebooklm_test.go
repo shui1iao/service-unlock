@@ -35,7 +35,7 @@ func TestRemovedNotebookLMNotRegisteredRequestedOrRendered(t *testing.T) {
 		}
 	}
 	core := len(access.Checks()) + len(geo.ServiceChecks()) + len(ai.Checks())
-	if core != 34 {
+	if core != 22 {
 		t.Fatal(core)
 	}
 	for _, region := range extra.Regions() {

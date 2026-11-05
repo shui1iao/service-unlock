@@ -1,3 +1,11 @@
+# Service Unlock v0.5.7 — source and license notice
+
+Modified 2026-11-05 from v0.5.6: remove twelve duplicate measurements (native34→22, all134 extras retained), replace multi-capability aggregation with one retained primary state, restore selected-region media section and exact source sample names. Preserved probe predicates/transport/family/auto/safety. The following older change notices remain historical, not current catalogue counts.
+
+Complete current Corresponding Source (project, fixed vendor, build/tests/data and all licenses):
+https://github.com/shui1iao/service-unlock/tree/v0.5.7
+https://github.com/shui1iao/service-unlock/releases/download/v0.5.7/service-unlock-v0.5.7-source.zip
+
 # Service Unlock v0.5.6 — source and license notice
 
 Modified 2026-11-05 for v0.5.6, based on v0.5.5: replace capability

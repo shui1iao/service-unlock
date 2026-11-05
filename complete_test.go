@@ -119,13 +119,13 @@ func mockCompleteStack(t *testing.T) (*netx.Stack, *completeTransport) {
 	t.Cleanup(stack.Close)
 	return stack, tr
 }
-func TestComplete34RealCallPathsAndAdditiveJSON(t *testing.T) {
+func TestComplete22RealCallPathsAndAdditiveJSON(t *testing.T) {
 	stack, tr := mockCompleteStack(t)
 	m, err := runGroups(context.Background(), stack, 3)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(m.Access) != 6 || len(m.Services) != 20 || len(m.AI) != 8 {
+	if len(m.Access) != 6 || len(m.Services) != 12 || len(m.AI) != 4 {
 		t.Fatalf("counts=%d/%d/%d", len(m.Access), len(m.Services), len(m.AI))
 	}
 	// The loose geo probe is retired, not merely hidden. Only strict access
@@ -225,7 +225,7 @@ func TestNewGroupErrorsAffectExitNotLegacyArray(t *testing.T) {
 		if err := json.Unmarshal(out.Bytes(), &r); err != nil {
 			t.Fatal(err)
 		}
-		if len(r.Results) != 6 || len(r.Services) != 20 || len(r.AIEndpoints) != 8 {
+		if len(r.Results) != 6 || len(r.Services) != 12 || len(r.AIEndpoints) != 4 {
 			t.Fatal("scope")
 		}
 		for _, r := range r.Results {
@@ -248,8 +248,8 @@ func TestNewGroupErrorsAffectExitNotLegacyArray(t *testing.T) {
 			}
 		}
 		if strings.Contains(failure, "deepseek") {
-			if r.AIEndpoints[3].Status != "error" || r.AIEndpoints[3].Error == nil {
-				t.Fatal(r.AIEndpoints[3])
+			if r.AIEndpoints[0].Status != "error" || r.AIEndpoints[0].Error == nil {
+				t.Fatal(r.AIEndpoints[0])
 			}
 		}
 	}

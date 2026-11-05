@@ -1,3 +1,15 @@
+# Service Unlock v0.5.7 — single primary checks + restored regional media
+
+Current behavior: 6 access + 12 services + 4 independent AI API probes = **22 native**, plus all134 extra catalogue entries, raw156. Twelve duplicate measurements are truly unregistered and removed: geo google/youtube/chatgpt/netflix/spotify/reddit/prime/tiktok and AI openai/anthropic/gemini/qwen_cn. This is a breaking JSON catalogue deletion; retained IDs/names/fields/order/request predicates are unchanged, and no aliases/results are fabricated. The historical source.port marker is not a current count/version.
+
+ChatGPT/Claude/Gemini keep Web clients only, Netflix its catalogue and PrimeVideo access. Independent DeepSeek/Qwen Intl/Kimi/GLM probes are explicitly (API). One ordinary platform has one state, not labelled Web/API/Geo sub-results. Region is only its own probe's known country or empty. Country/store observations are qualified as such; Google captcha keeps the original blocked inversion. Spotify remains the conservative Legacy signup endpoint, no anonymous Yes and no actual account registration/login claim.
+
+Default auto is global + ONE actual-exit region. Restore `Regional media — <English region>` for selected regional Video/Music extras, preserving source names, independent copyright samples and Selected order. All134 IDs/global6/ten regional lists/unsafe9 no-request guards remain. Regional games/MetaAI/DMM finance stay in their proper purpose, global media remain in the six purpose sections; empty sections are omitted. Same English three columns, single rounded frame, font/styles/wrapping and no timing/statistics.
+
+Selected totals: global28, TW39, HK36, JP54, NA65, SA31, EU58, OC47, KR36, SEA39, AF31. No all-region mode. The JSON+ANSI machine envelope comes from ONE measurement. Original request timeouts, family, auto metadata, exit1 complete-Unknown, strict error handling and cancellation are retained. See README.md and the matching v0.5.7 Release for exact build/test/source/known limitations. All licenses and fixed vendor ship in the full source ZIP; **not MIT-only**. arm64 cross-build is not real-hardware validation. No live platform/signup test is performed. Short-link and SG operational switches are separate controller actions.
+
+<details><summary>Historical v0.5.6 and earlier implementation/repair evidence — not the current contract</summary>
+
 # Service Unlock v0.5.6 — unified native implementation
 
 > **v0.5.6, 2026-11-05**: one logical row per explicit platform, correcting v0.5.5 adjacency-only layout. Result retains independent labelled states/colours; Region retains source-specific conflicts/Unknown, without voting or country backfill.168 raw IDs map to145 full-catalogue platforms (not an all-region execution mode). No new raw removal, selection/probe/network/Spotify changes or request savings relative to v0.5.5. Qwen API SG/CN are deployment labels, not observed exit countries.
@@ -112,3 +124,5 @@ Historical published-v0.5.5 validation (not v0.5.6) used Go1.26.10: all packages
 The16 consolidated families are ChatGPT (Web/OpenAI API/geo), Claude (Web/Anthropic API), Gemini (Web/API), Qwen (API SG/CN), Google (search/captcha and geo), YouTube (geo/Premium), Netflix (Catalogue/Fast), TikTok (Web/geo), Amazon Prime Video (Access/Geo), Spotify (Legacy signup/geo), Reddit (Guest/geo), Bilibili (TW/HK-MO-TW/Global SEA/TH/ID/VN), Sky (Go UK/DE/CH/Go NZ), Hulu (US/JP), Rakuten TV (EU/JP), DIRECTV (Stream/Go). YouTube Music is a separate music product. SkyShowTime, DMM financial site/DMM TV, Viu.TV/Viu.com and the distinct TVB services remain separate. No corporate/name/domain inference is used; all other extra IDs have explicit independent identities. Unknown callers remain visible with source-qualified fallback names and are not guessed or merged.
 
 Static only:168 measurements map to145 platforms; full-catalogue purpose counts112/7/8/10/2/6. Selected logical rows global28, tw39, hk36, jp54, na65, sa31, eu56, oc47, kr36, sea36, af31. These are catalogue calculations, not renderer output. All9 safety Unknowns remain. Spotify's country can never turn the legacy endpoint into a registration Yes. Current validation results are recorded in the v0.5.6 Release; these counts do not represent a live scan.
+
+</details>

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-func TestAppJCOMRemovedWithoutRemovingChatGPTWebRegionOrOpenAI(t *testing.T) {
+func TestAppJCOMAndDuplicateChatGPTRemovedButWebRetained(t *testing.T) {
 	if len(access.Checks()) != 6 {
 		t.Fatalf("access should contain6, got%d", len(access.Checks()))
 	}
@@ -38,8 +38,8 @@ func TestAppJCOMRemovedWithoutRemovingChatGPTWebRegionOrOpenAI(t *testing.T) {
 			api = true
 		}
 	}
-	if !web || !region || !api {
-		t.Fatal("other ChatGPT/OpenAI capabilities removed")
+	if !web || region || api {
+		t.Fatal("only ChatGPT Web must remain")
 	}
 	stack, trace := mockCompleteStack(t)
 	m, err := runGroups(context.Background(), stack, 3)
@@ -50,11 +50,11 @@ func TestAppJCOMRemovedWithoutRemovingChatGPTWebRegionOrOpenAI(t *testing.T) {
 		t.Fatal("actual request catalogue")
 	}
 	for endpoint := range trace.seen {
-		if strings.Contains(endpoint, "ios.chat.openai.com") || strings.Contains(endpoint, "auth.id2.zaq.ne.jp") || strings.Contains(endpoint, "notebook") {
+		if strings.Contains(endpoint, "ios.chat.openai.com") || strings.Contains(endpoint, "api.openai.com/v1/models") || strings.Contains(endpoint, "api.anthropic.com/v1/models") || strings.Contains(endpoint, "generativelanguage.googleapis.com") || strings.Contains(endpoint, "dashscope.aliyuncs.com") || strings.Contains(endpoint, "auth.id2.zaq.ne.jp") || strings.Contains(endpoint, "notebook") {
 			t.Fatal("removed endpoint requested", endpoint)
 		}
 	}
-	counts := map[string]int{"global": 40, "tw": 51, "hk": 48, "jp": 66, "na": 77, "sa": 43, "eu": 70, "oc": 59, "kr": 48, "sea": 51, "af": 43}
+	counts := map[string]int{"global": 28, "tw": 39, "hk": 36, "jp": 54, "na": 65, "sa": 31, "eu": 58, "oc": 47, "kr": 36, "sea": 39, "af": 31}
 	if len(extra.Catalogue()) != 134 {
 		t.Fatal("extra catalogue")
 	}

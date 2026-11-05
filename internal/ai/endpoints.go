@@ -35,30 +35,6 @@ type endpoint struct {
 
 var catalog = []endpoint{
 	{
-		id: "openai", name: "OpenAI", vendor: "OpenAI",
-		url:        "https://api.openai.com/v1/models",
-		authStatus: []int{401},
-		regionMarkers: []string{
-			"unsupported_country_region_territory",
-			"country, region, or territory not supported",
-		},
-	},
-	{
-		id: "anthropic", name: "Anthropic", vendor: "Anthropic",
-		url:        "https://api.anthropic.com/v1/models",
-		headers:    map[string]string{"anthropic-version": "2023-06-01"},
-		authStatus: []int{401},
-		regionMarkers: []string{
-			"request not allowed",
-			"unsupported_country",
-		},
-	},
-	{
-		id: "gemini", name: "Google Gemini", vendor: "Google",
-		url:        "https://generativelanguage.googleapis.com/v1beta/models",
-		authStatus: []int{401, 403},
-	},
-	{
 		id: "deepseek", name: "DeepSeek", vendor: "DeepSeek",
 		url:        "https://api.deepseek.com/models",
 		authStatus: []int{401},
@@ -66,11 +42,6 @@ var catalog = []endpoint{
 	{
 		id: "qwen_intl", name: "Qwen (Singapore)", vendor: "Alibaba",
 		url:        "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/models",
-		authStatus: []int{401},
-	},
-	{
-		id: "qwen_cn", name: "Qwen (Beijing)", vendor: "Alibaba",
-		url:        "https://dashscope.aliyuncs.com/compatible-mode/v1/models",
 		authStatus: []int{401},
 	},
 	{

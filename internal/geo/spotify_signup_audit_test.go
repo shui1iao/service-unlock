@@ -58,24 +58,25 @@ func TestSpotifySignupAuditHTTPAndChallengeGuards(t *testing.T) {
 		})
 	}
 }
-func TestSpotifyCountryObservationDoesNotVoteForSignup(t *testing.T) {
+func TestDeletedSpotifyCountryNeverRunsAndMetadataCannotPromoteSignup(t *testing.T) {
 	calls := 0
 	env := environment(t, func(req *http.Request) (*http.Response, error) {
 		calls++
 		switch req.URL.Host {
 		case "accounts.spotify.com":
-			return response(req, 200, `{"geoLocationCountryCode":"JP"}`, nil), nil
+			t.Fatal("deleted geo.spotify was requested")
+			return nil, nil
 		case "spclient.wg.spotify.com":
 			return response(req, 200, `{"status":311,"country":"JP","is_country_launched":true}`, nil), nil
 		}
 		t.Fatal(req.URL)
 		return nil, nil
 	})
-	results := Run(context.Background(), env, []Check{check(t, "spotify"), check(t, "spotify_signup")}, 1)
-	if calls != 2 || results[0].Value != "JP" || results[0].Err != nil || results[1].Value != "" || results[1].Err == nil {
+	results := Run(context.Background(), env, []Check{check(t, "spotify_signup")}, 1)
+	if calls != 1 || results[0].Value != "" || results[0].Err == nil {
 		t.Fatal("country/launch observations promoted signup", results, calls)
 	}
-	if !strings.Contains(results[1].Err.Error(), "actual registration/login not tested") {
-		t.Fatal(results[1])
+	if !strings.Contains(results[0].Err.Error(), "actual registration/login not tested") {
+		t.Fatal(results[0])
 	}
 }

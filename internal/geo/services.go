@@ -10,15 +10,12 @@ import (
 	"regexp"
 	"strings"
 
-	"serviceunlock/internal/countries"
 	"serviceunlock/internal/extra"
 	"serviceunlock/internal/jsonx"
 	"serviceunlock/internal/netx"
 )
 
 const (
-	// googleConsentCookie pre-accepts the EU consent interstitial so the real
-	// page (and its locale hints) is returned instead of the consent wall.
 	googleConsentCookie = "SOCS=CAISNQgDEitib3FfaWRlbnRpdHlmcm9udGVuZHVpc2VydmVyXzIwMjUwNzMwLjA1X3AwGgJlbiACGgYIgPC_xAY"
 
 	spotifyAPIKey   = "142b583129b2df829de3656f9eb484e6"
@@ -29,87 +26,30 @@ const (
 )
 
 var (
-	reGoogleLocaleUnderscore = regexp.MustCompile(`"[a-z]{2}_([A-Z]{2})"`)
-	reGoogleLocaleDash       = regexp.MustCompile(`"[a-z]{2}-([A-Z]{2})"`)
-	rePlayCountry            = regexp.MustCompile(`<div class="yVZQTb">([^<(]+)`)
-	reYouTubeCountry         = regexp.MustCompile(`"countryCode":"(\w+)"`)
-	reSpotifyGeo             = regexp.MustCompile(`"geoLocationCountryCode":"([^"]*)"`)
-	reDeezerCountry          = regexp.MustCompile(`'country':\s*'([^']*)'`)
-	rePrimeTerritory         = regexp.MustCompile(`"currentTerritory":"([^"]+)"`)
-	reBingRegion             = regexp.MustCompile(`Region\s*:\s*"([^"]+)"`)
-	reLiveCountry            = regexp.MustCompile(`"sRequestCountry":"([^"]*)"`)
-	reSteamCountry           = regexp.MustCompile(`steamCountry=([^%;]*)`)
-	rePSCountry              = regexp.MustCompile(`(?i)country=([A-Za-z]{2})`)
-	reGoogleBlocked          = regexp.MustCompile(`(?i)unusual traffic from|is blocked|unaddressed abuse`)
+	reDeezerCountry = regexp.MustCompile(`'country':\s*'([^']*)'`)
+
+	reBingRegion    = regexp.MustCompile(`Region\s*:\s*"([^"]+)"`)
+	reLiveCountry   = regexp.MustCompile(`"sRequestCountry":"([^"]*)"`)
+	reSteamCountry  = regexp.MustCompile(`steamCountry=([^%;]*)`)
+	rePSCountry     = regexp.MustCompile(`(?i)country=([A-Za-z]{2})`)
+	reGoogleBlocked = regexp.MustCompile(`(?i)unusual traffic from|is blocked|unaddressed abuse`)
 )
 
 // ServiceChecks returns the consumer-service probes, in display order.
 func ServiceChecks() []Check {
 	return []Check{
-		google(),
 		googleSearchCaptcha(),
-		youtube(),
 		youtubeMusic(),
 		twitch(),
-		chatGPT(),
-		netflix(),
-		spotify(),
 		spotifySignup(),
 		deezer(),
-		reddit(),
 		redditGuest(),
-		amazonPrime(),
 		apple(),
 		steam(),
 		playstation(),
-		tiktok(),
 		ookla(),
 		jetbrains(),
 		bing(),
-	}
-}
-
-// google reads the locale Google's homepage renders for you, falling back to
-// the country name printed on the Play Store landing page.
-func google() Check {
-	return Check{
-		ID: "google", Name: "Google", Group: GroupServices, Kind: KindCountry,
-		Run: func(ctx context.Context, env *Env, f netx.Family) (string, error) {
-			resp, err := env.request(ctx, f, netx.Request{URL: "https://www.google.com"})
-			if err != nil {
-				return "", err
-			}
-			if err == nil {
-				body := resp.Text()
-				if m := reGoogleLocaleUnderscore.FindStringSubmatch(body); m != nil {
-					return m[1], nil
-				}
-				// The dash form appears many times; the last one is the
-				// document's own locale rather than an alternate hreflang.
-				if all := reGoogleLocaleDash.FindAllStringSubmatch(body, -1); len(all) > 0 {
-					return all[len(all)-1][1], nil
-				}
-			}
-
-			play, perr := env.request(ctx, f, netx.Request{
-				URL: "https://play.google.com/",
-				Headers: map[string]string{
-					"Accept":          "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-					"Accept-Language": "en-US;q=0.9",
-				},
-			})
-			if perr != nil {
-				if err != nil {
-					return "", err
-				}
-				return "", perr
-			}
-			if m := rePlayCountry.FindStringSubmatch(play.Text()); m != nil {
-				env.note("google", "fallback: Google Play country name")
-				return countries.Code(m[1]), nil
-			}
-			return "", nil
-		},
 	}
 }
 
@@ -138,28 +78,6 @@ func googleSearchCaptcha() Check {
 
 // youtube reads the region YouTube serves; it falls back to the Google answer
 // because the two normally agree and YouTube's marker is not always present.
-func youtube() Check {
-	return Check{
-		ID: "youtube", Name: "YouTube", Group: GroupServices, Kind: KindCountry,
-		DependsOn: "google",
-		Run: func(ctx context.Context, env *Env, f netx.Family) (string, error) {
-			resp, err := env.request(ctx, f, netx.Request{URL: "https://www.youtube.com"})
-			if err == nil {
-				if m := reYouTubeCountry.FindStringSubmatch(resp.Text()); m != nil && len(m[1]) == 2 {
-					return m[1], nil
-				}
-			}
-			if err != nil {
-				return "", err
-			}
-			if fallback := env.lookupShared("google", f); fallback != "" {
-				env.note("youtube", "fallback: Google served region; not directly read from YouTube")
-				return fallback, nil
-			}
-			return "", err
-		},
-	}
-}
 
 // availabilityByPhrase is the shape shared by the "is this product offered
 // here" checks: fetch a page, look for the refusal sentence.
@@ -215,58 +133,8 @@ func twitch() Check {
 	}
 }
 
-func chatGPT() Check {
-	return Check{
-		ID: "chatgpt", Name: "ChatGPT", Group: GroupServices, Kind: KindCountry,
-		Run: func(ctx context.Context, env *Env, f netx.Family) (string, error) {
-			resp, err := env.request(ctx, f, netx.Request{
-				Method: http.MethodPost,
-				URL:    "https://ab.chatgpt.com/v1/initialize",
-				Headers: map[string]string{
-					"Statsig-Api-Key": "client-zUdXdSTygXJdzoE0sWTkP8GKTVsUMF2IRM7ShVO2JAG",
-				},
-			})
-			if err != nil {
-				return "", err
-			}
-			return jsonx.String(resp.Body, "derived_fields.country"), nil
-		},
-	}
-}
-
 // fastAPIURL is Netflix's own speedtest bootstrap; it reports both the client
 // location and the Open Connect target that would serve the stream.
-const fastAPIURL = "https://api.fast.com/netflix/speedtest/v2?https=true&" +
-	"token=YXNkZmFzZGxmbnNkYWZoYXNkZmhrYWxm&urlCount=1"
-
-func netflix() Check {
-	return Check{
-		ID: "netflix", Name: "Netflix", Group: GroupServices, Kind: KindCountry,
-		Run: func(ctx context.Context, env *Env, f netx.Family) (string, error) {
-			resp, err := env.request(ctx, f, netx.Request{URL: fastAPIURL})
-			if err != nil {
-				return "", err
-			}
-			return jsonx.String(resp.Body, "client.location.country"), nil
-		},
-	}
-}
-
-func spotify() Check {
-	return Check{
-		ID: "spotify", Name: "Spotify", Group: GroupServices, Kind: KindCountry,
-		Run: func(ctx context.Context, env *Env, f netx.Family) (string, error) {
-			resp, err := env.request(ctx, f, netx.Request{URL: "https://accounts.spotify.com/status"})
-			if err != nil {
-				return "", err
-			}
-			if m := reSpotifyGeo.FindStringSubmatch(resp.Text()); m != nil {
-				return m[1], nil
-			}
-			return "", nil
-		},
-	}
-}
 
 func spotifySignup() Check {
 	return Check{
@@ -331,29 +199,6 @@ var reRedditCountry = regexp.MustCompile(`country="([A-Za-z]{2})"`)
 
 const redditBlocked = "blocked by network security"
 
-func reddit() Check {
-	return Check{
-		ID: "reddit", Name: "Reddit", Group: GroupServices, Kind: KindCountry,
-		Run: func(ctx context.Context, env *Env, f netx.Family) (string, error) {
-			resp, err := env.request(ctx, f, netx.Request{
-				URL: "https://www.reddit.com/svc/shreddit/reddit-chat",
-			})
-			if err != nil {
-				return "", err
-			}
-			body := resp.Text()
-			if strings.Contains(strings.ToLower(body), redditBlocked) {
-				return "", errors.New("blocked by Reddit's network security, " +
-					"which turns away hosting ranges regardless of country")
-			}
-			if m := reRedditCountry.FindStringSubmatch(body); m != nil {
-				return strings.ToUpper(m[1]), nil
-			}
-			return "", nil
-		},
-	}
-}
-
 func redditGuest() Check {
 	return Check{
 		ID: "reddit_guest", Name: "Reddit guest access", Group: GroupServices, Kind: KindAvailability,
@@ -366,22 +211,6 @@ func redditGuest() Check {
 				return yes, nil
 			}
 			return no, nil
-		},
-	}
-}
-
-func amazonPrime() Check {
-	return Check{
-		ID: "prime", Name: "Amazon Prime Video", Group: GroupServices, Kind: KindCountry,
-		Run: func(ctx context.Context, env *Env, f netx.Family) (string, error) {
-			resp, err := env.request(ctx, f, netx.Request{URL: "https://www.primevideo.com"})
-			if err != nil {
-				return "", err
-			}
-			if m := rePrimeTerritory.FindStringSubmatch(resp.Text()); m != nil {
-				return m[1], nil
-			}
-			return "", nil
 		},
 	}
 }
@@ -441,21 +270,6 @@ func playstation() Check {
 				}
 			}
 			return "", nil
-		},
-	}
-}
-
-func tiktok() Check {
-	return Check{
-		ID: "tiktok", Name: "TikTok", Group: GroupServices, Kind: KindCountry,
-		Run: func(ctx context.Context, env *Env, f netx.Family) (string, error) {
-			resp, err := env.request(ctx, f, netx.Request{
-				URL: "https://www.tiktok.com/api/v1/web-cookie-privacy/config?appId=1988",
-			})
-			if err != nil {
-				return "", err
-			}
-			return jsonx.String(resp.Body, "body.appProps.region"), nil
 		},
 	}
 }

@@ -116,7 +116,7 @@ func TestDefaultAutoActualPipelineCountrySelectsRegionalChecks(t *testing.T) {
 	for _, tc := range []struct {
 		country, group string
 		total          int
-	}{{"JP", "jp", 66}, {"US", "na", 77}, {"ES", "eu", 70}, {"DE", "eu", 70}, {"SG", "sea", 51}, {"HK", "hk", 48}, {"MO", "hk", 48}, {"KR", "kr", 48}, {"TW", "tw", 51}, {"AU", "oc", 59}, {"ZA", "af", 43}, {"BR", "sa", 43}, {"GB", "eu", 70}} {
+	}{{"JP", "jp", 54}, {"US", "na", 65}, {"ES", "eu", 58}, {"DE", "eu", 58}, {"SG", "sea", 39}, {"HK", "hk", 36}, {"MO", "hk", 36}, {"KR", "kr", 36}, {"TW", "tw", 39}, {"AU", "oc", 47}, {"ZA", "af", 31}, {"BR", "sa", 31}, {"GB", "eu", 58}} {
 		t.Run(tc.country, func(t *testing.T) {
 			// No --region flag: execute the real resolver + actual core/extra Run paths.
 			r, terminal, code, n := autoRunFixture(t, []string{"--machine"}, "h=www.cloudflare.com\nloc="+tc.country+"\nip=203.0.113.55\n", `{"country_code":"ZZ"}`)
@@ -138,7 +138,13 @@ func TestDefaultAutoActualPipelineCountrySelectsRegionalChecks(t *testing.T) {
 				t.Fatal(terminal)
 			}
 			// Native mocked content country is US. It must NOT override exit country JP/etc.
-			if *r.Services[0].Value != "US" {
+			var country *string
+			for _, row := range r.Services {
+				if row.ID == "twitch" {
+					country = row.Value
+				}
+			}
+			if country == nil || *country != "US" {
 				t.Fatal("fixture changed")
 			}
 			if dir := os.Getenv("AUTO_REGION_ARTIFACT_DIR"); dir != "" {
@@ -166,7 +172,7 @@ func TestAutoFallbackUnsupportedAndFailureStillRunsGlobal(t *testing.T) {
 			if n != tc.calls || r.Selection.Region != tc.region || r.Selection.ResolutionReason != tc.reason || r.Selection.DetectedCountry != tc.country {
 				t.Fatal(r.Selection, n)
 			}
-			if tc.region == "global" && len(r.ExtraChecks)+34 != 40 {
+			if tc.region == "global" && len(r.ExtraChecks)+22 != 28 {
 				t.Fatal("fallback did not select global")
 			}
 			found := false

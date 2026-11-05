@@ -36,11 +36,11 @@ var originalMITLicense string
 var extraAGPLLicense string
 var licenseText = distributionNotice + "\n" + originalMITLicense + "\n" + extraAGPLLicense
 
-const help = `Service Unlock v0.5.6 — 34 core checks + global 6 + selected region
+const help = `Service Unlock v0.5.7 — 22 core checks + global 6 + selected region
   --region auto|global|tw|hk|jp|na|sa|eu|oc|kr|sea|af (default auto)
                Auto detects exit country on the extra family's direct HTTPS path;
                explicit global/group skips detection. Failure/unmapped -> global.
-  --extra-family auto|4|6 (default auto; native34 remains system-selected)
+  --extra-family auto|4|6 (default auto; native22 remains system-selected)
   --machine    One JSON + ANSI envelope from the same measurement
 Usage: service-unlock [--json] [--timeout SECONDS] [--workers N]
   --json       Output JSON only; error means inconclusive, not blocked
@@ -217,7 +217,7 @@ func runCLI(ctx context.Context, args []string, stdout, stderr io.Writer, run ru
 			_, err = fmt.Fprintln(stdout, notice)
 		}
 		if err == nil {
-			err = render.WriteAccess(stdout, render.Report{Access: results.Access, Services: results.Services, AI: results.AI, Extra: results.Extra, Duration: elapsed})
+			err = render.WriteAccess(stdout, render.Report{Access: results.Access, Services: results.Services, AI: results.AI, Extra: results.Extra, Region: resolvedRegion(results.Selection), Duration: elapsed})
 		}
 	}
 	if err != nil {

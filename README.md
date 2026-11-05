@@ -1,3 +1,74 @@
+# Service Unlock v0.5.7
+
+本版真正精简重复检测：**22个原生主探针（6 access＋12 services＋4 AI）＋134个extra目录，完整raw156**。普通平台只一个主结果Yes/No/Limited/Unknown，不再把Web/API/Geo并列成复杂聚合。不同区域片库/版权样本仍独立，不按品牌合并。
+
+## 破坏性JSON目录变化
+
+真正停止以下12项测量并删除注册/专用实现，不是只隐藏行，不提供旧ID别名或复制结果：
+- services：`google`、`youtube`、`chatgpt`、`netflix`、`spotify`、`reddit`、`prime`、`tiktok`。
+- ai_endpoints：`openai`、`anthropic`、`gemini`、`qwen_cn`。
+
+ChatGPT/Claude/Gemini只保现有Web客户端，Netflix只保片库、PrimeVideo只保访问；Qwen选国际API。DeepSeek/Qwen Intl/Kimi/GLM仍明确(API)，不冒充客户端。其余保留ID/name/platform、raw字段/status/value/detail/time/顺序与原请求判据不变。schema1与历史`source.port`出处标记保留，**该旧标记不是当前检测数量或CLI发行版本**。自动国家识别独立，不用已删geo或其它服务投票。
+
+## 自动选区和显示
+
+默认global＋实际出口对应**一个**地区，不是all-region扫描。extra134原目录、global6与十地区成员/顺序完整保留；其中125项有原生请求实现，9项安全Unknown仍不发请求。原来并没有物理删掉所有地区；v0.5.6丢失的是独立区域栏目/部分原样本名称。
+
+恢复`Regional media — <English region>`：将本次所选地区extra的Video/Music项目按原Selected顺序逐项列出，B-Global SEA/TH/ID/VN、Sky各市场、Hulu JP、Rakuten JP及Bilibili版权项目保原名和独立状态；global媒体仍在用途组。游戏、Meta AI、DMM金融站等不混入媒体区。六用途组加有内容的Regional组，空组省略。
+
+全英文单圆角外框，`Service | Result | Region`三列；字体/颜色/宽度/无损换行不升级，不显示统计/耗时。Region只来自这一保留探针的真实已知国码，没有就空，不跑额外探针补地区。国家观察项目名明确(region)/(store region)；Google Search captcha按原blocked反转，不代表Google全产品解锁。
+
+Spotify保严格`Legacy signup endpoint`：旧匿名不完整POST不是实际注册/登录，不存在匿名Yes路径；只有原精确typed status320代理拒绝为限定No，其余证据不足Unknown。删除独立spotify地区观察不改变请求或判据，不用country/metadata推断注册成功。
+
+| 选择 | 当前测量/逻辑行总数 |
+|---|---:|
+| global | 28 |
+| tw | 39 |
+| hk | 36 |
+| jp | 54 |
+| na | 65 |
+| sa | 31 |
+| eu | 58 |
+| oc | 47 |
+| kr | 36 |
+| sea | 39 |
+| af | 31 |
+
+## 使用
+
+```sh
+curl -fLsS https://github.com/shui1iao/service-unlock/releases/download/v0.5.7/check.sh -o check.sh && sh check.sh
+./service-unlock_linux_amd64 --help
+./service-unlock_linux_amd64 --machine > report-envelope.json
+```
+
+旧check.sh固定旧版本，需重新下载；短链切换由运营方另行完成，**本版发布不代表短链或SG GUKO已切换**。现有curl/GNU wget、SHA256与CA为前置，不自动安装依赖/常驻服务。
+
+`--region auto|global|tw|hk|jp|na|sa|eu|oc|kr|sea|af`，默认auto；显式选区不定位。仍沿同direct/system-CA/实际extra family顺序读取Cloudflare trace、必要时ip.sb，仅保安全国家码及错误码；失败或未映射国家只global，不保存IP/ASN原文。`--extra-family auto|4|6`只影响extra，原生22仍system-selected；不支持该族的项Unknown，不把整报告冒标IPv4。`--timeout`/并发原语义不变。
+
+`--json`为原schema1；`--machine`为同一次测量/selection的JSON＋ANSI `guko-unified-v1`，不重复探测；二者互斥。退出1可为完整Unknown报告，不是访问No或程序崩溃；取消不交部分JSON。GUKO v0.7.1严格同步此新契约，旧历史不重测不改标签。
+
+## 准确源、离线构建与限制
+
+本版Release附check.sh、Linux amd64v1/arm64v8.0程序、SHA256SUMS和完整`service-unlock-v0.5.7-source.zip`（固定vendor、构建/测试/数据及全许可；vendor不入Git）。从该源解包：
+
+```sh
+export GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off CGO_ENABLED=0
+go test -mod=vendor -count=1 ./...
+GOOS=linux GOARCH=amd64 GOAMD64=v1 go build -mod=vendor -buildvcs=false -trimpath -ldflags='-s -w -buildid=' -o service-unlock_linux_amd64 .
+GOOS=linux GOARCH=arm64 GOARM64=v8.0 go build -mod=vendor -buildvcs=false -trimpath -ldflags='-s -w -buildid=' -o service-unlock_linux_arm64 .
+```
+
+固定go.mod/go.sum与go1.22运行defaults不变。实际发布验证与首次失败/修复见匹配Release；只做离线/loopback及help/license，无真实全平台、Spotify请求、注册登录/邮件或跑分；arm64仅交编，不冒实机。Hulu Japan继承真实Go超时/Unknown仍未修，不改变HTTP/TLS/UA/预算掩盖。Yes不是播放/登录/模型调用保证。
+
+原Remnawave/geocheck v0.3.0 (`50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc`) MIT保留；RRC (`b6d4a6f9a87fc6eae6d3e62d0092ececcec8e844`)派生为AGPL-3.0-only；**组合发行非MIT-only**。见LICENSE、LICENSES、NOTICE及逐函数来源/hash。准确对应源：
+- https://github.com/shui1iao/service-unlock/tree/v0.5.7
+- https://github.com/shui1iao/service-unlock/releases/download/v0.5.7/service-unlock-v0.5.7-source.zip
+
+网络提供修改版须向交互用户提供实际对应源码，不把旧公开tag冒称修改源。
+
+<details><summary>历史v0.5.6及更早的说明/证据（非当前目录与显示契约）</summary>
+
 # Service Unlock v0.5.6
 
 > **v0.5.6（2026-11-05）平台单行聚合**：纠正v0.5.5只是归邻的问题。现在**每个平台一个逻辑表格行**，例如`ChatGPT | Web ● Yes · API ● No | JP`（规则示意，不是真测）。每项能力保持独立状态与颜色，不取最好值、不投票、不合成总Yes。窄屏允许单元格自然换行，但平台只占一个displayRow。
@@ -159,3 +230,5 @@ Git检出的开发树不含vendor；联网准备依赖时用`go mod download && 
 - [对应源码包](https://github.com/shui1iao/service-unlock/releases/download/v0.5.6/service-unlock-v0.5.6-source.zip)
 
 源码包与同版本二进制在同一 Release 页面提供。网络部署的修改版还须向其交互用户提供实际对应源码；此脚本发布不代表 GUKO 已部署统一报告版。
+
+</details>

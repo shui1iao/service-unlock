@@ -19,29 +19,19 @@ func find(t *testing.T, id string) endpoint {
 // API that asks for credentials has already agreed to serve the caller's
 // network, so 401 is a positive result rather than a failure.
 func TestAuthErrorProvesReachability(t *testing.T) {
-	e := find(t, "openai")
+	e := find(t, "deepseek")
 	got := e.classify(401, `{"error":{"message":"Missing bearer authentication in header","type":"invalid_request_error"}}`)
 	if got.State != StateReachable {
 		t.Errorf("state = %v, want reachable", got.State)
 	}
 }
 
-// TestRegionRefusalBeatsTheStatus covers the case that makes a status-only
-// reading wrong: the refusal and a missing key can share a status code, and
-// only the body separates them.
+// A shared classifier guard remains testable without registering a retired endpoint.
 func TestRegionRefusalBeatsTheStatus(t *testing.T) {
-	cases := []struct {
-		id     string
-		status int
-		body   string
-	}{
-		{"openai", 403, `{"error":{"code":"unsupported_country_region_territory","message":"Country, region, or territory not supported"}}`},
-		{"anthropic", 403, `{"error":{"type":"forbidden","message":"Request not allowed"}}`},
-	}
-	for _, c := range cases {
-		e := find(t, c.id)
-		if got := e.classify(c.status, c.body); got.State != StateBlocked {
-			t.Errorf("%s: state = %v, want blocked", c.id, got.State)
+	e := endpoint{regionMarkers: []string{"unsupported_country_region_territory", "request not allowed"}}
+	for _, body := range []string{`{"error":"unsupported_country_region_territory"}`, `{"error":"Request not allowed"}`} {
+		if got := e.classify(401, body); got.State != StateBlocked {
+			t.Fatal(got)
 		}
 	}
 }
@@ -49,7 +39,7 @@ func TestRegionRefusalBeatsTheStatus(t *testing.T) {
 // TestChallengeIsNotAnAnswer keeps an interstitial from being read as either
 // verdict — the same discipline the website checks follow.
 func TestChallengeIsNotAnAnswer(t *testing.T) {
-	e := find(t, "anthropic")
+	e := find(t, "deepseek")
 	body := `<html><head><title>Just a moment...</title></head><body>` +
 		`<script>window._cf_chl_opt={};</script></body></html>`
 	got := e.classify(403, body)
@@ -58,17 +48,15 @@ func TestChallengeIsNotAnAnswer(t *testing.T) {
 	}
 }
 
-// TestGeminiClaimsOnlyReachability records a measured limitation: Google
-// answers 403 "unregistered caller" whether or not the region is served, so
-// this endpoint must never produce a blocked verdict.
-func TestGeminiClaimsOnlyReachability(t *testing.T) {
-	e := find(t, "gemini")
-	if len(e.regionMarkers) != 0 {
-		t.Error("the Gemini endpoint has no region signal; it must not carry markers")
+func TestRetiredEndpointsAreNotRegistered(t *testing.T) {
+	want := []string{"deepseek", "qwen_intl", "moonshot", "zhipu"}
+	if len(catalog) != len(want) {
+		t.Fatal(len(catalog))
 	}
-	body := `{"error":{"code":403,"message":"Method doesn't allow unregistered callers"}}`
-	if got := e.classify(403, body); got.State != StateReachable {
-		t.Errorf("state = %v, want reachable", got.State)
+	for i, e := range catalog {
+		if e.id != want[i] {
+			t.Fatal(i, e.id)
+		}
 	}
 }
 

@@ -3,29 +3,24 @@
     "title": "Video, live & sports",
     "rows": [
       [
-        "YouTube",
-        "Premium ● Yes",
+        "Twitch (region)",
+        "● Yes",
         "US"
       ],
       [
-        "Twitch",
-        "Region ● Yes",
-        "US"
+        "YouTube",
+        "● Yes",
+        ""
       ],
       [
         "Netflix",
-        "Catalogue ● Limited",
-        "Catalogue FR · Fast US"
-      ],
-      [
-        "Amazon Prime Video",
-        "Region ● Yes",
-        "Geo US"
+        "● Limited",
+        "FR"
       ],
       [
         "TikTok",
-        "Web ● Yes",
-        "US"
+        "● Yes",
+        ""
       ]
     ]
   },
@@ -38,13 +33,13 @@
         ""
       ],
       [
-        "Spotify",
-        "Legacy signup ○ Unknown",
-        "US"
+        "Spotify (Legacy signup endpoint)",
+        "○ Unknown",
+        ""
       ],
       [
-        "Deezer",
-        "Region ● Yes",
+        "Deezer (region)",
+        "● Yes",
         "US"
       ]
     ]
@@ -54,37 +49,37 @@
     "rows": [
       [
         "ChatGPT",
-        "Web ● Yes · API ● Yes",
-        "US"
+        "● Yes",
+        ""
       ],
       [
         "Claude",
-        "Web ○ Unknown · API ● No",
-        "Geo Unknown"
+        "○ Unknown",
+        ""
       ],
       [
         "Gemini",
-        "Web ● No · API ● Yes",
+        "● No",
         "CN"
       ],
       [
-        "DeepSeek",
-        "API ● Yes",
+        "DeepSeek (API)",
+        "● Yes",
         ""
       ],
       [
-        "Qwen",
-        "API SG ● Yes · API CN ● Yes",
+        "Qwen Intl (API)",
+        "● Yes",
         ""
       ],
       [
-        "Kimi / Moonshot",
-        "API ● Yes",
+        "Kimi (API)",
+        "● Yes",
         ""
       ],
       [
-        "Zhipu GLM",
-        "API ○ Unknown",
+        "GLM (API)",
+        "○ Unknown",
         ""
       ]
     ]
@@ -93,13 +88,13 @@
     "title": "Gaming",
     "rows": [
       [
-        "Steam",
-        "Store region ● Yes",
+        "Steam (store region)",
+        "● Yes",
         "HK"
       ],
       [
-        "PlayStation",
-        "Region ● Yes",
+        "PlayStation (region)",
+        "● Yes",
         "JP"
       ]
     ]
@@ -108,9 +103,9 @@
     "title": "Community",
     "rows": [
       [
-        "Reddit",
-        "Guest ● Yes",
-        "US"
+        "Reddit (guest)",
+        "● Yes",
+        ""
       ]
     ]
   },
@@ -118,28 +113,28 @@
     "title": "General websites",
     "rows": [
       [
-        "Google",
-        "Search ● Yes",
+        "Google Search (captcha)",
+        "● Yes",
+        ""
+      ],
+      [
+        "Apple (region)",
+        "○ Unknown",
+        ""
+      ],
+      [
+        "Ookla Speedtest (region)",
+        "● Yes",
         "US"
       ],
       [
-        "Apple",
-        "Region ○ Unknown",
-        "Geo Unknown"
-      ],
-      [
-        "Ookla Speedtest",
-        "Region ● Yes",
+        "JetBrains (region)",
+        "● Yes",
         "US"
       ],
       [
-        "JetBrains",
-        "Region ● Yes",
-        "US"
-      ],
-      [
-        "Microsoft (Bing)",
-        "Region ● Yes",
+        "Microsoft Bing (region)",
+        "● Yes",
         "US"
       ]
     ]

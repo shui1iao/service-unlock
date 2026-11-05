@@ -17,7 +17,7 @@ import (
 type tripFunc func(*http.Request) (*http.Response, error)
 
 func (f tripFunc) RoundTrip(r *http.Request) (*http.Response, error) { return f(r) }
-func TestAllEightEndpointsReachableWithoutCredentials(t *testing.T) {
+func TestAllFourEndpointsReachableWithoutCredentials(t *testing.T) {
 	data, err := os.ReadFile("testdata/endpoints.json")
 	if err != nil {
 		t.Fatal(err)
@@ -32,8 +32,8 @@ func TestAllEightEndpointsReachableWithoutCredentials(t *testing.T) {
 		t.Fatal(err)
 	}
 	checks := Checks()
-	if len(checks) != 8 || len(fixture.Checks) != 8 {
-		t.Fatal("not eight")
+	if len(checks) != 4 || len(fixture.Checks) != 4 {
+		t.Fatal("not four")
 	}
 	for i, c := range checks {
 		f := fixture.Checks[i]
@@ -94,9 +94,6 @@ func TestAllAIStatusAndJSONGuards(t *testing.T) {
 				}
 			}
 			want := StateError
-			if e.id == "gemini" {
-				want = StateReachable
-			}
 			if r := e.classify(403, `{"error":"unregistered caller"}`); r.State != want {
 				t.Fatalf("403: %+v", r)
 			}

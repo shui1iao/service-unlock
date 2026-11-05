@@ -19,8 +19,8 @@ func TestTerminalRemovesTimesDetailsButJSONKeepsOriginalValues(t *testing.T) {
 	m.Access[0].Detail = "DETAIL_ACCESS"
 	m.Access[0].RTT = 999 * time.Second
 	m.Access[0].CheckedAt = when
-	m.Services = []geo.Result{{Check: geo.Check{ID: "google", Name: "Google", Kind: geo.KindCountry}, Value: "US", Detail: "DETAIL_SERVICE", RTT: 888 * time.Second, CheckedAt: when}}
-	m.AI = []ai.Result{{Check: ai.Check{ID: "openai", Name: "OpenAI", Vendor: "OpenAI"}, State: ai.StateReachable, Status: 401, Detail: "DETAIL_API", RTT: 777 * time.Second, CheckedAt: when}}
+	m.Services = []geo.Result{{Check: geo.Check{ID: "twitch", Name: "Twitch", Kind: geo.KindCountry}, Value: "US", Detail: "DETAIL_SERVICE", RTT: 888 * time.Second, CheckedAt: when}}
+	m.AI = []ai.Result{{Check: ai.Check{ID: "deepseek", Name: "DeepSeek", Vendor: "DeepSeek"}, State: ai.StateReachable, Status: 401, Detail: "DETAIL_API", RTT: 777 * time.Second, CheckedAt: when}}
 	run := func(context.Context, time.Duration, int) (measurements, error) { return m, nil }
 	out := new(bytes.Buffer)
 	if code := runCLI(context.Background(), nil, out, new(bytes.Buffer), run); code != 0 {

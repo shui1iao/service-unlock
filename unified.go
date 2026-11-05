@@ -42,7 +42,7 @@ func writeMachine(w io.Writer, r report, m measurements, elapsed time.Duration) 
 	profile := colorprofile.NewWriter(&buf, nil)
 	profile.Profile = colorprofile.TrueColor
 	terminal := render.NewMachineOutput(profile)
-	if err := terminal.PrintAccess(render.Report{Access: m.Access, Services: m.Services, AI: m.AI, Extra: m.Extra, Duration: elapsed}); err != nil {
+	if err := terminal.PrintAccess(render.Report{Access: m.Access, Services: m.Services, AI: m.AI, Extra: m.Extra, Region: resolvedRegion(m.Selection), Duration: elapsed}); err != nil {
 		return err
 	}
 	encoder := json.NewEncoder(w)
@@ -52,4 +52,11 @@ func writeMachine(w io.Writer, r report, m measurements, elapsed time.Duration) 
 		Report   report `json:"report"`
 		Terminal string `json:"terminal"`
 	}{"guko-unified-v1", r, buf.String()})
+}
+
+func resolvedRegion(s *selection) string {
+	if s == nil {
+		return "global"
+	}
+	return s.Region
 }
