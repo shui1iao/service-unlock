@@ -22,7 +22,7 @@ type presentation struct {
 
 var corePresentation = map[string]map[string]presentation{
 	"geo": {
-		"google_captcha": {purpose: general, name: "Google Search (captcha)"},
+		"google_captcha": {purpose: general, name: "Google"},
 		"youtube_music":  {purpose: music, name: "YouTube Music"},
 		"twitch":         {purpose: video, name: "Twitch (region)"},
 		"spotify_signup": {purpose: music, name: "Spotify (Legacy signup endpoint)"},

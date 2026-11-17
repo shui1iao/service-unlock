@@ -77,6 +77,8 @@ type Result struct {
 	RTT       time.Duration
 	CheckedAt time.Time
 	Err       error
+	// Shared internal YouTube evidence; never serialized as a new report field.
+	YouTubeCountry geo.YouTubeCountryEvidence `json:"-"`
 }
 
 // Run executes every check concurrently.
@@ -113,7 +115,12 @@ func Run(ctx context.Context, stack *netx.Stack, f netx.Family, checks []Check, 
 				res.RTT = time.Since(start)
 			}
 			// Preserve primary timing/state; optional country uses this same worker.
-			if res.Region == "" {
+			if c.ID == "youtube_premium_access" {
+				if res.Region == "" && res.YouTubeCountry.Problem == "" {
+					res.YouTubeCountry = geo.YouTubeMetadata(ctx, stack, f)
+					res.Region = res.YouTubeCountry.Region
+				}
+			} else if res.Region == "" {
 				res.Region = geo.RegionMetadata(ctx, stack, f, c.ID)
 			}
 			results[i] = res

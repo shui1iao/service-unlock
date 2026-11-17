@@ -1,4 +1,4 @@
-// Six optional, same-platform country observations, adapted from the retired
+// Optional same-platform country observations, adapted from the retired
 // geo checks in service-unlock v0.5.6 (53e7e8f1), originally geocheck MIT,
 // Copyright (c) 2026 Remnawave. No check registration or availability verdict.
 package geo
@@ -18,9 +18,6 @@ import (
 )
 
 var youtubeCountry = regexp.MustCompile(`"countryCode"\s*:\s*"([^"]*)"`)
-var googleUnderscore = regexp.MustCompile(`"[a-z]{2}_([A-Z]{2})"`)
-var googleDash = regexp.MustCompile(`"[a-z]{2}-([A-Z]{2})"`)
-var googlePlayCountry = regexp.MustCompile(`<div class="yVZQTb">([^<(]+)`)
 var redditCountry = regexp.MustCompile(`country="([^"]*)"`)
 
 // metadataCountry deliberately excludes provider pseudo-codes, not merely WW.
@@ -166,15 +163,12 @@ func validMetadataResponse(resp *netx.Response, originURL string) *netx.Response
 // Reuse only successful, unchallenged official Premium response metadata;
 // this helper does not change the Premium primary verdict.
 func YouTubePrimaryRegion(resp *netx.Response) string {
-	if validMetadataResponse(resp, "https://www.youtube.com/premium") == nil {
-		return ""
-	}
-	return YouTubeRegion(resp.Text())
+	return YouTubeCountry(resp, "https://www.youtube.com/premium").Region
 }
 
 // RegionMetadata runs only after the primary result and its RTT are frozen,
-// in that result's existing worker. One auxiliary budget (including Google's
-// two sequential steps) <= --timeout, using the SAME direct/system stack.
+// in that result's existing worker, bounded by --timeout on the SAME stack.
+// Google no longer queries homepage locales or Play.
 // No errors/raw response are reflected into primary error/detail/exit status.
 func RegionMetadata(ctx context.Context, stack *netx.Stack, f netx.Family, id string) string {
 	var req netx.Request
@@ -184,13 +178,11 @@ func RegionMetadata(ctx context.Context, stack *netx.Stack, f netx.Family, id st
 	case "tiktok_access":
 		req.URL = "https://www.tiktok.com/api/v1/web-cookie-privacy/config?appId=1988"
 	case "youtube_premium_access":
-		req.URL = "https://www.youtube.com"
+		return YouTubeMetadata(ctx, stack, f).Region
 	case "spotify_signup":
 		req.URL = "https://accounts.spotify.com/status"
 	case "reddit_guest":
 		req.URL = "https://www.reddit.com/svc/shreddit/reddit-chat"
-	case "google_captcha":
-		req.URL = "https://www.google.com"
 	default:
 		return ""
 	}
@@ -208,38 +200,10 @@ func RegionMetadata(ctx context.Context, stack *netx.Stack, f netx.Family, id st
 		return metadataJSONCountry(resp.Body, "derived_fields", "country")
 	case "tiktok_access":
 		return metadataJSONCountry(resp.Body, "body", "appProps", "region")
-	case "youtube_premium_access":
-		return YouTubeRegion(resp.Text())
 	case "spotify_signup":
 		return metadataJSONCountry(resp.Body, "geoLocationCountryCode")
 	case "reddit_guest":
 		return uniqueCountry(redditCountry.FindAllStringSubmatch(resp.Text(), -1))
-	case "google_captcha":
-		underscore := googleUnderscore.FindAllStringSubmatch(resp.Text(), -1)
-		dash := googleDash.FindAllStringSubmatch(resp.Text(), -1)
-		if len(underscore) > 0 {
-			code := uniqueCountry(underscore)
-			if code == "" {
-				return ""
-			}
-			if len(dash) > 0 && metadataCountry(dash[len(dash)-1][1]) != code {
-				return ""
-			}
-			return code
-		}
-		// Historical parser's LAST dash locale is the document's own, not alternate hreflangs.
-		if len(dash) > 0 {
-			return metadataCountry(dash[len(dash)-1][1])
-		}
-		play := metadataResponse(aux, stack, f, netx.Request{URL: "https://play.google.com/", Headers: map[string]string{"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "Accept-Language": "en-US;q=0.9"}})
-		if play == nil {
-			return ""
-		}
-		matches := googlePlayCountry.FindAllStringSubmatch(play.Text(), -1)
-		for i := range matches {
-			matches[i][1] = countries.Code(matches[i][1])
-		}
-		return uniqueCountry(matches)
 	}
 	return ""
 }

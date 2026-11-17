@@ -142,7 +142,7 @@ func TestAll12CatalogueTypesMethodsPayloadsAndParsers(t *testing.T) {
 				return response(req, 200, f.Body, f.ResponseHeaders), nil
 			})
 			wantAux := 0
-			if c.ID == "google_captcha" || c.ID == "spotify_signup" || c.ID == "reddit_guest" {
+			if c.ID == "spotify_signup" || c.ID == "reddit_guest" {
 				wantAux = 1
 			}
 			if auxCalls != wantAux || wantAux == 1 && r.Region != "JP" {

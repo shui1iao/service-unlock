@@ -99,3 +99,37 @@ func TestAuxiliaryOwnTimeoutCannotMakePrimaryError(t *testing.T) {
 		t.Fatal("aux timeout changed primary", r)
 	}
 }
+func TestYouTubeEvidenceSharesPrimaryOrExistingFallbackWithoutRepeating(t *testing.T) {
+	for _, tc := range []struct {
+		primary, fallback, region string
+		calls                     int
+	}{
+		{`ad-free "countryCode":"CN"`, "", "CN", 1},
+		{`ad-free ytcfg.set({}); www.google.cn`, "", "CN", 1},
+		{`ad-free`, `"countryCode":"CN"`, "CN", 2},
+		{`ad-free ytcfg.set({}); www.google.cn "countryCode":"US"`, `"countryCode":"CN"`, "", 1},
+		{`ad-free g-recaptcha "countryCode":"CN"`, `"countryCode":"CN"`, "", 1},
+	} {
+		env := testEnv(t)
+		calls := 0
+		env.Stack.HTTP(0).Transport = metadataTrip(func(r *http.Request) (*http.Response, error) {
+			calls++
+			body := tc.primary
+			if calls == 1 {
+				if r.URL.String() != "https://www.youtube.com/premium" {
+					t.Fatal(r.URL)
+				}
+			} else {
+				if r.URL.String() != "https://www.youtube.com" || calls > 2 {
+					t.Fatal("repeated/cross-platform request", r.URL)
+				}
+				body = tc.fallback
+			}
+			return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(body)), ContentLength: -1, Request: r}, nil
+		})
+		got := Run(context.Background(), env.Stack, 0, []Check{youTubePremium()}, 4)[0]
+		if calls != tc.calls || got.Region != tc.region || got.YouTubeCountry.Region != tc.region || got.State != StateAvailable {
+			t.Fatal(got, calls)
+		}
+	}
+}

@@ -43,24 +43,26 @@ func youTubePremium() Check {
 			if err != nil {
 				return Result{State: StateError, Detail: "request failed", Err: err}
 			}
+			evidence := geo.YouTubeCountry(resp, "https://www.youtube.com/premium")
 			if problem := textProblem(resp.Status, resp.Text()); problem != "" {
-				return Result{State: StateError, Detail: problem}
+				return Result{State: StateError, Detail: problem, YouTubeCountry: evidence}
 			}
 
-			region := geo.YouTubePrimaryRegion(resp)
+			region := evidence.Region
 			body := strings.ToLower(resp.Text())
 			switch {
 			case strings.Contains(body, "youtube premium is not available in your country"):
-				return Result{State: StateBlocked, Region: region, Detail: "not offered in this country"}
+				return Result{State: StateBlocked, Region: region, YouTubeCountry: evidence, Detail: "not offered in this country"}
 			case resp.Status < 200 || resp.Status >= 400:
-				return Result{State: StateError, Detail: "unexpected HTTP " + itoa(resp.Status)}
+				return Result{State: StateError, Detail: "unexpected HTTP " + itoa(resp.Status), YouTubeCountry: evidence}
 			case strings.Contains(body, "ad-free"):
-				return Result{State: StateAvailable, Region: region}
+				return Result{State: StateAvailable, Region: region, YouTubeCountry: evidence}
 			}
 			return Result{
-				State:  StateError,
-				Region: region,
-				Detail: "neither the offer nor the refusal wording was present",
+				State:          StateError,
+				Region:         region,
+				YouTubeCountry: evidence,
+				Detail:         "neither the offer nor the refusal wording was present",
 			}
 		},
 	}

@@ -102,12 +102,11 @@ func mockCompleteStack(t *testing.T) (*netx.Stack, *completeTransport) {
 		}
 	}
 	for _, f := range []requestFixture{
-        {URL: "https://ab.chatgpt.com/v1/initialize",Method:"POST",Body:`{"derived_fields":{"country":"JP"}}`},
-        {URL: "https://www.youtube.com",Body:`{"countryCode":"JP"}`},
-        {URL: "https://www.tiktok.com/api/v1/web-cookie-privacy/config?appId=1988",Body:`{"body":{"appProps":{"region":"JP"}}}`},
-        {URL: "https://accounts.spotify.com/status",Body:`{"geoLocationCountryCode":"JP"}`},
-        {URL: "https://www.reddit.com/svc/shreddit/reddit-chat",Body:`<widget country="JP">`},
-        {URL: "https://www.google.com",Body:`"ja_JP"`},
+		{URL: "https://ab.chatgpt.com/v1/initialize", Method: "POST", Body: `{"derived_fields":{"country":"JP"}}`},
+		{URL: "https://www.youtube.com", Body: `{"countryCode":"JP"}`},
+		{URL: "https://www.tiktok.com/api/v1/web-cookie-privacy/config?appId=1988", Body: `{"body":{"appProps":{"region":"JP"}}}`},
+		{URL: "https://accounts.spotify.com/status", Body: `{"geoLocationCountryCode":"JP"}`},
+		{URL: "https://www.reddit.com/svc/shreddit/reddit-chat", Body: `<widget country="JP">`},
 
 		{URL: "https://api.openai.com/compliance/cookie_requirements", Body: `{}`},
 		{URL: "https://www.youtube.com/premium", Body: "ad-free offer"},
@@ -137,6 +136,9 @@ func TestComplete22RealCallPathsAndAdditiveJSON(t *testing.T) {
 	}
 	// The loose geo probe is retired, not merely hidden. Only strict access
 	// may request Premium, and no compatibility alias is emitted in raw JSON.
+	if tr.seen["https://www.google.com"] != 0 || tr.seen["https://play.google.com/store"] != 0 || tr.seen["https://www.youtube.com"] != 1 {
+		t.Fatal("retired Google metadata or duplicate YouTube fallback", tr.seen)
+	}
 	if tr.seen["https://www.youtube.com/premium"] != 1 {
 		t.Fatal("duplicate Premium request", tr.seen)
 	}

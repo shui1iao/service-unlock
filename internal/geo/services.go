@@ -56,7 +56,7 @@ func ServiceChecks() []Check {
 // googleSearchCaptcha detects whether the exit IP is flagged for abuse.
 func googleSearchCaptcha() Check {
 	return Check{
-		ID: "google_captcha", Name: "Google Search captcha", Group: GroupServices, Kind: KindBlocked,
+		ID: "google_captcha", Name: "Google", Group: GroupServices, Kind: KindBlocked,
 		Run: func(ctx context.Context, env *Env, f netx.Family) (string, error) {
 			resp, err := env.request(ctx, f, netx.Request{
 				URL:     "https://www.google.com/search?q=cats",

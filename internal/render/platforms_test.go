@@ -16,7 +16,7 @@ func TestSinglePrimaryStatusAndNoRegionBackfill(t *testing.T) {
 	o := &Output{Theme: newTheme(nil)}
 	jp := "JP"
 	r := Report{Services: []geo.Result{{Check: geo.Check{ID: "spotify_signup", Kind: geo.KindAvailability}, Err: errors.New("legacy endpoint inconclusive")}, {Check: geo.Check{ID: "google_captcha", Kind: geo.KindBlocked}, Value: "yes"}}, Access: []access.Result{{Check: access.Check{ID: "chatgpt_web"}, State: access.StateAvailable}, {Check: access.Check{ID: "netflix_access"}, State: access.StateRestricted, Region: "JP"}, {Check: access.Check{ID: "claude_access"}, State: access.StateBlocked}, {Check: access.Check{ID: "gemini_access"}, State: access.StateError}}, AI: []ai.Result{{Check: ai.Check{ID: "qwen_intl"}, State: ai.StateReachable}}, Extra: []extra.Result{{ID: "MediaUnlockTest_PrimeVideo", Status: "available", Region: &jp}}}
-	for name, want := range map[string][2]string{"ChatGPT": {"● Yes", ""}, "Netflix": {"● Limited", "JP"}, "Claude": {"● No", ""}, "Gemini": {"○ Unknown", ""}, "Google Search (captcha)": {"● No", ""}, "Spotify (Legacy signup endpoint)": {"○ Unknown", ""}, "Qwen Intl (API)": {"● Yes", ""}, "Amazon Prime Video": {"● Yes", "JP"}} {
+	for name, want := range map[string][2]string{"ChatGPT": {"● Yes", ""}, "Netflix": {"● Limited", "JP"}, "Claude": {"● No", ""}, "Gemini": {"○ Unknown", ""}, "Google": {"● No", ""}, "Spotify (Legacy signup endpoint)": {"○ Unknown", ""}, "Qwen Intl (API)": {"● Yes", ""}, "Amazon Prime Video": {"● Yes", "JP"}} {
 		row := platformNamed(t, o.groups(r), name)
 		if row.result != want[0] || row.region != want[1] {
 			t.Fatal(name, row, want)

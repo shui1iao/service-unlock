@@ -18,10 +18,9 @@ var metadataCases = []struct{ id, url, method, body string }{
 	{"youtube_premium_access", "https://www.youtube.com", "GET", `{"countryCode":"JP"}`},
 	{"spotify_signup", "https://accounts.spotify.com/status", "GET", `{"geoLocationCountryCode":"JP"}`},
 	{"reddit_guest", "https://www.reddit.com/svc/shreddit/reddit-chat", "GET", `<widget country="JP">`},
-	{"google_captcha", "https://www.google.com", "GET", `"ja_JP"`},
 }
 
-func TestSixOfficialAuxiliaryRequestsAndNoGoogleYouTubeFallback(t *testing.T) {
+func TestFiveOfficialAuxiliaryRequestsAndNoGoogleYouTubeFallback(t *testing.T) {
 	for _, tc := range metadataCases {
 		t.Run(tc.id, func(t *testing.T) {
 			calls := 0
@@ -91,8 +90,6 @@ func TestMetadataMalformedConflictWrongTypeAndChallengeStayUnknown(t *testing.T)
 							body = `"countryCode":"JP","countryCode":"SG"`
 						case "reddit_guest":
 							body = `country="JP" country="SG"`
-						case "google_captcha":
-							body = `"ja_JP" "en_SG"`
 						}
 					case "bad-type":
 						body = `{"derived_fields":{"country":42},"body":{"appProps":{"region":["JP"]}},"geoLocationCountryCode":true,"countryCode":42}`
@@ -118,39 +115,13 @@ func TestMetadataMalformedConflictWrongTypeAndChallengeStayUnknown(t *testing.T)
 		}
 	}
 }
-func TestGoogleFallbackSharesOneAuxiliaryBudget(t *testing.T) {
-	for _, slow := range []bool{false, true} {
-		t.Run(map[bool]string{false: "normal", true: "shared-budget"}[slow], func(t *testing.T) {
-			stack, _ := netx.New(context.Background(), netx.Options{Timeout: 90 * time.Millisecond})
-			defer stack.Close()
-			calls := 0
-			stack.HTTP(0).Transport = tripFunc(func(req *http.Request) (*http.Response, error) {
-				calls++
-				if slow {
-					select {
-					case <-req.Context().Done():
-						return nil, req.Context().Err()
-					case <-time.After(60 * time.Millisecond):
-					}
-				}
-				if calls == 1 {
-					if req.URL.String() != "https://www.google.com" {
-						t.Fatal(req.URL)
-					}
-					return response(req, 200, "no locale", nil), nil
-				}
-				if req.URL.String() != "https://play.google.com/" || req.Header.Get("Accept-Language") != "en-US;q=0.9" {
-					t.Fatal(req.URL)
-				}
-				return response(req, 200, `<div class="yVZQTb">Japan</div>`, nil), nil
-			})
-			start := time.Now()
-			got := RegionMetadata(context.Background(), stack, 0, "google_captcha")
-			elapsed := time.Since(start)
-			if calls != 2 || !slow && got != "JP" || slow && (got != "" || elapsed > 150*time.Millisecond) {
-				t.Fatal(got, calls, elapsed)
-			}
-		})
+func TestGoogleMetadataNeverQueriesHomepageOrPlay(t *testing.T) {
+	env := environment(t, func(req *http.Request) (*http.Response, error) {
+		t.Fatal("Google auxiliary request forbidden", req.URL)
+		return nil, nil
+	})
+	if got := RegionMetadata(context.Background(), env.Stack, 0, "google_captcha"); got != "" {
+		t.Fatal("Google locale survived", got)
 	}
 }
 func TestAuxiliaryCancelUnknownAndNoQueryForUnrelatedCheck(t *testing.T) {
