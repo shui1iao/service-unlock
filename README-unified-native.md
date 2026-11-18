@@ -1,4 +1,4 @@
-# Service Unlock v0.5.10 — single primary checks + restored regional media
+# Service Unlock v0.5.11 — single primary checks + restored regional media
 
 Current behavior: 6 access + 12 services + 4 independent AI API probes = **22 native**, plus all134 extra catalogue entries, raw156. Twelve duplicate measurements are truly unregistered and removed: geo google/youtube/chatgpt/netflix/spotify/reddit/prime/tiktok and AI openai/anthropic/gemini/qwen_cn. This is a breaking JSON catalogue deletion; retained IDs/names/fields/order/request predicates are unchanged, and no aliases/results are fabricated. The historical source.port marker is not a current count/version.
 
@@ -6,7 +6,7 @@ ChatGPT/Claude/Gemini keep Web clients only, Netflix its catalogue and PrimeVide
 
 Default auto is global + ONE actual-exit region. Restore `Regional media — <English region>` for selected regional Video/Music extras, preserving source names, independent copyright samples and Selected order. All134 IDs/global6/ten regional lists/unsafe9 no-request guards remain. Regional games/MetaAI/DMM finance stay in their proper purpose, global media remain in the six purpose sections; empty sections are omitted. Same English three columns, single rounded frame, font/styles/wrapping and no timing/statistics.
 
-Selected totals: global28, TW39, HK36, JP54, NA65, SA31, EU58, OC47, KR36, SEA39, AF31. No all-region mode. The JSON+ANSI machine envelope comes from ONE measurement. Original request timeouts, family, auto metadata, exit1 complete-Unknown, strict error handling and cancellation are retained. See README.md and the matching v0.5.10 Release for exact build/test/source/known limitations. All licenses and fixed vendor ship in the full source ZIP; **not MIT-only**. arm64 cross-build is not real-hardware validation. No full-platform, account signup, or playback validation was performed. Short-link and SG operational switches are separate controller actions.
+Selected totals: global28, TW39, HK36, JP54, NA65, SA31, EU58, OC47, KR36, SEA39, AF31. No all-region mode. The JSON+ANSI machine envelope comes from ONE measurement. Original request timeouts, family, auto metadata, exit1 complete-Unknown, strict error handling and cancellation are retained. See README.md and the matching v0.5.11 Release for exact build/test/source/known limitations. All licenses and fixed vendor ship in the full source ZIP; **not MIT-only**. arm64 cross-build is not real-hardware validation. No full-platform, account signup, or playback validation was performed. Short-link and SG operational switches are separate controller actions.
 
 <details><summary>Historical v0.5.6 and earlier implementation/repair evidence — not the current contract</summary>
 

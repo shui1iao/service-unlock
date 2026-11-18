@@ -16,7 +16,7 @@ type YouTubeCountryEvidence struct {
 	Region, Source, Problem string
 }
 
-var youtubeOtherCountry = regexp.MustCompile(`"(?:INNERTUBE_CONTEXT_GL|contentRegion)"\s*:\s*"([^"]*)"`)
+var youtubeOtherCountry = regexp.MustCompile(`"(INNERTUBE_CONTEXT_GL|contentRegion)"\s*:\s*"([^"]*)"`)
 var youtubeOtherCountryKey = regexp.MustCompile(`"(?:INNERTUBE_CONTEXT_GL|contentRegion)"\s*:`)
 
 func YouTubeCountry(resp *netx.Response, origin string) YouTubeCountryEvidence {
@@ -43,14 +43,26 @@ func YouTubeCountry(resp *netx.Response, origin string) YouTubeCountryEvidence {
 	// document, so a bare error/consent page link is not routing evidence.
 	cn := strings.Contains(body, "www.google.cn")
 	otherMatches := youtubeOtherCountry.FindAllStringSubmatch(body, -1)
-	if len(otherMatches) != len(youtubeOtherCountryKey.FindAllStringIndex(body, -1)) || len(otherMatches) > 0 && uniqueCountry(otherMatches) == "" {
+	if len(otherMatches) != len(youtubeOtherCountryKey.FindAllStringIndex(body, -1)) {
 		return unknown("malformed YouTube region field")
 	}
+	var contextRegion string
+	var hasClientCountry, hasContentRegion bool
 	for _, match := range otherMatches {
-		other := metadataCountry(match[1])
-		if other == "" || region != "" && other != region || cn && other != "CN" {
-			return unknown("malformed or conflicting YouTube region fields")
+		other := metadataCountry(match[2])
+		if other == "" || contextRegion != "" && other != contextRegion {
+			return unknown("malformed YouTube region field")
 		}
+		contextRegion = other
+		switch match[1] {
+		case "INNERTUBE_CONTEXT_GL":
+			hasClientCountry = true
+		case "contentRegion":
+			hasContentRegion = true
+		}
+	}
+	if contextRegion != "" && (region != "" && contextRegion != region || cn && contextRegion != "CN") {
+		return unknown("malformed or conflicting YouTube region fields")
 	}
 	if cn {
 		if !youtubeDocument(body) {
@@ -63,6 +75,11 @@ func YouTubeCountry(resp *netx.Response, origin string) YouTubeCountryEvidence {
 	}
 	if region != "" {
 		return YouTubeCountryEvidence{Region: region, Source: origin + " countryCode"}
+	}
+	// Some normal Premium/home pages omit countryCode. In that case require
+	// both country fields to exist and agree across the same document.
+	if hasClientCountry && hasContentRegion && youtubeDocument(body) {
+		return YouTubeCountryEvidence{Region: contextRegion, Source: origin + " matching INNERTUBE_CONTEXT_GL and contentRegion"}
 	}
 	return YouTubeCountryEvidence{}
 }
