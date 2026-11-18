@@ -76,38 +76,30 @@ func googleSearchCaptcha() Check {
 	}
 }
 
-// availabilityByPhrase is the shape shared by the "is this product offered
-// here" checks: fetch a page, look for the refusal sentence.
-func availabilityByPhrase(id, name, url, phrase string, headers map[string]string) Check {
-	needle := strings.ToLower(phrase)
+func youtubeMusic() Check {
+	const home = "https://music.youtube.com/"
+	const refusal = "youtube music is not available in your area"
 	return Check{
-		ID: id, Name: name, Group: GroupServices, Kind: KindAvailability,
-		Run: func(ctx context.Context, env *Env, f netx.Family) (string, error) {
-			resp, err := env.request(ctx, f, netx.Request{URL: url, Headers: headers}, http.StatusForbidden)
+		ID: "youtube_music", Name: "YouTube Music", Group: GroupServices, Kind: KindAvailability,
+		runWithRegion: func(ctx context.Context, env *Env, f netx.Family) (string, string, error) {
+			resp, err := env.request(ctx, f, netx.Request{URL: home, Headers: map[string]string{
+				"Cookie": googleConsentCookie, "Accept-Language": "en-US,en;q=0.9",
+			}}, http.StatusForbidden)
 			if err != nil {
-				return "", err
+				return "", "", err
 			}
 			if len(resp.Body) == 0 {
-				return "", nil
+				return "", "", nil
 			}
-			if strings.Contains(strings.ToLower(resp.Text()), needle) {
-				return no, nil
+			if strings.Contains(strings.ToLower(resp.Text()), refusal) {
+				return no, youtubeMusicRegion(resp, home, http.StatusForbidden), nil
 			}
 			if !resp.OK() {
-				return "", errors.New("unexpected HTTP 403 without refusal wording")
+				return "", "", errors.New("unexpected HTTP 403 without refusal wording")
 			}
-			return yes, nil
+			return yes, youtubeMusicRegion(resp, home), nil
 		},
 	}
-}
-
-func youtubeMusic() Check {
-	return availabilityByPhrase(
-		"youtube_music", "YouTube Music",
-		"https://music.youtube.com/",
-		"youtube music is not available in your area",
-		map[string]string{"Cookie": googleConsentCookie, "Accept-Language": "en-US,en;q=0.9"},
-	)
 }
 
 func twitch() Check {

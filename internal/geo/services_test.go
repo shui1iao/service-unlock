@@ -207,6 +207,40 @@ func TestServiceSpecificRefusalAndUnknownSemantics(t *testing.T) {
 		})
 	}
 }
+func TestYouTubeMusicCountryFromPrimaryResponse(t *testing.T) {
+	const match = `ytcfg.set({"INNERTUBE_CONTEXT_GL":"JP","contentRegion":"JP"});`
+	const refusal = "YouTube Music is not available in your area"
+	for _, tc := range []struct {
+		name, body, value, region string
+		status                    int
+	}{
+		{"yes", match, yes, "JP", 200},
+		{"no", refusal + match, no, "JP", 403},
+		{"direct", `ytcfg.set({"countryCode":"US"});`, yes, "US", 200},
+		{"bare-refusal", refusal, no, "", 403},
+		{"conflict", `ytcfg.set({"INNERTUBE_CONTEXT_GL":"JP","contentRegion":"US"});`, yes, "", 200},
+		{"bad-field", `ytcfg.set({"INNERTUBE_CONTEXT_GL":"JP","contentRegion":42,"countryCode":"JP"});`, yes, "", 200},
+		{"single-context", `ytcfg.set({"INNERTUBE_CONTEXT_GL":"JP"});`, yes, "", 200},
+		{"interstitial", "<title>Before you continue</title>" + match, yes, "", 200},
+		{"lookalike", `{"INNERTUBE_CONTEXT_GL":"JP","contentRegion":"JP"}`, yes, "", 200},
+		{"unexpected-403", match, "", "", 403},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			calls := 0
+			r := single(t, check(t, "youtube_music"), func(req *http.Request) (*http.Response, error) {
+				calls++
+				if req.URL.String() != "https://music.youtube.com/" || calls != 1 {
+					t.Fatal("unexpected request", req.URL, calls)
+				}
+				return response(req, tc.status, tc.body, nil), nil
+			})
+			if calls != 1 || r.Value != tc.value || r.Region != tc.region || (r.Err != nil) != (tc.value == "") {
+				t.Fatalf("calls=%d result=%+v", calls, r)
+			}
+		})
+	}
+}
+
 func TestJSONAndMissingCountryParseFailures(t *testing.T) {
 	for _, id := range []string{"twitch", "spotify_signup", "deezer", "apple", "steam", "playstation", "ookla", "jetbrains", "bing"} {
 		for _, body := range []string{"{}", "{broken", "", "<html>no marker</html>"} {

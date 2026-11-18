@@ -102,13 +102,19 @@ func TestAuxiliaryOwnTimeoutCannotMakePrimaryError(t *testing.T) {
 func TestYouTubeEvidenceSharesPrimaryOrExistingFallbackWithoutRepeating(t *testing.T) {
 	for _, tc := range []struct {
 		primary, fallback, region string
+		state                     State
 		calls                     int
 	}{
-		{`ad-free "countryCode":"CN"`, "", "CN", 1},
-		{`ad-free ytcfg.set({}); www.google.cn`, "", "CN", 1},
-		{`ad-free`, `"countryCode":"CN"`, "CN", 2},
-		{`ad-free ytcfg.set({}); www.google.cn "countryCode":"US"`, `"countryCode":"CN"`, "", 1},
-		{`ad-free g-recaptcha "countryCode":"CN"`, `"countryCode":"CN"`, "", 1},
+		{`ad-free "countryCode":"CN"`, "", "CN", StateAvailable, 1},
+		{`ad-free ytcfg.set({}); www.google.cn`, "", "CN", StateAvailable, 1},
+		{`ad-free`, `"countryCode":"CN"`, "CN", StateAvailable, 2},
+		{`ad-free ytcfg.set({}); www.google.cn "countryCode":"US"`, `"countryCode":"JP"`, "JP", StateAvailable, 2},
+		{`ad-free g-recaptcha "countryCode":"CN"`, `"countryCode":"JP"`, "JP", StateAvailable, 2},
+		{`youtube premium is not available in your country "countryCode":"JP"`, "", "JP", StateBlocked, 1},
+		{`youtube premium is not available in your country`, `"countryCode":"JP"`, "JP", StateBlocked, 2},
+		{`youtube premium is not available in your country "countryCode":"US" "countryCode":"CN"`, `"countryCode":"CN"`, "CN", StateBlocked, 2},
+		{`youtube premium is not available in your country "countryCode":"US" "countryCode":"CN"`, `g-recaptcha "countryCode":"CN"`, "", StateBlocked, 2},
+		{`g-recaptcha "countryCode":"CN"`, `"countryCode":"JP"`, "", StateError, 1},
 	} {
 		env := testEnv(t)
 		calls := 0
@@ -128,8 +134,8 @@ func TestYouTubeEvidenceSharesPrimaryOrExistingFallbackWithoutRepeating(t *testi
 			return &http.Response{StatusCode: 200, Header: http.Header{}, Body: io.NopCloser(strings.NewReader(body)), ContentLength: -1, Request: r}, nil
 		})
 		got := Run(context.Background(), env.Stack, 0, []Check{youTubePremium()}, 4)[0]
-		if calls != tc.calls || got.Region != tc.region || got.YouTubeCountry.Region != tc.region || got.State != StateAvailable {
-			t.Fatal(got, calls)
+		if calls != tc.calls || got.Region != tc.region || got.YouTubeCountry.Region != tc.region || got.State != tc.state {
+			t.Fatal(tc.primary, got, calls)
 		}
 	}
 }

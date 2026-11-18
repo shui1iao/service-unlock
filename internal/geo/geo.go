@@ -42,6 +42,8 @@ type Check struct {
 	Group    Group
 	Kind     Kind
 	Run      RunFunc
+	// A probe may extract a country from its primary response at no request cost.
+	runWithRegion func(context.Context, *Env, netx.Family) (value, region string, err error)
 }
 type Result struct {
 	Check         Check
@@ -149,7 +151,15 @@ func Run(ctx context.Context, env *Env, checks []Check, workers int) []Result {
 				}
 				start := time.Now()
 				c := checks[i]
-				raw, err := c.Run(ctx, env, 0)
+				var raw, region string
+				var err error
+				// Preserve an explicitly supplied runner over the built-in regional probe.
+				withRegion := c.Run == nil && c.runWithRegion != nil
+				if withRegion {
+					raw, region, err = c.runWithRegion(ctx, env, 0)
+				} else {
+					raw, err = c.Run(ctx, env, 0)
+				}
 				r := Result{Check: c, CheckedAt: start, RTT: time.Since(start), Detail: env.detail(c.ID), Err: err}
 				if err == nil {
 					r.Value = normalize(raw, c.Kind)
@@ -168,7 +178,11 @@ func Run(ctx context.Context, env *Env, checks []Check, workers int) []Result {
 					}
 				}
 				if c.Kind != KindCountry {
-					r.Region = RegionMetadata(ctx, env.Stack, 0, c.ID)
+					if !withRegion {
+						r.Region = RegionMetadata(ctx, env.Stack, 0, c.ID)
+					} else if r.Err == nil {
+						r.Region = region
+					}
 				}
 				results[i] = r
 			}(i)

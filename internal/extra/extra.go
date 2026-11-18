@@ -109,7 +109,10 @@ type verdict struct{ status, region, detail string }
 func yes(region string) verdict {
 	return verdict{"available", country(region), "source positive criterion matched"}
 }
-func no(detail string) verdict              { return verdict{"blocked", "", detail} }
+func no(detail string) verdict { return noRegion(detail, "") }
+func noRegion(detail, region string) verdict {
+	return verdict{"blocked", country(region), detail}
+}
 func limited(region, detail string) verdict { return verdict{"restricted", country(region), detail} }
 func unknown(detail string) verdict         { return verdict{"error", "", detail} }
 func country(s string) string {

@@ -224,3 +224,81 @@ func hmacSignature(text, key string) string {
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 func validJSON(text string) bool { return json.Valid([]byte(text)) }
+
+// jsonRegion is for metadata only: reject duplicate, list-contained, non-string
+// or invalid country fields rather than picking a possible market.
+func jsonRegion(r response, key string) string {
+	if !regionResponse(r) || !validJSON(r.Text) {
+		return ""
+	}
+	dec := json.NewDecoder(strings.NewReader(r.Text))
+	dec.UseNumber()
+	var region string
+	seen := false
+	var visit func(inList bool) bool
+	visit = func(inList bool) bool {
+		tok, _ := dec.Token() // The input has already passed json.Valid.
+		switch tok {
+		case json.Delim('{'):
+			for dec.More() {
+				k, _ := dec.Token()
+				if k == key {
+					var value string
+					if seen || inList || dec.Decode(&value) != nil {
+						return false
+					}
+					seen, region = true, country(value)
+				} else if !visit(inList) {
+					return false
+				}
+			}
+		case json.Delim('['):
+			for dec.More() {
+				if !visit(true) {
+					return false
+				}
+			}
+		default:
+			return true
+		}
+		_, _ = dec.Token()
+		return true
+	}
+	if !visit(false) {
+		return ""
+	}
+	return region
+}
+
+// embeddedRegion is for existing inline configuration fields, not free-text
+// country names. Count all occurrences of the key, including non-string ones.
+func embeddedRegion(body, key string) string {
+	matches := regexp.MustCompile(`(?:^|[^\\])"`+regexp.QuoteMeta(key)+`"\s*:\s*`).FindAllStringIndex(body, 2)
+	if len(matches) != 1 {
+		return ""
+	}
+	return country(rx(body[matches[0][1]:], `^"([A-Za-z]{2})"\s*(?:[,};<]|$)`))
+}
+
+func regionResponse(r response) bool {
+	return !strings.EqualFold(strings.TrimSpace(r.Header.Get("Cf-Mitigated")), "challenge") &&
+		!has(r.Text, `(?i)^\s*403 ERROR\b|<title>\s*(?:403 ERROR|Access Denied|Request Blocked)\s*</title>`)
+}
+
+func responseRegionCookie(r response, key string) string {
+	if r.Status != 200 || !regionResponse(r) {
+		return ""
+	}
+	var values []string
+	for _, line := range r.Header.Values("Set-Cookie") {
+		pair, _, _ := strings.Cut(line, ";")
+		name, value, ok := strings.Cut(pair, "=")
+		if ok && strings.TrimSpace(name) == key {
+			values = append(values, value)
+		}
+	}
+	if len(values) != 1 {
+		return ""
+	}
+	return country(values[0])
+}

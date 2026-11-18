@@ -118,7 +118,15 @@ func runFlow(ctx context.Context, c *Client, id string) verdict {
 			return unknown("malformed token/home response")
 		}
 		if !strings.Contains(token.Text, "animeSn") {
-			return no("title withheld")
+			var region string
+			if home.Status == 200 && regionResponse(home) && has(home.Text, `(?i)<(?:html|body)\b[^>]*\sdata-geo\s*=\s*"`) {
+				// Keep the homepage's caller geography, not a region in the token error.
+				matches := regexp.MustCompile(`(?i)\sdata-geo\s*=\s*"([^"]*)"`).FindAllStringSubmatch(home.Text, 2)
+				if len(matches) == 1 {
+					region = matches[0][1]
+				}
+			}
+			return noRegion("title withheld", region)
 		}
 		region := rx(home.Text, `data-geo="([^"]+)`)
 		if region == "" {
@@ -162,7 +170,7 @@ func runFlow(ctx context.Context, c *Client, id string) verdict {
 			return yes(region)
 		}
 		if has(home.Final, `preview|unavailable`) {
-			return no("source unavailable destination")
+			return noRegion("source unavailable destination", jsonRegion(graph, "countryCode"))
 		}
 		if supported == "false" {
 			return limited(region, "Available Soon")
@@ -194,9 +202,9 @@ func runFlow(ctx context.Context, c *Client, id string) verdict {
 			return unknown("source supported-location data missing")
 		}
 		if region == "US" && supported == "true" {
-			return yes("")
+			return yes(jsonRegion(graph, "countryCode"))
 		}
-		return no("source supported-location refusal")
+		return noRegion("source supported-location refusal", jsonRegion(graph, "countryCode"))
 	case "MediaUnlockTest_LineTVTW":
 		home := f.get(0)
 		js := rx(home.Text, `src="([^"]*/main-[a-z0-9]{8}[^"]*)`)
@@ -340,6 +348,8 @@ func runFlow(ctx context.Context, c *Client, id string) verdict {
 		v := sourcePair(r, `(?i)is unavailable in your|not yet available`, `(?i)relationships`)
 		if v.status == "available" {
 			v.region = country(scalar(r.Text, "mainTerritoryCode"))
+		} else if v.status == "blocked" {
+			v.region = jsonRegion(r, "mainTerritoryCode")
 		}
 		return v
 	case "MediaUnlockTest_TLCGO":
@@ -354,6 +364,8 @@ func runFlow(ctx context.Context, c *Client, id string) verdict {
 		v := sourcePair(r, `(?i)is not yet available`, `(?i)Episodes`)
 		if v.status == "available" {
 			v.region = country(scalar(r.Text, "mainTerritoryCode"))
+		} else if v.status == "blocked" {
+			v.region = jsonRegion(r, "mainTerritoryCode")
 		}
 		return v
 	case "MediaUnlockTest_AETV":
@@ -372,10 +384,14 @@ func runFlow(ctx context.Context, c *Client, id string) verdict {
 		if region == "" {
 			return unknown("country cookie missing")
 		}
-		if region == "US" || region == "CA" {
-			return yes("")
+		actual := responseRegionCookie(second, "AETN-Country-Code")
+		if actual != country(region) {
+			actual = ""
 		}
-		return no("source US/CA territory criterion")
+		if region == "US" || region == "CA" {
+			return yes(actual)
+		}
+		return noRegion("source US/CA territory criterion", actual)
 	case "GameTest_MathsSpot":
 		home := f.get(0)
 		if f.err != nil {
@@ -400,6 +416,9 @@ func runFlow(ctx context.Context, c *Client, id string) verdict {
 		case "Success":
 			return yes(f.v["region"])
 		case "FailureServiceNotInRegion", "FailureProxyUserLimitExceeded":
+			if home.Status == 200 && regionResponse(home) {
+				return noRegion("source session/proxy refusal", embeddedRegion(home.Text, "countryCode"))
+			}
 			return no("source session/proxy refusal")
 		}
 		return f.failure()
@@ -430,6 +449,9 @@ func runFlow(ctx context.Context, c *Client, id string) verdict {
 		case "OK":
 			return yes(f.v["region"])
 		case "KO":
+			if country.Status == 200 {
+				return noRegion("source content prefetch refusal", jsonRegion(country, "country_code"))
+			}
 			return no("source content prefetch refusal")
 		}
 		return f.failure()

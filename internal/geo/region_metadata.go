@@ -11,6 +11,7 @@ import (
 	"io"
 	"net/url"
 	"regexp"
+	"slices"
 	"strings"
 
 	"serviceunlock/internal/countries"
@@ -139,8 +140,8 @@ func metadataResponse(ctx context.Context, stack *netx.Stack, f netx.Family, req
 	return validMetadataResponse(resp, req.URL)
 }
 
-func validMetadataResponse(resp *netx.Response, originURL string) *netx.Response {
-	if !resp.OK() {
+func validMetadataResponse(resp *netx.Response, originURL string, allowedStatus ...int) *netx.Response {
+	if resp == nil || !resp.OK() && !slices.Contains(allowedStatus, resp.Status) {
 		return nil
 	}
 	final, err := url.Parse(resp.FinalURL)

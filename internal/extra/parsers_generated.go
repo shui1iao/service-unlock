@@ -1,7 +1,11 @@
 // Native translations; AGPL-3.0-only. RRC snapshot b6d4a6f9a87fc6eae6d3e62d0092ececcec8e844.
 package extra
 
-import "strings"
+import (
+	"encoding/json"
+	"regexp"
+	"strings"
+)
 
 var singleParsers = map[string]func(response) verdict{
 	"MediaUnlockTest_BilibiliHKMCTW": func(r response) verdict {
@@ -87,7 +91,7 @@ var singleParsers = map[string]func(response) verdict{
 		}
 		value := scalar(r.Text, "isAllowed")
 		if value == "false" {
-			return no("source isAllowed=false")
+			return noRegion("source isAllowed=false", jsonRegion(r, "GeolocatedCountry"))
 		}
 		if value == "true" && r.Status >= 200 && r.Status < 300 {
 			return yes(scalar(r.Text, "GeolocatedCountry"))
@@ -754,7 +758,7 @@ var singleParsers = map[string]func(response) verdict{
 		if v == "HK" {
 			return yes(v)
 		}
-		return no("source country refusal")
+		return noRegion("source country refusal", jsonRegion(r, "country_code"))
 	},
 	"MediaUnlockTest_KKTV": func(r response) verdict {
 		v := scalar(r.Text, "country")
@@ -767,7 +771,7 @@ var singleParsers = map[string]func(response) verdict{
 		if v == "TW" {
 			return yes(v)
 		}
-		return no("source country refusal")
+		return noRegion("source country refusal", jsonRegion(r, "country"))
 	},
 	"MediaUnlockTest_CBCGem": func(r response) verdict {
 		v := scalar(r.Text, "country")
@@ -780,7 +784,7 @@ var singleParsers = map[string]func(response) verdict{
 		if v == "CA" {
 			return yes(v)
 		}
-		return no("source country refusal")
+		return noRegion("source country refusal", jsonRegion(r, "country"))
 	},
 	"MediaUnlockTest_SBSonDemand": func(r response) verdict {
 		v := scalar(r.Text, "country_code")
@@ -793,7 +797,7 @@ var singleParsers = map[string]func(response) verdict{
 		if v == "AU" {
 			return yes(v)
 		}
-		return no("source country refusal")
+		return noRegion("source country refusal", jsonRegion(r, "country_code"))
 	},
 	"MediaUnlockTest_NBATV": func(r response) verdict {
 		if !has(r.Text, `(?i)<html|<!doctype`) {
@@ -1011,6 +1015,9 @@ var singleParsers = map[string]func(response) verdict{
 				return yes(v)
 			}
 		}
+		if actual := responseRegionCookie(r, "countryCode"); actual == country(v) {
+			return noRegion("source territory list excludes caller", actual)
+		}
 		return no("source territory list excludes caller")
 	},
 	"MediaUnlockTest_Showmax": func(r response) verdict {
@@ -1051,7 +1058,7 @@ var singleParsers = map[string]func(response) verdict{
 	},
 	"MediaUnlockTest_PrimeVideo": func(r response) verdict {
 		if has(r.Text, `(?i)isServiceRestricted`) {
-			return no("Service Not Available")
+			return noRegion("Service Not Available", primeRefusalRegion(r))
 		}
 		v := scalar(r.Text, "currentTerritory")
 		if country(v) != "" && r.Status == 200 {
@@ -1068,6 +1075,9 @@ var singleParsers = map[string]func(response) verdict{
 			return unknown("geo cookie missing")
 		}
 		if v == "US" {
+			if actual := responseRegionCookie(r, "geo"); actual == v {
+				return noRegion("Discontinued in the US", actual)
+			}
 			return no("Discontinued in the US")
 		}
 		u := strings.TrimPrefix(strings.TrimPrefix(r.Final, "https://www.hotstar.com/"), "https://hotstar.com/")
@@ -1092,7 +1102,7 @@ var singleParsers = map[string]func(response) verdict{
 	},
 	"MediaUnlockTest_FuboTV": func(r response) verdict {
 		if has(r.Text, `(?i)NO_SERVICE_IN_COUNTRY`) || scalar(r.Text, "network_allowed") == "false" {
-			return no("source network/country refusal")
+			return noRegion("source network/country refusal", jsonRegion(r, "country_code2"))
 		}
 		if scalar(r.Text, "network_allowed") == "true" && r.Status == 200 {
 			return yes(scalar(r.Text, "country_code2"))
@@ -1101,6 +1111,14 @@ var singleParsers = map[string]func(response) verdict{
 	},
 	"MediaUnlockTest_RakutenTV": func(r response) verdict {
 		if has(r.Text, `(?i)VPN|forbidden|is not available`) {
+			// Only a top-level country on the me/start reply, not country
+			// objects in a nested error or list of markets.
+			var data struct {
+				Code string `json:"iso3166_code"`
+			}
+			if json.Unmarshal([]byte(r.Text), &data) == nil && country(data.Code) == jsonRegion(r, "iso3166_code") {
+				return noRegion("source refusal wording", data.Code)
+			}
 			return no("source refusal wording")
 		}
 		v := scalar(r.Text, "iso3166_code")
@@ -1175,14 +1193,18 @@ var singleParsers = map[string]func(response) verdict{
 		if v == "" {
 			return unknown("region header missing")
 		}
-		if v == "US" && r.Status == 200 {
-			return yes("")
+		region := ""
+		if values := r.Header.Values("X-Crackle-Region"); len(values) == 1 && r.Status == 200 && regionResponse(r) {
+			region = country(values[0])
 		}
-		return no("source US-only region criterion")
+		if v == "US" && r.Status == 200 {
+			return yes(region)
+		}
+		return noRegion("source US-only region criterion", region)
 	},
 	"MediaUnlockTest_SkyShowTime": func(r response) verdict {
 		if r.Status == 403 || has(r.Text, `(?i)where-can-i-stream`) {
-			return no("source region refusal")
+			return noRegion("source region refusal", responseRegionCookie(r, "activeTerritory"))
 		}
 		v := rx(allText(r), `activeTerritory=([A-Z]+)`)
 		if country(v) != "" && r.Status == 200 {
@@ -1208,4 +1230,29 @@ var singleParsers = map[string]func(response) verdict{
 		}
 		return unknown("unexpected HTTP")
 	},
+}
+
+// Prime's service flag and currentTerritory must come from its structured
+// configuration, not merely occur as prose on an error page.
+func primeRefusalRegion(r response) string {
+	if r.Status != 200 || !regionResponse(r) {
+		return ""
+	}
+	const restricted = `"isServiceRestricted"\s*:\s*true\s*[,}]`
+	if validJSON(r.Text) {
+		if has(r.Text, restricted) {
+			return jsonRegion(r, "currentTerritory")
+		}
+		return ""
+	}
+	region := embeddedRegion(r.Text, "currentTerritory")
+	if region == "" {
+		return ""
+	}
+	for _, script := range regexp.MustCompile(`(?is)<script(?:\s[^>]*)?>(.*?)</script\s*>`).FindAllStringSubmatch(r.Text, -1) {
+		if has(script[1], restricted) && embeddedRegion(script[1], "currentTerritory") == region {
+			return region
+		}
+	}
+	return ""
 }

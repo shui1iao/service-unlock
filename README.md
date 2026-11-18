@@ -1,16 +1,18 @@
-# Service Unlock v0.5.9
+# Service Unlock v0.5.10
 
 本版真正精简重复检测：**22个原生主探针（6 access＋12 services＋4 AI）＋134个extra目录，完整raw156**。普通平台只一个主结果Yes/No/Limited/Unknown，不再把Web/API/Geo并列成复杂聚合。不同区域片库/版权样本仍独立，不按品牌合并。
 
-## Google 同步 YouTube 送中（v0.5.9）
+## 地区覆盖与 Google 同步 YouTube 送中（v0.5.10）
 
-每平台仍一个项目、一个主结果；ChatGPT(ab initialize)、TikTok(privacy config)、YouTube(countryCode，无Google fallback)、Spotify(accounts status)、Reddit(匿名chat widget)保留官方同平台国家元信息。Google（ID仍为`google_captcha`）不再查Google首页locale或Play：复用本次YouTube Premium响应；仅缺国家且无冲突/挑战时复用原有YouTube首页辅助请求，不为Google重复请求YouTube。地区来自YouTube，不是Search官方判区，也不保证两次请求实际使用同一IP/地址族。
+每平台仍一个项目、一个主结果；ChatGPT(ab initialize)、TikTok(privacy config)、YouTube(countryCode，无Google fallback)、Spotify(accounts status)、Reddit(匿名chat widget)保留官方同平台国家元信息。Google（ID仍为`google_captcha`）不再查Google首页locale或Play：复用本次YouTube Premium响应和已有首页回退，不为Google重复请求YouTube。Premium显示Yes或No时，主页面没有可用国家就尝试一次YouTube首页；冲突或异常页面本身不用于判区，只接受另一个合格响应的国家，两处都取不到就留空。地区来自YouTube，不是Search官方判区，也不保证两次请求实际使用同一IP/地址族。
 
 Google的特殊合并规则：可信同源正常YouTube页面中的字面`www.google.cn`（须有YouTube文档标记），或合法`countryCode=CN`，令Google为No|CN；与其它国家字段冲突、挑战/同意/错误页面或未知国码不推断国家。非CN只能补Region，原Search验证码/封锁No和请求错误Unknown不变。CN可独立成立No，即使Search请求失败；失败诊断保留在detail，明确不是验证码命中。终端、JSON、machine消费同一合并结果；KindBlocked的raw `yes`仍表示No。YouTube Premium原可用性判据不变，国家不推出Premium可用。
 
 同一个direct/system-selected netx.Stack与原UA/CA/正文/重定向安全策略；每项目辅助budget不超过--timeout（默认6秒），workers默认4全局上限保持。其它平台辅助失败/WAF/坏数据/冲突只留空，不改原主判定/诊断/时间/退出码。Spotify国家不能推出可注册Yes。不给其它平台强填出口国家或产品标签，无登录/播放保证。
 
-services仅google_captcha/spotify_signup/reddit_guest可新增可选`region` ISO2，未知省略；access复用已有region字段，顶层四数组/22+134不变。严格JSON消费者需同步本版本；历史原报告不查新、不补贴国家。
+YouTube Music 复用自己的首页响应：读取有效 `countryCode`，或一致的 `INNERTUBE_CONTEXT_GL` 和 `contentRegion`；仅确立 Yes/No 后保留可信地区，不借 Premium 结果，不另发请求。扩展项目也只保留原请求中可信的平台地区，不把市场组别和出口 IP 国别补进结果。
+
+services 的 Google、YouTube Music、Spotify 和 Reddit 可输出可选 `region` ISO2，未知省略；access 和 extra 复用已有 region 字段，顶层四数组/22+134不变。严格JSON消费者需同步本版本；历史原报告不查新、不补贴国家。
 
 ## 上版已完成的破坏性JSON目录变化（0.5.7保留）
 
@@ -47,7 +49,7 @@ Spotify保严格`Legacy signup endpoint`：旧匿名不完整POST不是实际注
 ## 使用
 
 ```sh
-curl -fLsS https://github.com/shui1iao/service-unlock/releases/download/v0.5.9/check.sh -o check.sh && sh check.sh
+curl -fLsS https://github.com/shui1iao/service-unlock/releases/download/v0.5.10/check.sh -o check.sh && sh check.sh
 ./service-unlock_linux_amd64 --help
 ./service-unlock_linux_amd64 --machine > report-envelope.json
 ```
@@ -60,7 +62,7 @@ curl -fLsS https://github.com/shui1iao/service-unlock/releases/download/v0.5.9/c
 
 ## 准确源、离线构建与限制
 
-本版Release附check.sh、Linux amd64v1/arm64v8.0程序、SHA256SUMS和完整`service-unlock-v0.5.9-source.zip`（固定vendor、构建/测试/数据及全许可；vendor不入Git）。从该源解包：
+本版Release附check.sh、Linux amd64v1/arm64v8.0程序、SHA256SUMS和完整`service-unlock-v0.5.10-source.zip`（固定vendor、构建/测试/数据及全许可；vendor不入Git）。从该源解包：
 
 ```sh
 export GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off CGO_ENABLED=0
@@ -69,11 +71,11 @@ GOOS=linux GOARCH=amd64 GOAMD64=v1 go build -mod=vendor -buildvcs=false -trimpat
 GOOS=linux GOARCH=arm64 GOARM64=v8.0 go build -mod=vendor -buildvcs=false -trimpath -ldflags='-s -w -buildid=' -o service-unlock_linux_arm64 .
 ```
 
-本版使用现有 Go1.26.9 工具链构建（未升级系统）；固定go.mod/go.sum与go1.22运行defaults不变。实际发布验证与首次失败/修复见匹配Release；只做离线/loopback及help/license，无真实全平台、Spotify请求、注册登录/邮件或跑分；arm64仅交编，不冒实机。Hulu Japan继承真实Go超时/Unknown仍未修，不改变HTTP/TLS/UA/预算掩盖。Yes不是播放/登录/模型调用保证。
+本版使用现有 Go1.26.9 工具链构建（未升级系统）；固定go.mod/go.sum与go1.22运行defaults不变。发布验证见匹配 Release；未做真实全平台、注册登录/邮件或跑分验收；arm64仅交编，不冒实机。Hulu Japan继承真实Go超时/Unknown仍未修，不改变HTTP/TLS/UA/预算掩盖。Yes不是播放/登录/模型调用保证。
 
 原Remnawave/geocheck v0.3.0 (`50e084bb3ed34b55fc6839fe0dc4bafd9fe275fc`) MIT保留；RRC (`b6d4a6f9a87fc6eae6d3e62d0092ececcec8e844`)派生为AGPL-3.0-only；**组合发行非MIT-only**。见LICENSE、LICENSES、NOTICE及逐函数来源/hash。准确对应源：
-- https://github.com/shui1iao/service-unlock/tree/v0.5.9
-- https://github.com/shui1iao/service-unlock/releases/download/v0.5.9/service-unlock-v0.5.9-source.zip
+- https://github.com/shui1iao/service-unlock/tree/v0.5.10
+- https://github.com/shui1iao/service-unlock/releases/download/v0.5.10/service-unlock-v0.5.10-source.zip
 
 网络提供修改版须向交互用户提供实际对应源码，不把旧公开tag冒称修改源。
 

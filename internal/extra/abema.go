@@ -19,6 +19,9 @@ func classifyAbema(r response) verdict {
 	// Only the captured, service-specific denial code is recognized. Missing
 	// country, arbitrary text/other messages and empty objects remain Unknown.
 	if data.Message != nil && *data.Message == "anonymous_ip" {
+		if data.Country != nil && country(*data.Country) == jsonRegion(r, "isoCountryCode") {
+			return noRegion("Abema refused anonymous_ip", *data.Country)
+		}
 		return no("Abema refused anonymous_ip")
 	}
 	if r.Status != 200 {

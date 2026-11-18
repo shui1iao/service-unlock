@@ -116,9 +116,15 @@ func Run(ctx context.Context, stack *netx.Stack, f netx.Family, checks []Check, 
 			}
 			// Preserve primary timing/state; optional country uses this same worker.
 			if c.ID == "youtube_premium_access" {
-				if res.Region == "" && res.YouTubeCountry.Problem == "" {
-					res.YouTubeCountry = geo.YouTubeMetadata(ctx, stack, f)
-					res.Region = res.YouTubeCountry.Region
+				// A decisive Premium result can lack a trusted country on its page.
+				// Try the existing homepage once, whether Premium is offered or not.
+				decisive := res.State == StateAvailable || res.State == StateBlocked
+				if res.Region == "" && (decisive || res.YouTubeCountry.Problem == "") {
+					home := geo.YouTubeMetadata(ctx, stack, f)
+					if home.Region != "" || res.YouTubeCountry.Problem == "" {
+						res.YouTubeCountry = home
+						res.Region = home.Region
+					}
 				}
 			} else if res.Region == "" {
 				res.Region = geo.RegionMetadata(ctx, stack, f, c.ID)
